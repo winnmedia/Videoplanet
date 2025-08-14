@@ -1,3 +1,5 @@
+'use client'
+
 import Feedback from '@/page/Cms/Feedback'
 
 interface PageProps {
