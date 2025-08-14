@@ -27,6 +27,7 @@ FROM python:3.9-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    DJANGO_SETTINGS_MODULE=config.settings_production \
     PATH="/app/.venv/bin:$PATH"
 
 # Install runtime dependencies
@@ -34,6 +35,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     ffmpeg \
     netcat-openbsd \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Create app user
@@ -51,24 +53,22 @@ COPY --chown=django:django . .
 
 # Create necessary directories
 RUN mkdir -p /app/staticfiles /app/media /app/logs && \
-    chown -R django:django /app
+    chown -R django:django /app && \
+    chmod +x /app/docker-entrypoint.sh
 
 # Switch to non-root user
 USER django
 
-# Collect static files
+# Pre-collect static files (may fail, that's ok)
 RUN python manage.py collectstatic --noinput || true
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health/')" || exit 1
+# Health check - using simple endpoint
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+    CMD curl -f http://localhost:${PORT:-8000}/health/?simple=true || exit 1
 
 # Expose port
 EXPOSE 8000
 
 # Start script
-COPY --chown=django:django docker-entrypoint.sh /app/
-RUN chmod +x /app/docker-entrypoint.sh
-
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "config.asgi:application"]

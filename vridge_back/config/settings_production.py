@@ -3,6 +3,8 @@ Production settings for Railway deployment
 """
 
 import os
+import sys
+import time
 from pathlib import Path
 from datetime import timedelta
 import dj_database_url
@@ -14,17 +16,29 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Track startup time for health checks
+STARTUP_TIME = time.time()
+
 # Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this-in-production')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
+
+# Application version
+APP_VERSION = os.environ.get('APP_VERSION', '1.0.0')
+ENVIRONMENT = os.environ.get('RAILWAY_ENVIRONMENT', 'production')
 
 # Allowed hosts - Railway will provide the domain
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
-if os.environ.get('RAILWAY_STATIC_URL'):
-    ALLOWED_HOSTS.append(os.environ.get('RAILWAY_STATIC_URL'))
-if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
-    ALLOWED_HOSTS.append(os.environ.get('RAILWAY_PUBLIC_DOMAIN'))
-ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost', '.railway.app'])
+ALLOWED_HOSTS = ['*']  # Temporarily allow all during debugging
+
+# More secure configuration (use after debugging):
+# ALLOWED_HOSTS = []
+# if os.environ.get('ALLOWED_HOSTS'):
+#     ALLOWED_HOSTS.extend(os.environ.get('ALLOWED_HOSTS', '').split(','))
+# if os.environ.get('RAILWAY_STATIC_URL'):
+#     ALLOWED_HOSTS.append(os.environ.get('RAILWAY_STATIC_URL').replace('https://', '').replace('http://', ''))
+# if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
+#     ALLOWED_HOSTS.append(os.environ.get('RAILWAY_PUBLIC_DOMAIN'))
+# ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost', '.railway.app'])
 
 # Application definition
 DJANGO_APPS = [
@@ -115,11 +129,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 # Channels configuration
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')],
+            "hosts": [REDIS_URL],
         },
     },
 }
@@ -185,13 +200,15 @@ AUTH_USER_MODEL = "users.User"
 
 # CORS settings
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True  # Temporarily allow all during debugging
 
-# Parse CORS allowed origins from environment
-cors_origins = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins if origin.strip()]
-if not CORS_ALLOWED_ORIGINS:
-    CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+# More secure configuration (use after debugging):
+# CORS_ALLOW_ALL_ORIGINS = False
+# # Parse CORS allowed origins from environment
+# cors_origins = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+# CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins if origin.strip()]
+# if not CORS_ALLOWED_ORIGINS:
+#     CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -226,7 +243,7 @@ EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # CSRF settings
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS.copy()
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'http://localhost:3000']
 if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
     CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('RAILWAY_PUBLIC_DOMAIN')}")
 
@@ -243,25 +260,31 @@ if os.environ.get('SENTRY_DSN'):
     )
 
 # Security settings for production
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
+SECURE_SSL_REDIRECT = False  # Disable for debugging
+SESSION_COOKIE_SECURE = False  # Disable for debugging
+CSRF_COOKIE_SECURE = False  # Disable for debugging
 
-# Logging configuration
+# Enable these in production:
+# if not DEBUG:
+#     SECURE_SSL_REDIRECT = True
+#     SESSION_COOKIE_SECURE = True
+#     CSRF_COOKIE_SECURE = True
+#     SECURE_BROWSER_XSS_FILTER = True
+#     SECURE_CONTENT_TYPE_NOSNIFF = True
+#     X_FRAME_OPTIONS = 'DENY'
+
+# Logging configuration - Enhanced for debugging
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "format": "[{levelname}] {asctime} {name} {module} {funcName} {lineno}: {message}",
             "style": "{",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
         "simple": {
-            "format": "{levelname} {message}",
+            "format": "[{levelname}] {message}",
             "style": "{",
         },
     },
@@ -269,11 +292,12 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
+            "stream": sys.stdout,  # Explicitly use stdout
         },
     },
     "root": {
         "handlers": ["console"],
-        "level": "INFO",
+        "level": os.environ.get("LOG_LEVEL", "INFO"),
     },
     "loggers": {
         "django": {
@@ -281,5 +305,52 @@ LOGGING = {
             "level": os.environ.get("DJANGO_LOG_LEVEL", "INFO"),
             "propagate": False,
         },
+        "django.server": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "daphne": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "channels": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "core": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "core.health": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
     },
 }
+
+# Print startup configuration for debugging
+print("=" * 50)
+print("Django Settings Loaded")
+print(f"DEBUG: {DEBUG}")
+print(f"ENVIRONMENT: {ENVIRONMENT}")
+print(f"DATABASE_URL configured: {'Yes' if os.environ.get('DATABASE_URL') else 'No'}")
+print(f"REDIS_URL: {REDIS_URL}")
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+print(f"RAILWAY_PUBLIC_DOMAIN: {os.environ.get('RAILWAY_PUBLIC_DOMAIN', 'Not set')}")
+print(f"PORT: {os.environ.get('PORT', 'Not set')}")
+print("=" * 50)

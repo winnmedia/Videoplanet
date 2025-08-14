@@ -20,13 +20,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.models import Group
 from rest_framework_simplejwt import token_blacklist
-from core.health import health_check, ready_check, liveness_check
+from core.health import health_check, ready_check, liveness_check, simple_health_check
+from core.simple_health import simple_health, ping
+from core.views import root, status
 
 urlpatterns = [
+    # Root endpoint
+    path("", root, name="root"),
+    
     # Health check endpoints
     path("health/", health_check, name="health_check"),
+    path("health/simple/", simple_health_check, name="simple_health_check"),
     path("ready/", ready_check, name="ready_check"),
     path("live/", liveness_check, name="liveness_check"),
+    path("ping/", ping, name="ping"),
+    path("status/", status, name="status"),
+    path("simple-health/", simple_health, name="simple_health"),
     
     # Application endpoints
     path("admin/", admin.site.urls),

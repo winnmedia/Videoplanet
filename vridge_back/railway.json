@@ -5,10 +5,18 @@
     "dockerfilePath": "vridge_back/Dockerfile"
   },
   "deploy": {
-    "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && daphne -b 0.0.0.0 -p $PORT config.asgi:application",
+    "startCommand": "/app/docker-entrypoint.sh",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3,
-    "healthcheckPath": "/health/",
-    "healthcheckTimeout": 30
+    "healthcheckPath": "/health/?simple=true",
+    "healthcheckTimeout": 60,
+    "healthcheckInterval": 30,
+    "region": "us-west1",
+    "environmentVariables": {
+      "DJANGO_SETTINGS_MODULE": "config.settings_production",
+      "RAILWAY_ENVIRONMENT": "production",
+      "LOG_LEVEL": "INFO",
+      "DJANGO_LOG_LEVEL": "INFO"
+    }
   }
 }
