@@ -1,0 +1,135 @@
+// 메인 스타일 인덱스 파일 - 지연 로딩 최적화
+@import "variables";
+
+// 기본 스타일은 globals.scss에서 이미 로드됨
+// 여기서는 필요에 따라 동적으로 로드할 스타일들만 포함
+
+// 컴포넌트 스타일 (필요시 동적 로드)
+// @import "components";
+
+// 페이지 스타일 (필요시 동적 로드)  
+// @import "pages";
+
+// 유틸리티 확장 클래스들
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.container {
+  width: 100%;
+  max-width: map-get($layout, container-max-width);
+  margin: 0 auto;
+  padding: 0 spacing(4);
+  
+  @include responsive(lg) {
+    padding: 0 spacing(6);
+  }
+}
+
+.section {
+  padding: spacing(16) 0;
+  
+  @include responsive(md) {
+    padding: spacing(12) 0;
+  }
+}
+
+// 애니메이션 유틸리티
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 스크롤바 스타일링
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: color(border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color(text-tertiary);
+  border-radius: 4px;
+  
+  &:hover {
+    background: color(text-secondary);
+  }
+}
+
+// 포커스 스타일
+*:focus {
+  outline: 2px solid color(primary);
+  outline-offset: 2px;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid color(primary);
+  outline-offset: 2px;
+}
+
+// 프린트 스타일
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  
+  .Header,
+  .SideBar,
+  button,
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+}

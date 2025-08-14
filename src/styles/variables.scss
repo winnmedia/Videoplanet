@@ -1,0 +1,176 @@
+// Design Tokens - 색상 시스템
+$colors: (
+  primary: #0031ff,
+  primary-hover: #0058da,
+  primary-light: rgba(0, 74, 193, 0.3),
+  secondary: #516e8b,
+  text-primary: #23262d,
+  text-secondary: #919191,
+  text-tertiary: #c1c1c1,
+  background: #fff,
+  border: #eeeeee,
+  shadow: #e8e8e8,
+  error: red,
+  success: #0058da
+);
+
+// 타이포그래피 토큰
+$font-families: (
+  suit: 'suit',
+  poppins-bold: 'pb',
+  poppins-light: 'pl',
+  poppins-medium: 'pm',
+  poppins-regular: 'pr',
+  poppins-semibold: 'psb'
+);
+
+$font-sizes: (
+  xs: 12px,
+  sm: 13px,
+  base: 15px,
+  md: 16px,
+  lg: 18px,
+  xl: 20px
+);
+
+$line-heights: (
+  base: 1.5,
+  tight: 1.2,
+  loose: 1.8
+);
+
+// 간격 시스템 토큰
+$spacing: (
+  0: 0,
+  1: 5px,
+  2: 10px,
+  3: 15px,
+  4: 20px,
+  5: 30px,
+  6: 40px,
+  7: 50px,
+  8: 60px,
+  9: 70px,
+  10: 80px,
+  11: 90px,
+  12: 100px,
+  14: 110px,
+  16: 120px,
+  18: 130px,
+  20: 140px,
+  22: 150px,
+  24: 160px,
+  26: 170px,
+  28: 180px,
+  30: 190px,
+  32: 200px
+);
+
+// 보더 시스템
+$borders: (
+  radius-sm: 5px,
+  radius-base: 15px,
+  radius-full: 100%,
+  width-thin: 1px
+);
+
+// 그림자 시스템
+$shadows: (
+  base: 5px 5px 10px map-get($colors, shadow),
+  none: none
+);
+
+// 트랜지션 시스템
+$transitions: (
+  base: all 0.3s,
+  ease: all 0.3s ease-in-out
+);
+
+// 레이아웃 토큰
+$layout: (
+  header-height: 80px,
+  sidebar-width: 250px,
+  container-max-width: 1200px
+);
+
+// 반응형 브레이크포인트
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// Z-index 관리
+$z-indexes: (
+  dropdown: 1000,
+  sticky: 1020,
+  fixed: 1030,
+  modal-backdrop: 1040,
+  modal: 1050,
+  popover: 1060,
+  tooltip: 1070
+);
+
+// 헬퍼 함수들
+@function color($key) {
+  @return map-get($colors, $key);
+}
+
+@function spacing($key) {
+  @return map-get($spacing, $key);
+}
+
+@function font-size($key) {
+  @return map-get($font-sizes, $key);
+}
+
+@function border-radius($key) {
+  @return map-get($borders, $key);
+}
+
+// 믹스인
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin button-base {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: map-get($font-families, suit);
+  transition: map-get($transitions, base);
+}
+
+@mixin input-base {
+  border: map-get($borders, width-thin) solid color(border);
+  border-radius: border-radius(base);
+  font-family: map-get($font-families, suit);
+  outline: none;
+  transition: map-get($transitions, ease);
+  
+  &:focus, &:hover {
+    background: color(background);
+    box-shadow: map-get($shadows, base);
+  }
+  
+  &::placeholder {
+    color: color(text-secondary);
+    font-family: map-get($font-families, suit);
+  }
+}
+
+@mixin responsive($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}

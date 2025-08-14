@@ -1,0 +1,483 @@
+@charset "utf-8";
+@import "styles/variables";
+
+// CSS Reset - 기존 App.scss에서 마이그레이션
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+input,
+select,
+textarea,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  padding: 0px;
+  margin: 0px;
+  vertical-align: top;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: normal;
+}
+
+html {
+  overflow-y: auto;
+}
+
+html,
+body {
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  min-width: 320px;
+  font-family: map-get($font-families, suit);
+  line-height: map-get($line-heights, base);
+  font-size: font-size(base);
+}
+
+ul,
+ol {
+  list-style-type: none;
+}
+
+li {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+th {
+  font-weight: 400;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img,
+fieldset {
+  border: 0;
+  outline: none;
+}
+
+label {
+  cursor: pointer;
+}
+
+i,
+em,
+address {
+  font-style: normal;
+}
+
+caption,
+legend {
+  visibility: hidden;
+  width: 0px;
+  height: 0px;
+  font-size: 0px;
+  line-height: 0px;
+}
+
+img {
+  max-width: 100%;
+}
+
+// HTML5 IE9 else
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+}
+
+header,
+nav,
+main,
+section,
+aside,
+footer {
+  display: block;
+}
+
+// Font Face 정의
+@font-face {
+  font-family: 'suit';
+  src: url('../assets/fonts/SUIT-Variable.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'pb';
+  src: url('../assets/fonts/Poppins-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'pl';
+  src: url('../assets/fonts/Poppins-Light.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'pm';
+  src: url('../assets/fonts/Poppins-Medium.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'pr';
+  src: url('../assets/fonts/Poppins-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'psb';
+  src: url('../assets/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+
+// Box Sizing
+* {
+  box-sizing: border-box;
+}
+
+// 유틸리티 클래스 - 기존 Common.scss에서 마이그레이션
+// Margin Top 유틸리티들
+@for $i from 1 through 32 {
+  .mt#{$i * 10} {
+    margin-top: spacing($i) !important;
+  }
+}
+
+// Float 유틸리티
+.float {
+  &:after {
+    content: '';
+    display: block;
+    float: none;
+    clear: both;
+  }
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.pr {
+  position: relative;
+}
+
+// Flexbox 유틸리티
+.flex {
+  display: flex;
+  
+  &.space_between {
+    justify-content: space-between;
+  }
+  
+  &.align_center {
+    align-items: center;
+  }
+  
+  &.justify_center {
+    justify-content: center;
+  }
+}
+
+// Text Alignment
+.tr {
+  text-align: right;
+}
+
+.tl {
+  text-align: left;
+}
+
+.tc {
+  text-align: center;
+}
+
+// Form 요소 스타일링
+input,
+select,
+button,
+textarea {
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  font-family: map-get($font-families, suit);
+  width: 100%;
+}
+
+input {
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}
+
+// Input 스타일 타입
+input[type='text'].ty01,
+input[type='password'].ty01 {
+  @include input-base;
+  padding: 0 spacing(3);
+  height: 54px;
+  font-size: font-size(md);
+}
+
+input::placeholder {
+  font-size: font-size(md);
+  font-family: map-get($font-families, suit);
+  color: color(text-secondary);
+}
+
+// Radio Button 스타일
+input[type='radio'] {
+  display: none;
+}
+
+input[type='radio'].ty02 + label {
+  display: inline-block;
+  width: 100%;
+  padding: 0 0 0 24px;
+  background: url('../assets/images/Common/check.png') no-repeat;
+  background-size: 18px;
+  background-position: left 0 top 1px;
+  color: color(text-tertiary);
+}
+
+input[type='radio'].ty02:checked + label {
+  background: url('../assets/images/Common/checked.png') no-repeat;
+  background-size: 18px;
+  background-position: left 0 top 1px;
+  color: color(primary);
+  font-weight: Bold;
+}
+
+// Textarea 스타일
+textarea {
+  @include input-base;
+  padding: spacing(3);
+  min-height: 54px;
+  font-size: font-size(md);
+  resize: vertical;
+}
+
+// Select 스타일
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select::-ms-expand {
+  display: none; // 화살표 없애기 for IE10, 11
+}
+
+// Button 스타일
+button {
+  @include button-base;
+}
+
+button.submit {
+  background: color(primary);
+  color: color(background);
+  border-radius: border-radius(base);
+  height: 54px;
+  font-size: font-size(lg);
+  
+  &:hover {
+    background: color(primary-hover);
+  }
+}
+
+button.cert {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: spacing(2);
+  background: color(primary-light);
+  width: 60px;
+  color: color(background);
+  border-radius: border-radius(sm);
+  height: 36px;
+  transition: map-get($transitions, base);
+  
+  &:hover {
+    background: color(primary-hover);
+    transition: map-get($transitions, base);
+  }
+}
+
+span.timer {
+  @include flex-center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: spacing(2);
+  background: color(primary-light);
+  width: 60px;
+  color: color(background);
+  border-radius: border-radius(sm);
+  height: 36px;
+}
+
+// Ant Design 커스터마이징
+.ant-btn-primary {
+  background-color: color(primary) !important;
+  border-color: color(primary) !important;
+  
+  &:hover {
+    background-color: color(primary-hover) !important;
+    border-color: color(primary-hover) !important;
+  }
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  border-color: color(primary) !important;
+  box-shadow: 0 0 0 2px rgba(0, 49, 255, 0.2) !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: color(primary) !important;
+  box-shadow: 0 0 0 2px rgba(0, 49, 255, 0.2) !important;
+}
+
+// 반응형 유틸리티
+@include responsive(md) {
+  .md\:hidden {
+    display: none;
+  }
+  
+  .md\:block {
+    display: block;
+  }
+  
+  .md\:flex {
+    display: flex;
+  }
+}
+
+@include responsive(lg) {
+  .lg\:hidden {
+    display: none;
+  }
+  
+  .lg\:block {
+    display: block;
+  }
+  
+  .lg\:flex {
+    display: flex;
+  }
+}

@@ -1,0 +1,101 @@
+// Critical CSS - 첫 화면 렌더링에 필요한 핵심 스타일만 포함
+@import "variables";
+
+// 핵심 리셋 스타일
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: map-get($font-families, suit);
+  line-height: map-get($line-heights, base);
+  font-size: font-size(base);
+  background-color: color(background);
+  color: color(text-primary);
+}
+
+// 핵심 레이아웃 스타일
+.flex {
+  display: flex;
+  
+  &.space_between {
+    justify-content: space-between;
+  }
+  
+  &.align_center {
+    align-items: center;
+  }
+  
+  &.justify_center {
+    justify-content: center;
+  }
+}
+
+// 핵심 버튼 스타일
+button {
+  @include button-base;
+}
+
+button.submit {
+  background: color(primary);
+  color: color(background);
+  border-radius: border-radius(base);
+  height: 54px;
+  font-size: font-size(lg);
+  
+  &:hover {
+    background: color(primary-hover);
+  }
+}
+
+// 핵심 입력 스타일
+input[type='text'].ty01,
+input[type='password'].ty01 {
+  @include input-base;
+  padding: 0 spacing(3);
+  height: 54px;
+  font-size: font-size(md);
+}
+
+// 핵심 헤더 스타일
+.Header {
+  @include flex-between;
+  height: map-get($layout, header-height);
+  padding: 0 spacing(6);
+  background: color(background);
+  border-bottom: 1px solid color(border);
+  
+  .logo img {
+    width: 150px;
+    height: auto;
+  }
+  
+  .profile {
+    @include flex-center;
+    
+    .nick {
+      width: 40px;
+      height: 40px;
+      background: color(secondary);
+      border-radius: border-radius(full);
+      @include flex-center;
+      font-size: font-size(md);
+      color: color(background);
+      margin-right: spacing(2);
+    }
+    
+    .mail {
+      font-size: font-size(sm);
+    }
+  }
+}
+
+// 모바일 우선 반응형
+@include responsive(md) {
+  .Header {
+    padding: 0 spacing(4);
+  }
+}

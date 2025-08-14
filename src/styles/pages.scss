@@ -1,0 +1,553 @@
+// 페이지별 스타일 모듈
+@import "variables";
+
+// Home 페이지 스타일 (기존 Home.scss 마이그레이션)
+.Home {
+  .hero-section {
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(0, 49, 255, 0.1) 0%, rgba(81, 110, 139, 0.1) 100%);
+    @include flex-center;
+    flex-direction: column;
+    text-align: center;
+    
+    .hero-content {
+      max-width: 800px;
+      padding: spacing(8);
+      
+      h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: spacing(4);
+        color: color(text-primary);
+        
+        @include responsive(md) {
+          font-size: 2.5rem;
+        }
+      }
+      
+      .subtitle {
+        font-size: font-size(xl);
+        color: color(text-secondary);
+        margin-bottom: spacing(6);
+        line-height: map-get($line-heights, loose);
+      }
+      
+      .cta-buttons {
+        @include flex-center;
+        gap: spacing(4);
+        flex-wrap: wrap;
+        
+        .btn-primary {
+          background: color(primary);
+          color: color(background);
+          padding: spacing(3) spacing(6);
+          border-radius: border-radius(base);
+          font-size: font-size(lg);
+          font-weight: 600;
+          transition: map-get($transitions, base);
+          
+          &:hover {
+            background: color(primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 49, 255, 0.3);
+          }
+        }
+        
+        .btn-secondary {
+          background: transparent;
+          color: color(primary);
+          border: 2px solid color(primary);
+          padding: spacing(3) spacing(6);
+          border-radius: border-radius(base);
+          font-size: font-size(lg);
+          font-weight: 600;
+          transition: map-get($transitions, base);
+          
+          &:hover {
+            background: color(primary);
+            color: color(background);
+          }
+        }
+      }
+    }
+  }
+  
+  .features-section {
+    padding: spacing(16) spacing(4);
+    background: color(background);
+    
+    .container {
+      max-width: map-get($layout, container-max-width);
+      margin: 0 auto;
+      
+      .section-title {
+        text-align: center;
+        margin-bottom: spacing(12);
+        
+        h2 {
+          font-size: 2.5rem;
+          font-weight: 700;
+          margin-bottom: spacing(4);
+          color: color(text-primary);
+        }
+        
+        p {
+          font-size: font-size(lg);
+          color: color(text-secondary);
+        }
+      }
+      
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: spacing(8);
+        
+        .feature-card {
+          background: color(background);
+          padding: spacing(6);
+          border-radius: border-radius(base);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          transition: map-get($transitions, base);
+          text-align: center;
+          
+          &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+          }
+          
+          .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto spacing(4);
+            background: linear-gradient(135deg, color(primary), color(secondary));
+            border-radius: border-radius(full);
+            @include flex-center;
+            
+            img {
+              width: 40px;
+              height: 40px;
+            }
+          }
+          
+          h3 {
+            font-size: font-size(xl);
+            font-weight: 600;
+            margin-bottom: spacing(3);
+            color: color(text-primary);
+          }
+          
+          p {
+            color: color(text-secondary);
+            line-height: map-get($line-heights, loose);
+          }
+        }
+      }
+    }
+  }
+}
+
+// 로그인 페이지 스타일 (기존 Login.scss, Auth.scss 마이그레이션)
+.Login {
+  min-height: 100vh;
+  background: url('../assets/images/User/login_bg.png') center/cover;
+  @include flex-center;
+  
+  .login-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: spacing(8);
+    border-radius: border-radius(base);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    
+    .logo {
+      text-align: center;
+      margin-bottom: spacing(6);
+      
+      img {
+        width: 150px;
+        height: auto;
+      }
+    }
+    
+    .login-form {
+      .form-group {
+        margin-bottom: spacing(4);
+        
+        label {
+          display: block;
+          margin-bottom: spacing(2);
+          font-weight: 600;
+          color: color(text-primary);
+        }
+        
+        input {
+          @include input-base;
+          width: 100%;
+          padding: spacing(3);
+          height: 54px;
+          font-size: font-size(md);
+        }
+      }
+      
+      .form-actions {
+        margin-top: spacing(6);
+        
+        .submit-btn {
+          width: 100%;
+          background: color(primary);
+          color: color(background);
+          border-radius: border-radius(base);
+          height: 54px;
+          font-size: font-size(lg);
+          font-weight: 600;
+          margin-bottom: spacing(4);
+          
+          &:hover {
+            background: color(primary-hover);
+          }
+        }
+        
+        .social-login {
+          .social-btn {
+            width: 100%;
+            @include flex-center;
+            gap: spacing(2);
+            padding: spacing(3);
+            border-radius: border-radius(base);
+            margin-bottom: spacing(3);
+            font-weight: 600;
+            transition: map-get($transitions, base);
+            
+            &.google {
+              background: #fff;
+              border: 1px solid #ddd;
+              color: #333;
+              
+              &:hover {
+                background: #f5f5f5;
+              }
+            }
+            
+            &.kakao {
+              background: #fee500;
+              color: #000;
+              
+              &:hover {
+                background: #fdd835;
+              }
+            }
+            
+            &.naver {
+              background: #03c75a;
+              color: #fff;
+              
+              &:hover {
+                background: #02b351;
+              }
+            }
+          }
+        }
+        
+        .form-links {
+          text-align: center;
+          margin-top: spacing(4);
+          
+          a {
+            color: color(text-secondary);
+            text-decoration: none;
+            margin: 0 spacing(2);
+            
+            &:hover {
+              color: color(primary);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// CMS 페이지 스타일 (기존 Cms.scss 마이그레이션)
+.CmsHome {
+  .dashboard-header {
+    @include flex-between;
+    margin-bottom: spacing(6);
+    
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: color(text-primary);
+    }
+    
+    .header-actions {
+      @include flex-center;
+      gap: spacing(3);
+      
+      .btn {
+        padding: spacing(2) spacing(4);
+        border-radius: border-radius(base);
+        font-weight: 600;
+        transition: map-get($transitions, base);
+        
+        &.primary {
+          background: color(primary);
+          color: color(background);
+          
+          &:hover {
+            background: color(primary-hover);
+          }
+        }
+      }
+    }
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: spacing(6);
+    margin-bottom: spacing(8);
+    
+    .dashboard-card {
+      background: color(background);
+      padding: spacing(6);
+      border-radius: border-radius(base);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      
+      .card-header {
+        @include flex-between;
+        margin-bottom: spacing(4);
+        
+        h3 {
+          font-size: font-size(lg);
+          font-weight: 600;
+          color: color(text-primary);
+        }
+        
+        .card-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: border-radius(sm);
+          @include flex-center;
+          
+          &.projects {
+            background: rgba(0, 49, 255, 0.1);
+            color: color(primary);
+          }
+          
+          &.feedback {
+            background: rgba(255, 99, 71, 0.1);
+            color: #ff6347;
+          }
+          
+          &.calendar {
+            background: rgba(52, 168, 83, 0.1);
+            color: #34a853;
+          }
+        }
+      }
+      
+      .card-content {
+        .metric {
+          font-size: 2rem;
+          font-weight: 700;
+          color: color(text-primary);
+          margin-bottom: spacing(2);
+        }
+        
+        .metric-label {
+          color: color(text-secondary);
+          font-size: font-size(sm);
+        }
+      }
+    }
+  }
+  
+  .projects-section {
+    .section-header {
+      @include flex-between;
+      margin-bottom: spacing(4);
+      
+      h2 {
+        font-size: font-size(xl);
+        font-weight: 600;
+        color: color(text-primary);
+      }
+      
+      .view-all {
+        color: color(primary);
+        text-decoration: none;
+        font-weight: 600;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: spacing(4);
+      
+      .project-card {
+        background: color(background);
+        border-radius: border-radius(base);
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: map-get($transitions, base);
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-header {
+          padding: spacing(4);
+          background: linear-gradient(135deg, color(primary), color(secondary));
+          color: color(background);
+          
+          .project-title {
+            font-size: font-size(lg);
+            font-weight: 600;
+            margin-bottom: spacing(2);
+          }
+          
+          .project-meta {
+            font-size: font-size(sm);
+            opacity: 0.9;
+          }
+        }
+        
+        .project-body {
+          padding: spacing(4);
+          
+          .project-description {
+            color: color(text-secondary);
+            line-height: map-get($line-heights, loose);
+            margin-bottom: spacing(4);
+          }
+          
+          .project-progress {
+            .progress-label {
+              @include flex-between;
+              margin-bottom: spacing(2);
+              font-size: font-size(sm);
+              
+              .percentage {
+                font-weight: 600;
+                color: color(primary);
+              }
+            }
+            
+            .progress-bar {
+              height: 6px;
+              background: color(border);
+              border-radius: 3px;
+              overflow: hidden;
+              
+              .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, color(primary), color(secondary));
+                transition: width 0.3s ease;
+              }
+            }
+          }
+        }
+        
+        .project-footer {
+          padding: spacing(3) spacing(4);
+          background: rgba(0, 0, 0, 0.02);
+          @include flex-between;
+          
+          .project-team {
+            @include flex-center;
+            gap: spacing(1);
+            
+            .team-member {
+              width: 24px;
+              height: 24px;
+              border-radius: border-radius(full);
+              background: color(secondary);
+              @include flex-center;
+              font-size: 12px;
+              color: color(background);
+              border: 2px solid color(background);
+              
+              &:not(:first-child) {
+                margin-left: -8px;
+              }
+            }
+          }
+          
+          .project-actions {
+            @include flex-center;
+            gap: spacing(2);
+            
+            .action-btn {
+              padding: spacing(1) spacing(2);
+              border-radius: border-radius(sm);
+              font-size: font-size(sm);
+              background: color(border);
+              color: color(text-primary);
+              
+              &:hover {
+                background: color(primary);
+                color: color(background);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 반응형 조정
+@include responsive(md) {
+  .Home {
+    .hero-section .hero-content {
+      padding: spacing(6);
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+    
+    .features-section .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .Login .login-container {
+    margin: spacing(4);
+    padding: spacing(6);
+  }
+  
+  .CmsHome {
+    .dashboard-header {
+      flex-direction: column;
+      gap: spacing(3);
+      align-items: flex-start;
+    }
+    
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

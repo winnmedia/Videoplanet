@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "name": "videoplanet-frontend",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/manifest.json",
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
+      },
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "/favicon.ico",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      },
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+      },
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@videoplanet-api-url",
+    "REACT_APP_WS_URL": "@videoplanet-ws-url",
+    "REACT_APP_GOOGLE_CLIENT_ID": "@google-client-id",
+    "REACT_APP_KAKAO_API_KEY": "@kakao-api-key"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "@videoplanet-api-url",
+      "REACT_APP_WS_URL": "@videoplanet-ws-url",
+      "REACT_APP_GOOGLE_CLIENT_ID": "@google-client-id",
+      "REACT_APP_KAKAO_API_KEY": "@kakao-api-key",
+      "CI": "false"
+    }
+  },
+  "regions": ["icn1"],
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 10
+    }
+  }
+}

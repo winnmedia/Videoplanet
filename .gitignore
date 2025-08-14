@@ -1,0 +1,245 @@
+# ==========================================
+# Archives and large files
+# ==========================================
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+아카이브.zip
+정보.txt
+__MACOSX/
+
+# ==========================================
+# Python / Django
+# ==========================================
+*.py[cod]
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.manifest
+*.spec
+
+# Django specific
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static_root/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+virtualenv/
+
+# ==========================================
+# Node.js / React
+# ==========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# React build output
+/vridge_front/build/
+/vridge_front/.next/
+/vridge_front/out/
+
+# Production files
+/vridge_front/dist/
+
+# ==========================================
+# Environment variables
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+my_settings.py
+
+# ==========================================
+# IDE and Editor files
+# ==========================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ==========================================
+# OS specific files
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+__MACOSX/
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ==========================================
+# Testing and Coverage
+# ==========================================
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.tox/
+htmlcov/
+
+# ==========================================
+# Deployment and CI/CD
+# ==========================================
+*.pid
+*.seed
+*.pid.lock
+.grunt
+.lock-wscript
+.node_repl_history
+.yarn-integrity
+.cache/
+
+# ==========================================
+# Documentation
+# ==========================================
+docs/_build/
+site/
+
+# ==========================================
+# Backup files
+# ==========================================
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*.temp
+
+# ==========================================
+# Security sensitive files
+# ==========================================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets.json
+credentials.json
+vridge_google_login.json
+
+# ==========================================
+# Media and Upload files
+# ==========================================
+uploads/
+media/
+temp/
+
+# ==========================================
+# Database
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ==========================================
+# Package manager locks (keep these for consistency)
+# ==========================================
+# poetry.lock - keep this
+# package-lock.json - keep this
+# yarn.lock - keep this if using yarn
+
+# ==========================================
+# Miscellaneous
+# ==========================================
+*.log
+*.pot
+*.mo
+.webassets-cache
+.sass-cache/
+.parcel-cache/
+*.zip
+*.tar.gz
+*.rar
+
+# Dropbox attributes
+*.attrs
+*:com.dropbox.attrs

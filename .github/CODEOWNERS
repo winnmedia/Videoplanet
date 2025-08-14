@@ -1,0 +1,34 @@
+# Code Owners for VideoPlanet Project
+# These owners will be automatically requested for review when someone opens a pull request
+
+# Global owners (for all files)
+* @videoplanet-team-lead @devops-lead
+
+# Backend specific
+/vridge_back/ @backend-lead @senior-django-dev
+/vridge_back/config/ @backend-lead @devops-lead
+/vridge_back/*/migrations/ @backend-lead @database-admin
+
+# Frontend specific
+/vridge_front/ @frontend-lead @senior-react-dev
+/vridge_front/src/components/ @frontend-lead @ui-ux-lead
+/vridge_front/src/api/ @frontend-lead @backend-lead
+
+# DevOps and Infrastructure
+/.github/ @devops-lead
+/docker/ @devops-lead
+/scripts/ @devops-lead
+*.yml @devops-lead
+*.yaml @devops-lead
+Dockerfile* @devops-lead
+docker-compose* @devops-lead
+
+# Documentation
+*.md @documentation-team
+/docs/ @documentation-team @tech-lead
+
+# Security sensitive files
+*.env* @security-team @devops-lead
+*secret* @security-team @devops-lead
+*credential* @security-team @devops-lead
+/vridge_back/config/settings.py @backend-lead @security-team @devops-lead

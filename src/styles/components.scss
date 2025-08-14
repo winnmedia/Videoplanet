@@ -1,0 +1,318 @@
+// 컴포넌트별 스타일 모듈 - 지연 로딩 가능한 스타일들
+@import "variables";
+
+// Header 컴포넌트 스타일 (기존 Header.scss 마이그레이션)
+.Header {
+  @include flex-between;
+  height: map-get($layout, header-height);
+  padding: 0 spacing(6);
+  background: color(background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: map-get($z-indexes, sticky);
+  
+  .logo {
+    img {
+      width: 150px;
+      height: auto;
+      transition: map-get($transitions, base);
+      
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  
+  .profile {
+    @include flex-center;
+    gap: spacing(2);
+    
+    .nick {
+      width: 40px;
+      height: 40px;
+      background: color(secondary);
+      border-radius: border-radius(full);
+      @include flex-center;
+      font-size: font-size(md);
+      color: color(background);
+      overflow: hidden;
+      transition: map-get($transitions, base);
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+    
+    .mail {
+      font-size: font-size(sm);
+      color: color(text-secondary);
+    }
+  }
+}
+
+// SideBar 컴포넌트 스타일 (기존 SideBar.scss 마이그레이션)
+.SideBar {
+  width: map-get($layout, sidebar-width);
+  height: 100vh;
+  background: color(background);
+  border-right: 1px solid color(border);
+  padding: spacing(4);
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  z-index: map-get($z-indexes, fixed);
+  
+  .navigation {
+    .nav-item {
+      padding: spacing(3) spacing(4);
+      margin-bottom: spacing(2);
+      border-radius: border-radius(base);
+      cursor: pointer;
+      transition: map-get($transitions, base);
+      
+      &:hover {
+        background: color(border);
+      }
+      
+      &.active {
+        background: color(primary);
+        color: color(background);
+      }
+    }
+  }
+}
+
+// PageTemplate 컴포넌트 스타일
+.PageTemplate {
+  min-height: 100vh;
+  background: color(background);
+  
+  .main-content {
+    margin-left: map-get($layout, sidebar-width);
+    padding: spacing(4);
+    
+    @include responsive(md) {
+      margin-left: 0;
+      padding: spacing(3);
+    }
+  }
+}
+
+// LoginIntro 컴포넌트 스타일
+.LoginIntro {
+  min-height: 100vh;
+  @include flex-center;
+  background: linear-gradient(135deg, color(primary) 0%, color(secondary) 100%);
+  
+  .intro-content {
+    text-align: center;
+    color: color(background);
+    max-width: 500px;
+    padding: spacing(8);
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: spacing(4);
+      font-weight: 600;
+    }
+    
+    p {
+      font-size: font-size(lg);
+      line-height: map-get($line-heights, loose);
+      margin-bottom: spacing(6);
+    }
+    
+    .cta-button {
+      background: color(background);
+      color: color(primary);
+      padding: spacing(3) spacing(6);
+      border-radius: border-radius(base);
+      font-size: font-size(lg);
+      font-weight: 600;
+      transition: map-get($transitions, base);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+// Calendar 컴포넌트 스타일
+.Calendar {
+  .calendar-header {
+    @include flex-between;
+    margin-bottom: spacing(4);
+    
+    .month-navigation {
+      @include flex-center;
+      gap: spacing(3);
+      
+      button {
+        background: color(primary);
+        color: color(background);
+        border-radius: border-radius(sm);
+        padding: spacing(2) spacing(3);
+        
+        &:hover {
+          background: color(primary-hover);
+        }
+      }
+    }
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: color(border);
+    border-radius: border-radius(base);
+    overflow: hidden;
+    
+    .calendar-cell {
+      background: color(background);
+      padding: spacing(2);
+      min-height: 120px;
+      position: relative;
+      
+      &:hover {
+        background: rgba(0, 49, 255, 0.05);
+      }
+      
+      .date-number {
+        font-weight: 600;
+        margin-bottom: spacing(1);
+      }
+      
+      .events {
+        .event {
+          background: color(primary);
+          color: color(background);
+          padding: 2px spacing(1);
+          border-radius: border-radius(sm);
+          font-size: 12px;
+          margin-bottom: 2px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+// Modal 컴포넌트 스타일
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  @include flex-center;
+  z-index: map-get($z-indexes, modal);
+  
+  .modal-content {
+    background: color(background);
+    border-radius: border-radius(base);
+    padding: spacing(6);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    
+    .modal-header {
+      @include flex-between;
+      margin-bottom: spacing(4);
+      
+      h2 {
+        font-size: font-size(xl);
+        font-weight: 600;
+      }
+      
+      .close-button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: spacing(1);
+        
+        &:hover {
+          color: color(primary);
+        }
+      }
+    }
+    
+    .modal-body {
+      margin-bottom: spacing(4);
+    }
+    
+    .modal-footer {
+      @include flex-center;
+      gap: spacing(3);
+      
+      button {
+        padding: spacing(2) spacing(4);
+        border-radius: border-radius(base);
+        
+        &.primary {
+          background: color(primary);
+          color: color(background);
+          
+          &:hover {
+            background: color(primary-hover);
+          }
+        }
+        
+        &.secondary {
+          background: color(border);
+          color: color(text-primary);
+          
+          &:hover {
+            background: color(text-tertiary);
+          }
+        }
+      }
+    }
+  }
+}
+
+// 반응형 조정
+@include responsive(md) {
+  .Header {
+    padding: 0 spacing(4);
+    
+    .logo img {
+      width: 120px;
+    }
+  }
+  
+  .SideBar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    
+    &.open {
+      transform: translateX(0);
+    }
+  }
+  
+  .PageTemplate .main-content {
+    margin-left: 0;
+  }
+  
+  .Calendar .calendar-grid {
+    .calendar-cell {
+      min-height: 80px;
+      font-size: font-size(sm);
+    }
+  }
+  
+  .Modal .modal-content {
+    padding: spacing(4);
+    width: 95%;
+  }
+}
