@@ -44,14 +44,8 @@
       "dest": "/index.html"
     }
   ],
-  "env": {
-    "REACT_APP_API_URL": "@videoplanet-api-url",
-    "REACT_APP_WS_URL": "@videoplanet-ws-url"
-  },
   "build": {
     "env": {
-      "REACT_APP_API_URL": "@videoplanet-api-url",
-      "REACT_APP_WS_URL": "@videoplanet-ws-url",
       "CI": "false"
     }
   },
