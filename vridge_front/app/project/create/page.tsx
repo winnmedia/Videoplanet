@@ -1,3 +1,5 @@
+'use client'
+
 import ProjectCreate from '@/page/Cms/ProjectCreate'
 
 export default function ProjectCreatePage() {

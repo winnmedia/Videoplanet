@@ -1,3 +1,5 @@
+'use client'
+
 import ProjectEdit from '@/page/Cms/ProjectEdit'
 
 interface PageProps {

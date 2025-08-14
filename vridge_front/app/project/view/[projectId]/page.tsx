@@ -1,3 +1,5 @@
+'use client'
+
 import ProjectView from '@/page/Cms/ProjectView'
 
 interface PageProps {

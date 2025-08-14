@@ -1,3 +1,5 @@
+'use client'
+
 import 'css/User/Auth.scss'
 import PageTemplate from 'components/PageTemplate'
 import queryString from 'query-string'
