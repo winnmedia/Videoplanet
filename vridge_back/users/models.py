@@ -5,17 +5,8 @@ from core import managers, models as core_model
 
 
 class User(AbstractUser):
-    LOGIN_CHOICES = (
-        ("email", "Email"),
-        ("google", "Google"),
-        ("kakao", "Kakao"),
-        ("naver", "Naver"),
-    )
-
     nickname = models.CharField(verbose_name="닉네임", max_length=100, blank=True)
-    login_method = models.CharField(
-        max_length=50, verbose_name="로그인 방식", choices=LOGIN_CHOICES, default="email"
-    )
+    # login_method field removed - only email login supported
     email_secret = models.CharField(verbose_name="비밀번호 찾기(인증번호)", max_length=10, null=True, blank=True)
     objects = managers.CustomUserManager()
 

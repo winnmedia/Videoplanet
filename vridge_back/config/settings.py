@@ -334,25 +334,23 @@ CORS_ALLOW_HEADERS = (
 )
 CORS_ALLOW_HEADERS = list(default_headers) + ["vridge_session"]
 
-# Email 전송
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# 메일을 호스트하는 서버
-EMAIL_HOST = "smtp.gmail.com"
-# gmail과의 통신하는 포트
-EMAIL_PORT = "587"
-# 발신할 이메일
-# EMAIL_HOST_USER = '구글아이디@gmail.com'
-EMAIL_HOST_USER = my_settings.GOOGLE_ID
+# SendGrid Email Configuration
+SENDGRID_API_KEY = getattr(my_settings, 'SENDGRID_API_KEY', os.environ.get('SENDGRID_API_KEY', ''))
+DEFAULT_FROM_EMAIL = getattr(my_settings, 'DEFAULT_FROM_EMAIL', 'noreply@vridge.kr')
+DEFAULT_FROM_NAME = getattr(my_settings, 'DEFAULT_FROM_NAME', 'Vlanet')
 
-# 발신할 메일의 비밀번호
-# EMAIL_HOST_PASSWORD = '구글비밀번호'
-EMAIL_HOST_PASSWORD = my_settings.GOOGLE_APP_PASSWORD
-
-# TLS 보안 방법
-EMAIL_USE_TLS = True
-
-# 사이트와 관련한 자동응답을 받을 이메일 주소
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# Use SendGrid if API key is available, otherwise fall back to console backend for development
+if SENDGRID_API_KEY:
+    # Using custom SendGrid backend
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'apikey'
+    EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+else:
+    # Fallback for development without SendGrid
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # USE_X_FORWARDED_HOST = True
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

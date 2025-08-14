@@ -1,11 +1,13 @@
-import jwt, my_settings, threading
+import jwt, my_settings, threading, logging, os
 from django.http import JsonResponse
 from . import models
 from projects import models as project_model
-
+from django.conf import settings
 from django.core.mail import EmailMessage, send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+logger = logging.getLogger(__name__)
 
 
 def user_validator(function):
@@ -36,48 +38,115 @@ def user_validator(function):
 
 
 class EmailThread(threading.Thread):
-    def __init__(self, subject, body, recipient_list, html_message):
+    """Enhanced email thread with SendGrid support and better error handling"""
+    def __init__(self, subject, body, recipient_list, html_message, from_email=None):
         self.subject = subject
         self.body = body
         self.recipient_list = recipient_list
         self.fail_silently = False
         self.html_message = html_message
+        self.from_email = from_email or settings.DEFAULT_FROM_EMAIL
         threading.Thread.__init__(self)
 
     def run(self):
-        email = EmailMultiAlternatives(
-            subject=self.subject, body=self.body, to=self.recipient_list
-        )
-        if self.html_message:
-            email.attach_alternative(self.html_message, "text/html")
-        email.send(self.fail_silently)
+        try:
+            # Use SendGrid-compatible email sending
+            email = EmailMultiAlternatives(
+                subject=self.subject, 
+                body=self.body, 
+                from_email=self.from_email,
+                to=self.recipient_list
+            )
+            if self.html_message:
+                email.attach_alternative(self.html_message, "text/html")
+            
+            # Send email with better error handling
+            email.send(fail_silently=self.fail_silently)
+            logger.info(f"Email sent successfully to {self.recipient_list}")
+        except Exception as e:
+            logger.error(f"Failed to send email to {self.recipient_list}: {str(e)}")
+            if not self.fail_silently:
+                raise
 
 
 def auth_send_email(request, email, secret):
-    html_message = render_to_string("verify_email.html", {"secret": secret})
-    to = [email]
-    EmailThread("Vlanet", strip_tags(html_message), to, html_message).start()
+    """Send authentication email with verification code using SendGrid"""
+    try:
+        # Render email template
+        html_message = render_to_string("verify_email.html", {"secret": secret})
+        plain_message = strip_tags(html_message)
+        
+        # Email configuration
+        subject = f"Vlanet - 인증번호: {secret}"
+        to = [email]
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@vridge.kr')
+        
+        # Send email in thread for better performance
+        EmailThread(subject, plain_message, to, html_message, from_email).start()
+        logger.info(f"Authentication email sent to {email}")
+    except Exception as e:
+        logger.error(f"Failed to send authentication email to {email}: {str(e)}")
+        raise
 
 
 def invite_send_email(request, email, uid, token, name):
-    if my_settings.DEBUG:
-        url = "http://localhost:3000/EmailCheck"
-    else:
-        url = "https://vlanet.net/EmailCheck"
-    html_message = render_to_string(
-        "invite_email.html",
-        {
-            "uid": uid,
-            "token": token,
-            "url": url,
-            "scheme": request.scheme,
-            "domain": request.META["HTTP_HOST"],
-            "name": name,
-        },
-    )
-    to = [email]
-    EmailThread("Vlanet", strip_tags(html_message), to, html_message).start()
+    """Send project invitation email using SendGrid"""
+    try:
+        # Determine URL based on environment
+        if settings.DEBUG:
+            url = "http://localhost:3000/EmailCheck"
+        else:
+            url = "https://vlanet.net/EmailCheck"
+        
+        # Render email template
+        html_message = render_to_string(
+            "invite_email.html",
+            {
+                "uid": uid,
+                "token": token,
+                "url": url,
+                "scheme": request.scheme,
+                "domain": request.META.get("HTTP_HOST", "vridge.kr"),
+                "name": name,
+            },
+        )
+        plain_message = strip_tags(html_message)
+        
+        # Email configuration
+        subject = f"Vlanet - {name}님이 프로젝트에 초대하셨습니다"
+        to = [email]
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@vridge.kr')
+        
+        # Send email in thread
+        EmailThread(subject, plain_message, to, html_message, from_email).start()
+        logger.info(f"Invitation email sent to {email} from {name}")
+    except Exception as e:
+        logger.error(f"Failed to send invitation email to {email}: {str(e)}")
+        raise
 
+
+def send_password_reset_email(request, email, reset_link):
+    """Send password reset email using SendGrid"""
+    try:
+        # Render email template
+        context = {
+            "reset_link": reset_link,
+            "email": email,
+        }
+        html_message = render_to_string("password_reset_email.html", context)
+        plain_message = strip_tags(html_message)
+        
+        # Email configuration
+        subject = "Vlanet - 비밀번호 재설정"
+        to = [email]
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@vridge.kr')
+        
+        # Send email in thread
+        EmailThread(subject, plain_message, to, html_message, from_email).start()
+        logger.info(f"Password reset email sent to {email}")
+    except Exception as e:
+        logger.error(f"Failed to send password reset email to {email}: {str(e)}")
+        raise
 
 # request.Meta
 # CONTENT_LENGTH– 요청 본문의 길이(문자열).

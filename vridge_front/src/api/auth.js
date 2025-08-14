@@ -45,32 +45,6 @@ export function ResetPassword(data) {
   )
 }
 
-// 카카오 로그인
-export function KakaoLoginAPI(data) {
-  return axiosCredentials(
-    'post',
-    `${process.env.REACT_APP_BACKEND_API_URL}/users/login/kakao`,
-    data,
-  )
-}
-
-// 네이버 로그인
-export function NaverLoginAPI(data) {
-  return axiosCredentials(
-    'post',
-    `${process.env.REACT_APP_BACKEND_API_URL}/users/login/naver`,
-    data,
-  )
-}
-
-// 구글 로그인
-export function GoogleLoginAPI(data) {
-  return axiosCredentials(
-    'post',
-    `${process.env.REACT_APP_BACKEND_API_URL}/users/login/google`,
-    data,
-  )
-}
 
 // 유저 메모 작성
 export function WriteUserMemo(data) {
