@@ -13,7 +13,7 @@
     "healthcheckInterval": 30,
     "region": "us-west1",
     "environmentVariables": {
-      "DJANGO_SETTINGS_MODULE": "config.settings_production",
+      "DJANGO_SETTINGS_MODULE": "config.settings.railway",
       "RAILWAY_ENVIRONMENT": "production",
       "LOG_LEVEL": "INFO",
       "DJANGO_LOG_LEVEL": "INFO"

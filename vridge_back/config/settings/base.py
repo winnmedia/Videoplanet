@@ -13,29 +13,25 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
-import my_settings
+import dj_database_url
 from corsheaders.defaults import default_headers
-
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-# IMAGEIO_FFMPEG_EXE = os.environ.get("IMAGEIO_FFMPEG_EXE", "/opt/homebrew/bin/FFmpeg")
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = my_settings.SECRET_KEY
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-4(7b%fv3+tc0ptvzu9j2yh9)wotp(lty83a^b)d$79^+r(=trg')
 
-DEBUG = my_settings.DEBUG
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = [
-    "api.vridge.kr",
-    "127.0.0.1",
-    "43.201.170.139",
-]
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', 
+    'api.vlanet.net,vlanet.net,localhost,127.0.0.1,*.railway.app'
+).split(',')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
 
 # Application definition
 
@@ -89,8 +85,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=28),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ALGORITHM": my_settings.ALGORITHM,
-    "SIGNING_KEY": my_settings.SECRET_KEY,
+    "ALGORITHM": os.environ.get('ALGORITHM', 'HS256'),
+    "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
@@ -122,36 +118,43 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+# Redis configuration with fallback
+REDIS_URL = os.environ.get('REDIS_URL')
+if REDIS_URL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [REDIS_URL],
+            },
         },
-    },
-}
+    }
+else:
+    # Fallback to in-memory channel layer when Redis is not available
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-if DEBUG:
+# Database configuration
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    # Fallback to SQLite for local development
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "HOST": my_settings.RDS_HOST,
-            "NAME": my_settings.RDS_NAME,
-            "USER": my_settings.RDS_USER,
-            "PASSWORD": my_settings.RDS_PASSWORD,
-            "PORT": "5432",
-        }
-    }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -171,7 +174,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = "ko-kr"
 
 TIME_ZONE = "Asia/Seoul"
@@ -180,7 +182,6 @@ USE_I18N = True
 
 USE_TZ = True  # False 로 설정해야 DB에 변경 된 TIME_ZONE 이 반영 됨
 
-
 STATIC_URL = "/static/"  # 접두사
 STATIC_ROOT = BASE_DIR / "staticfiles"  # 실제 저장되는 파일
 STATICFILES_DIRS = []  # 정적 파일을 찾을 수 있는 추가적인 디렉토리 경로
@@ -188,29 +189,28 @@ if os.path.exists(BASE_DIR / "static"):
     STATICFILES_DIRS.append(BASE_DIR / "static")
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "uploads"
+# Use /data/media for Railway persistent volume
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/data/media' if os.path.exists('/data') else str(BASE_DIR / 'media'))
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 200000
 
 MAX_UPLOAD_SIZE = 429916160
 
-if not DEBUG:
-    # Sentry configuration
+# Sentry configuration (optional)
+SENTRY_DSN = os.environ.get('SENTRY_DSN')
+if SENTRY_DSN and not DEBUG:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    
     sentry_sdk.init(
-        dsn=my_settings.sentry_url,
-        integrations=[
-            DjangoIntegration(),
-        ],
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production.
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
         traces_sample_rate=1.0,
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
     )
 
-    LOG_FILE = "/var/log/django/django.log"
+if not DEBUG:
+    LOG_FILE = os.environ.get('LOG_FILE', '/tmp/django.log')
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -304,13 +304,9 @@ AUTH_USER_MODEL = "users.User"
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = (
-    "https://vridge.kr",
-    "http://localhost:3000",
-    "https://api.vridge.kr",
-    "https://vlanet.net",
-    "http://127.0.0.1",
-)
+# Parse CORS origins from environment
+cors_origins = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://vlanet.net,http://localhost:3000').split(',')
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins if origin.strip()]
 
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -334,10 +330,10 @@ CORS_ALLOW_HEADERS = (
 )
 CORS_ALLOW_HEADERS = list(default_headers) + ["vridge_session"]
 
-# SendGrid Email Configuration
-SENDGRID_API_KEY = getattr(my_settings, 'SENDGRID_API_KEY', os.environ.get('SENDGRID_API_KEY', ''))
-DEFAULT_FROM_EMAIL = getattr(my_settings, 'DEFAULT_FROM_EMAIL', 'noreply@vridge.kr')
-DEFAULT_FROM_NAME = getattr(my_settings, 'DEFAULT_FROM_NAME', 'Vlanet')
+# Email Configuration
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@vlanet.net')
+DEFAULT_FROM_NAME = os.environ.get('DEFAULT_FROM_NAME', 'Vlanet')
 
 # Use SendGrid if API key is available, otherwise fall back to console backend for development
 if SENDGRID_API_KEY:
@@ -354,9 +350,7 @@ else:
 
 # USE_X_FORWARDED_HOST = True
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-CSRF_TRUSTED_ORIGINS = [
-    "https://api.vridge.kr",
-    "https://vridge.kr",
-    "https://vlanet.net",
-    "http://localhost:3000",
-]
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = ['https://vlanet.net', 'https://*.railway.app', 'http://localhost:3000']
+if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('RAILWAY_PUBLIC_DOMAIN')}")

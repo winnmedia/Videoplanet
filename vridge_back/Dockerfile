@@ -27,7 +27,7 @@ FROM python:3.9-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=config.settings_production \
+    DJANGO_SETTINGS_MODULE=config.settings.railway \
     PATH="/app/.venv/bin:$PATH"
 
 # Install runtime dependencies
@@ -51,6 +51,17 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy application code
 COPY --chown=django:django . .
 
+# CRITICAL: Remove old settings.py if it exists (must use settings package)
+RUN rm -f /app/config/settings.py /app/config/my_settings.py /app/my_settings.py
+
+# Verify settings package structure
+RUN test -d /app/config/settings && \
+    test -f /app/config/settings/__init__.py && \
+    test -f /app/config/settings/base.py && \
+    test -f /app/config/settings/railway.py && \
+    echo "✓ Settings package structure verified" || \
+    (echo "❌ ERROR: config/settings/ directory structure is missing!" && exit 1)
+
 # Create necessary directories
 RUN mkdir -p /app/staticfiles /app/media /app/logs && \
     chown -R django:django /app && \
@@ -59,8 +70,7 @@ RUN mkdir -p /app/staticfiles /app/media /app/logs && \
 # Switch to non-root user
 USER django
 
-# Pre-collect static files (may fail, that's ok)
-RUN python manage.py collectstatic --noinput || true
+# Skip collectstatic during build - will run in entrypoint
 
 # Health check - using simple endpoint
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \

@@ -14,8 +14,24 @@ echo "DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-Not set}"
 echo "=========================================="
 
 # Set Django settings module
-export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-config.settings_production}
+export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-config.settings.railway}
 echo "Using Django settings: $DJANGO_SETTINGS_MODULE"
+
+# CRITICAL: Ensure old settings.py doesn't exist
+if [ -f "/app/config/settings.py" ]; then
+    echo "WARNING: Found old settings.py file, removing it..."
+    rm -f /app/config/settings.py
+fi
+
+# Verify settings package exists
+if [ ! -d "/app/config/settings" ]; then
+    echo "ERROR: config/settings/ directory not found!"
+    echo "Directory structure:"
+    ls -la /app/config/
+    exit 1
+fi
+
+echo "✓ Settings package structure confirmed"
 
 # Wait for database (with timeout)
 if [ "$DATABASE_URL" ]; then
@@ -105,26 +121,16 @@ python manage.py collectstatic --noinput --clear || {
     echo "The application will continue to start."
 }
 
-# Ensure media directories exist
+# Ensure media directories exist at /data/media
 echo "Creating media directories..."
-python manage.py ensure_media_dirs || {
-    echo "Creating media directories manually..."
-    python << END || true
-import os
-from pathlib import Path
-
-base_dir = Path('/app')
-media_root = base_dir / 'media'
-media_root.mkdir(parents=True, exist_ok=True)
-print(f"✓ Media root created at: {media_root}")
-
-# Create subdirectories
-for subdir in ['uploads', 'project_file', 'feedback_file']:
-    path = media_root / subdir
-    path.mkdir(parents=True, exist_ok=True)
-    print(f"✓ Created: {path}")
-END
-}
+if [ -d "/data" ]; then
+    mkdir -p /data/media/uploads /data/media/project_file /data/media/feedback_file
+    echo "✓ Media directories created at /data/media"
+else
+    # Fallback to /app/media if /data doesn't exist
+    mkdir -p /app/media/uploads /app/media/project_file /app/media/feedback_file
+    echo "✓ Media directories created at /app/media (fallback)"
+fi
 
 # Start the application
 echo "=========================================="
