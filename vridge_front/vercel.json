@@ -46,23 +46,14 @@
   ],
   "env": {
     "REACT_APP_API_URL": "@videoplanet-api-url",
-    "REACT_APP_WS_URL": "@videoplanet-ws-url",
-    "REACT_APP_GOOGLE_CLIENT_ID": "@google-client-id",
-    "REACT_APP_KAKAO_API_KEY": "@kakao-api-key"
+    "REACT_APP_WS_URL": "@videoplanet-ws-url"
   },
   "build": {
     "env": {
       "REACT_APP_API_URL": "@videoplanet-api-url",
       "REACT_APP_WS_URL": "@videoplanet-ws-url",
-      "REACT_APP_GOOGLE_CLIENT_ID": "@google-client-id",
-      "REACT_APP_KAKAO_API_KEY": "@kakao-api-key",
       "CI": "false"
     }
   },
-  "regions": ["icn1"],
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 10
-    }
-  }
+  "regions": ["icn1"]
 }
