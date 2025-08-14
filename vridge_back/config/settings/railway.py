@@ -92,10 +92,12 @@ if RAILWAY_PUBLIC_DOMAIN:
 # Add environment variable overrides
 additional_origins = os.environ.get('CORS_ALLOWED_ORIGINS', '')
 if additional_origins:
-    CORS_ALLOWED_ORIGINS.extend([
-        origin.strip() for origin in additional_origins.split(',') 
-        if origin.strip()
-    ])
+    for origin in additional_origins.split(','):
+        origin = origin.strip()
+        if origin and not origin.startswith(('http://', 'https://')):
+            origin = f'https://{origin}'
+        if origin:
+            CORS_ALLOWED_ORIGINS.append(origin)
 
 # CSRF configuration
 CSRF_TRUSTED_ORIGINS = [
@@ -109,22 +111,35 @@ if RAILWAY_PUBLIC_DOMAIN:
 
 # Static files - use Railway's static URL if available
 if RAILWAY_STATIC_URL:
-    STATIC_URL = RAILWAY_STATIC_URL
+    # Ensure STATIC_URL always ends with a slash
+    STATIC_URL = RAILWAY_STATIC_URL if RAILWAY_STATIC_URL.endswith('/') else f"{RAILWAY_STATIC_URL}/"
 else:
     STATIC_URL = '/static/'
 
 # Media files - ensure using Railway volume with fallback
+# Check if /data exists and is writable
 if os.path.exists('/data'):
-    MEDIA_ROOT = '/data/media'
+    try:
+        # Try to create a test file to check write permissions
+        test_file = '/data/.write_test'
+        with open(test_file, 'w') as f:
+            f.write('test')
+        os.remove(test_file)
+        MEDIA_ROOT = '/data/media'
+    except (PermissionError, IOError):
+        # /data exists but not writable, use app directory
+        MEDIA_ROOT = os.environ.get('MEDIA_ROOT', str(BASE_DIR / 'media'))
+        warnings.warn("Cannot write to /data, using local media directory")
 else:
     # Fallback for local testing or containers without volume
     MEDIA_ROOT = os.environ.get('MEDIA_ROOT', str(BASE_DIR / 'media'))
     
-# Ensure media directory exists
+# Ensure media directory exists (suppress permission errors)
 try:
     os.makedirs(MEDIA_ROOT, exist_ok=True)
-except Exception as e:
-    warnings.warn(f"Could not create MEDIA_ROOT directory: {e}")
+except (PermissionError, OSError) as e:
+    # This is expected on Railway with read-only filesystem
+    pass  # Silently ignore as Railway handles media differently
 
 # Security settings for production
 SECURE_SSL_REDIRECT = False  # Railway handles SSL termination

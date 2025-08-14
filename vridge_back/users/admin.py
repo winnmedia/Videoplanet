@@ -9,7 +9,6 @@ class UserAdmin(UserAdmin):
         "id",
         "username",
         "nickname",
-        "login_method",
         "date_joined",
     )
 
@@ -38,7 +37,6 @@ class UserAdmin(UserAdmin):
             {
                 "fields": UserAdmin.fieldsets[0][1]["fields"]
                 + (
-                    "login_method",
                     "email_secret",
                 ),
             },
