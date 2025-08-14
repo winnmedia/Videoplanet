@@ -56,7 +56,9 @@ COPY --chown=django:django . .
 RUN chmod +x /app/docker-entrypoint.sh && \
     chmod +x /app/pre-start.sh && \
     chmod +x /app/railway-start.sh && \
-    ls -la /app/*.sh
+    chmod +x /app/bulletproof-start.py && \
+    chmod +x /app/server_django_proxy_v2.py && \
+    ls -la /app/*.sh /app/*.py | grep -E "(start|proxy|entrypoint)"
 
 # Create necessary directories
 RUN mkdir -p /app/staticfiles /app/media /app/logs && \
