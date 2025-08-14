@@ -5,7 +5,6 @@
     "dockerfilePath": "vridge_back/Dockerfile"
   },
   "deploy": {
-    "startCommand": "/app/railway-start.sh",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3,
     "healthcheckPath": "/health/?simple=true",

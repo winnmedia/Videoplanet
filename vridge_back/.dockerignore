@@ -25,12 +25,11 @@ wheels/
 
 # Django
 *.log
-*.pot
-*.pyc
 local_settings.py
 db.sqlite3
 media/
 staticfiles/
+*.sqlite3
 
 # IDE
 .vscode/
@@ -43,18 +42,27 @@ staticfiles/
 .DS_Store
 Thumbs.db
 
-# Project specific
-my_settings.py
-config/settings.py
-config/settings.py.backup
-config/my_settings.py
-*.attrs
-
 # Git
 .git/
 .gitignore
 
 # Docker
-Dockerfile
+Dockerfile*
 docker-compose*.yml
 .dockerignore
+
+# Project specific
+*.md
+README*
+tests/
+docs/
+.env*
+!.env.example
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.old
+tmp/
+temp/

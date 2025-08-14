@@ -47,13 +47,16 @@ WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Copy application code
+# Copy application code with cache busting
+# Add a build argument to force cache invalidation
+ARG CACHEBUST=1
 COPY --chown=django:django . .
 
-# Make scripts executable
-RUN chmod +x /app/docker-entrypoint.sh || true && \
-    chmod +x /app/pre-start.sh || true && \
-    chmod +x /app/railway-start.sh || true
+# Make scripts executable - CRITICAL for deployment
+RUN chmod +x /app/docker-entrypoint.sh && \
+    chmod +x /app/pre-start.sh && \
+    chmod +x /app/railway-start.sh && \
+    ls -la /app/*.sh
 
 # Create necessary directories
 RUN mkdir -p /app/staticfiles /app/media /app/logs && \
@@ -78,6 +81,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
 # Expose port
 EXPOSE 8000
 
-# Start script
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+# Start script - use shell form to ensure script execution
+ENTRYPOINT ["/bin/bash", "/app/docker-entrypoint.sh"]
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "config.asgi:application"]
