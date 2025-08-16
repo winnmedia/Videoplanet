@@ -301,7 +301,46 @@ Videoplanet/
   - Redux SSR 경고 해결
   - Vercel 환경 변수 설정
 
+### 2025-08-16 Vercel 배포 오류 해결
+- **요청사항**: Vercel 빌드 오류 해결
+  1. Redux store export 오류
+  2. useSearchParams Suspense boundary 오류
+  3. Routes manifest 경로 오류
+  4. Dashboard 페이지 누락 오류
+
+- **완료 사항**:
+  - **Redux Store 수정**: 
+    - src/redux/store.ts: default export 추가
+    - app/providers.tsx: import 경로 수정
+    - ProjectState interface export 추가
+  
+  - **Suspense Boundary 추가** (useSearchParams 오류 해결):
+    - app/(auth)/login/page.tsx
+    - app/(auth)/email-check/[token]/page.tsx  
+    - app/(main)/projects/page.tsx
+    - app/(main)/projects/create/page.tsx
+  
+  - **Legacy 디렉토리 제거**:
+    - vridge_front, vridge_back 디렉토리 삭제 (빌드 경로 충돌 해결)
+  
+  - **Vercel Root Directory 설정**:
+    - Vercel 대시보드에서 Root Directory 설정 비움 (기본값 사용)
+  
+  - **Dashboard 페이지 생성**:
+    - app/(dashboard)/page.tsx: 대시보드 메인 페이지 구현
+    - app/(dashboard)/Dashboard.scss: 스타일링 추가
+    - 프로젝트 관리, 통계, 빠른 액션 기능 구현
+  
+  - **.gitignore 업데이트**:
+    - Next.js 빌드 출력 추가 (.next/, out/, build/)
+    - Vercel 빌드 경고 제거
+  
+  - **VERCEL_DEPLOYMENT_GUIDE.md 생성**: 배포 가이드 문서화
+  
+  - **최종 커밋**: "fix: Add missing dashboard page and update .gitignore for Vercel deployment"
+  - **GitHub 푸시 완료**: Vercel 자동 재배포 트리거
+
 ---
 
 **마지막 업데이트**: 2025-08-16
-**버전**: 3.0.0
+**버전**: 3.1.0
