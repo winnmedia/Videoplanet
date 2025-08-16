@@ -30,10 +30,21 @@
       "Bash(git add:*)",
       "Bash(git config:*)",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(tar:*)",
+      "Bash(chmod:*)",
+      "Bash(cat:*)",
+      "Bash(python:*)",
+      "Bash(.venvScriptsactivate)",
+      "Bash(pip install:*)",
+      "Bash(source:*)",
+      "Bash(export DJANGO_SETTINGS_MODULE=config.settings)"
     ],
     "deny": [],
     "ask": [],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "C:\\Users\\유석근PD\\linux_videoplanet"
+    ]
   }
 }
