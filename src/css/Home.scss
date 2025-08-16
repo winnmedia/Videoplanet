@@ -538,17 +538,22 @@
                   background: #0059db;
                 }
                 img {
-                  height: 130px;
+                  width: auto;
+                  height: auto;
+                  max-width: 130px;
+                  max-height: 130px;
                   position: absolute;
                   left: 50%;
                   transform: translateX(-50%);
                   top: -24px;
-                  max-width: initial;
+                  object-fit: contain;
                   &.img01 {
-                    height: 120px;
+                    max-width: 120px;
+                    max-height: 120px;
                   }
                   &.img02 {
-                    height: 120px;
+                    max-width: 120px;
+                    max-height: 120px;
                   }
                 }
               }
@@ -1570,7 +1575,7 @@
                     left: 50%;
                     transform: translateX(-50%);
                     top: -8px;
-                    max-width: initial;
+                    max-width: 100%;
                     &.img01 {
                       height: 40px;
                     }

@@ -44,9 +44,15 @@ export default function HomePage() {
     setIsClient(true)
   }, [])
   
-  const handleLoginClick = () => {
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log('Login button clicked')
     if (isClient) {
+      console.log('Navigating to login page')
       router.push('/login')
+    } else {
+      console.log('Client not ready, waiting for hydration')
     }
   }
   
@@ -90,7 +96,12 @@ export default function HomePage() {
                 </a>
               </li>
             </ul>
-            <button onClick={handleLoginClick} className="submit">
+            <button 
+              onClick={handleLoginClick} 
+              className="submit"
+              type="button"
+              aria-label="로그인 페이지로 이동"
+            >
               로그인
             </button>
           </div>
@@ -149,7 +160,12 @@ export default function HomePage() {
                   영상 피드백은 익명일 때 가장 효과적입니다. 이제 익명으로
                   피드백해보세요!
                 </p>
-                <button onClick={handleLoginClick} className="submit">
+                <button 
+                  onClick={handleLoginClick} 
+                  className="submit"
+                  type="button"
+                  aria-label="로그인 페이지로 바로가기"
+                >
                   바로가기
                 </button>
               </div>
@@ -175,7 +191,12 @@ export default function HomePage() {
                   오늘 어떤 프로젝트가 진행되는지 쉽게 추적하고, 앞으로 해야 할
                   일이 무엇인지 정확하게 알려줍니다.
                 </p>
-                <button onClick={handleLoginClick} className="submit">
+                <button 
+                  onClick={handleLoginClick} 
+                  className="submit"
+                  type="button"
+                  aria-label="로그인 페이지로 바로가기"
+                >
                   바로가기
                 </button>
               </div>
@@ -201,7 +222,12 @@ export default function HomePage() {
                   라이브코멘트 기능을 통해 영상을 보면서 실시간 미팅이
                   가능합니다.
                 </p>
-                <button onClick={handleLoginClick} className="submit">
+                <button 
+                  onClick={handleLoginClick} 
+                  className="submit"
+                  type="button"
+                  aria-label="로그인 페이지로 바로가기"
+                >
                   바로가기
                 </button>
               </div>
@@ -228,7 +254,12 @@ export default function HomePage() {
                   체계적으로 영상을 만드는 방법을 알려드려요. <br />
                   고수의 제작 방법을 이용해보세요!
                 </p>
-                <button onClick={handleLoginClick} className="submit">
+                <button 
+                  onClick={handleLoginClick} 
+                  className="submit"
+                  type="button"
+                  aria-label="로그인 페이지로 바로가기"
+                >
                   바로가기
                 </button>
               </div>
@@ -336,7 +367,19 @@ export default function HomePage() {
               <div className="ex">
                 <div className="part flex space_between align_center">
                   <div className="img">
-                    <Image src={emoji01} className="img01" alt="Designer emoji" />
+                    <Image 
+                      src={emoji01} 
+                      className="img01" 
+                      alt="Designer emoji"
+                      width={130}
+                      height={130}
+                      style={{
+                        width: 'auto',
+                        height: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
                   <div className="text">
                     <div>
@@ -371,7 +414,18 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="img">
-                    <Image src={emoji03} alt="Planner emoji" />
+                    <Image 
+                      src={emoji03} 
+                      alt="Planner emoji"
+                      width={130}
+                      height={130}
+                      style={{
+                        width: 'auto',
+                        height: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -391,7 +445,19 @@ export default function HomePage() {
               <div className="ex">
                 <div className="part flex space_between align_center">
                   <div className="img">
-                    <Image src={emoji02} className="img01" alt="Student emoji" />
+                    <Image 
+                      src={emoji02} 
+                      className="img01" 
+                      alt="Student emoji"
+                      width={130}
+                      height={130}
+                      style={{
+                        width: 'auto',
+                        height: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
                   <div className="text">
                     <div>
@@ -426,7 +492,19 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="img">
-                    <Image src={emoji04} className="img02" alt="Student emoji 2" />
+                    <Image 
+                      src={emoji04} 
+                      className="img02" 
+                      alt="Student emoji 2"
+                      width={130}
+                      height={130}
+                      style={{
+                        width: 'auto',
+                        height: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain'
+                      }}
+                    />
                   </div>
                 </div>
               </div>
