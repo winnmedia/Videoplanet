@@ -7,7 +7,7 @@ interface User {
   [key: string]: any
 }
 
-interface AuthState {
+export interface AuthState {
   user: User | null
   isAuthenticated: boolean
   loading: boolean

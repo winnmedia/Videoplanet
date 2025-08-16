@@ -42,6 +42,7 @@ Videoplanet/
   1. Vercel 배포 오류 해결 (dashboard 라우트 빌드 실패)
   2. Railway 배포 스냅샷 실패 해결 (Docker 이미지 문제)
   3. 랜딩페이지 UI 렌더링 및 로그인 버튼 네비게이션 문제 해결
+  4. 로그인 페이지 빈 화면 문제 해결
   
 - **문제 분석 및 해결**:
   1. **Vercel 빌드 오류**: 
@@ -55,12 +56,17 @@ Videoplanet/
   3. **랜딩페이지 UI 문제**:
      - 원인: Home.scss 클래스명 불일치 및 Common.scss 미포함
      - 해결: Linux 환경에서 원본 Home.scss 복사, Common.scss 추가 및 import
+  
+  4. **로그인 페이지 빈 화면 문제**:
+     - 원인: Redux store에 auth 리듀서 누락으로 useAuth 훅 실패
+     - 해결: src/redux/auth.ts 생성, store에 auth 리듀서 추가, Suspense fallback 수정
 
 - **완료 사항**:
   - Dashboard 라우트 구조 정상화
   - Django 백엔드 파일 완전성 복구
   - CSS 글로벌 스타일 및 유틸리티 클래스 적용
-  - Git 커밋 및 GitHub 푸시 완료
+  - Redux auth 리듀서 및 타입 정의 생성
+  - Git 커밋 및 GitHub 푸시 완료 (c18f737)
 
 ### 2025-08-15 종합 테스트 환경 구축 완료
 - **요청사항**: VideoPlanet 프로젝트에 종합적인 테스트 환경 구축
