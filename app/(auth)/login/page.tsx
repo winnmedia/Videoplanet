@@ -4,11 +4,13 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import queryString from 'query-string'
+import Image from 'next/image'
 import type { LoginCredentials, EmailVerificationParams } from '@/features/auth/types'
 // useAuth import removed to prevent circular dependency
 import { authApi } from '@/features/auth/api/authApi'
 import { checkSession, refetchProject } from '@/utils/util'
-import './Login.scss'
+import logo from '@/assets/images/Common/vlanet-logo.svg'
+import './AuthForm.scss'
 
 function LoginPageContent() {
   const dispatch = useDispatch()
@@ -112,6 +114,9 @@ function LoginPageContent() {
   return (
     <div className="Auth_Form">
       <div className="form_wrap">
+        <div className="logo">
+          <Image src={logo} alt="Vlanet Logo" width={150} height={50} />
+        </div>
         <div className="title">로그인</div>
         
         <input
