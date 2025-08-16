@@ -8,7 +8,7 @@ import type { LoginCredentials, EmailVerificationParams } from '@/features/auth/
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { authApi } from '@/features/auth/api/authApi'
 import { checkSession, refetchProject } from '@/utils/util'
-// import './Login.scss' // Temporarily disabled for build
+import './Login.scss'
 
 function LoginPageContent() {
   const dispatch = useDispatch()
