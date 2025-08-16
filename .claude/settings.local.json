@@ -42,7 +42,8 @@
       "Bash(touch:*)",
       "Bash(git reset:*)",
       "Bash(git lfs:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": [],

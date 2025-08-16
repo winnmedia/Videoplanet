@@ -116,13 +116,13 @@ export default function HomePage() {
               </p>
             </div>
             <div className="img">
-              <Image src={visual} alt="Visual content" />
+              <Image src={visual} alt="Visual content" priority style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
             </div>
           </div>
         </section>
 
         <section className="textbox">
-          <Image src={tool02} alt="Tool illustration" />
+          <Image src={tool02} alt="Tool illustration" style={{width: 'auto', height: 'auto', maxWidth: '100%'}} />
           <div>번거로운 n가지 툴 사용은 이제 그만,</div>
           <p>
             영상 편집 피드백, 프로젝트 관리가 까다로우셨나요? <br />
@@ -154,7 +154,7 @@ export default function HomePage() {
                 </button>
               </div>
               <div className="img">
-                <Image src={feedback} alt="Feedback feature" />
+                <Image src={feedback} alt="Feedback feature" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
               </div>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function HomePage() {
                 </button>
               </div>
               <div className="img">
-                <Image src={project} alt="Project management" />
+                <Image src={project} alt="Project management" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
               </div>
             </div>
           </div>
@@ -206,7 +206,7 @@ export default function HomePage() {
                 </button>
               </div>
               <div className="img">
-                <Image src={comment} alt="Live comment feature" />
+                <Image src={comment} alt="Live comment feature" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
               </div>
             </div>
           </div>
@@ -291,25 +291,25 @@ export default function HomePage() {
             <ul>
               <li>
                 <div className="img">
-                  <Image src={identity} alt="Easy Management" />
+                  <Image src={identity} alt="Easy Management" style={{width: '100%', height: 'auto'}} />
                 </div>
                 <div className="txt">Easy Management</div>
               </li>
               <li>
                 <div className="img">
-                  <Image src={identity02} alt="Fast and Accurate Feedback" />
+                  <Image src={identity02} alt="Fast and Accurate Feedback" style={{width: '100%', height: 'auto'}} />
                 </div>
                 <div className="txt">Fast and Accurate Feedback</div>
               </li>
               <li>
                 <div className="img">
-                  <Image src={identity03} alt="Study Together" />
+                  <Image src={identity03} alt="Study Together" style={{width: '100%', height: 'auto'}} />
                 </div>
                 <div className="txt">Study Together</div>
               </li>
               <li>
                 <div className="img">
-                  <Image src={identity04} alt="Convenient Meeting" />
+                  <Image src={identity04} alt="Convenient Meeting" style={{width: '100%', height: 'auto'}} />
                 </div>
                 <div className="txt">Convenient Meeting</div>
               </li>
@@ -467,7 +467,7 @@ export default function HomePage() {
               <span>만들어 갑니다.</span>
             </div>
             <div className="img">
-              <Image src={end} alt="Save the creators" />
+              <Image src={end} alt="Save the creators" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
             </div>
           </div>
           <div className="ment">

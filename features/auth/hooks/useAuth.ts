@@ -40,8 +40,8 @@ export const useAuth = (): UseAuthReturn => {
   const dispatch = useDispatch()
   const router = useRouter()
   
-  // Redux state에서 인증 정보 가져오기 (추후 구현)
-  const authState = useSelector((state: any) => state.auth || {})
+  // Redux state에서 인증 정보 가져오기 - memoized selector 사용
+  const authState = useSelector((state: any) => state.auth) || {}
   
   // 로컬 상태
   const [loading, setLoading] = useState<boolean>(false)

@@ -189,7 +189,7 @@ function LoginPageContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="Auth_Form"><div className="form_wrap"><div className="title">로딩 중...</div></div></div>}>
+    <Suspense fallback={null}>
       <LoginPageContent />
     </Suspense>
   )
