@@ -69,9 +69,7 @@ export type {
   FeedbackError,
   FeedbackConfig,
   
-  // 테스트 관련 타입들
-  FeedbackTestUtils,
-  MockWebSocket,
+  // Note: Test-specific types (FeedbackTestUtils, MockWebSocket) moved to ./types/test.ts
 } from './types';
 
 // 상수 Export

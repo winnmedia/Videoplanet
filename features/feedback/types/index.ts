@@ -342,21 +342,8 @@ export interface FeedbackMemoProps {
   onRefetch: () => void;
 }
 
-// 테스트를 위한 Mock 타입들
-export interface MockWebSocket {
-  readyState: number;
-  send: jest.Mock;
-  close: jest.Mock;
-  addEventListener: jest.Mock;
-  removeEventListener: jest.Mock;
-}
-
-export interface FeedbackTestUtils {
-  createMockProject: (overrides?: Partial<FeedbackProject>) => FeedbackProject;
-  createMockFeedback: (overrides?: Partial<Feedback>) => Feedback;
-  createMockChatMessage: (overrides?: Partial<ChatMessage>) => ChatMessage;
-  createMockWebSocket: () => MockWebSocket;
-}
+// Note: Test-specific types (MockWebSocket, FeedbackTestUtils) have been moved to
+// features/feedback/types/test.ts to avoid jest namespace issues in production builds
 
 // 타입 가드 함수들의 시그니처
 export type FeedbackTypeGuards = {
