@@ -1,0 +1,174 @@
+// =============================================================================
+// Settings Page Styles
+// VideoPlanet 프로젝트 - 설정 페이지 스타일
+// =============================================================================
+
+.settings {
+  .content {
+    padding: 30px;
+    max-width: 800px;
+    
+    .settings-section {
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      
+      h2 {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+      
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #555;
+        margin: 25px 0 15px 0;
+      }
+      
+      .setting-item {
+        margin-bottom: 20px;
+        
+        label {
+          display: block;
+          
+          span {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+          }
+        }
+        
+        // 토글 스위치 스타일
+        .toggle-switch {
+          width: 50px;
+          height: 25px;
+          background: #ddd;
+          border-radius: 25px;
+          position: relative;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          
+          &:checked {
+            background: #1631F8;
+          }
+          
+          &::before {
+            content: '';
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background: #fff;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+          
+          &:checked::before {
+            transform: translateX(25px);
+          }
+        }
+        
+        p {
+          margin: 0;
+          line-height: 1.5;
+        }
+      }
+      
+      .password-form {
+        border-top: 1px solid #f0f0f0;
+        padding-top: 20px;
+        margin-top: 20px;
+      }
+      
+      // 위험 영역 스타일
+      &.danger-zone {
+        border-left: 4px solid #dc3545;
+        
+        h2 {
+          color: #dc3545;
+        }
+      }
+    }
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .settings {
+    .content {
+      padding: 20px;
+      
+      .settings-section {
+        padding: 20px;
+        margin-bottom: 20px;
+        
+        h2 {
+          font-size: 18px;
+        }
+        
+        .setting-item {
+          label.flex {
+            flex-direction: column;
+            align-items: flex-start;
+            
+            .toggle-switch {
+              margin-top: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 다크 모드 지원
+@media (prefers-color-scheme: dark) {
+  .settings {
+    .content {
+      .settings-section {
+        background: #2a2a2a;
+        color: #fff;
+        
+        h2, h3 {
+          color: #fff;
+        }
+        
+        .setting-item {
+          label span {
+            color: #fff;
+          }
+        }
+        
+        input[type="email"]:read-only {
+          background-color: #404040 !important;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+// 접근성 개선
+@media (prefers-reduced-motion: reduce) {
+  .settings {
+    .content {
+      .settings-section {
+        .setting-item {
+          .toggle-switch,
+          .toggle-switch::before {
+            transition: none;
+          }
+        }
+      }
+    }
+  }
+}

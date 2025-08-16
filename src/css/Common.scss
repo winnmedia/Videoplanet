@@ -216,6 +216,15 @@ button {
   position: relative;
   z-index: 10;
   pointer-events: all;
+  transition: all 0.15s ease;
+  &:active {
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+  }
+  &:focus-visible {
+    outline: 2px solid rgba(22, 49, 248, 0.5);
+    outline-offset: 2px;
+  }
 }
 button.submit {
   background: #0031ff;
@@ -223,10 +232,20 @@ button.submit {
   border-radius: 15px;
   height: 54px;
   font-size: 18px;
-  transition: all 0.3s;
+  transition: all 0.15s ease;
   &:hover {
     background: #1631F8;
     box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(22, 49, 248, 0.4);
+    transition: all 0.1s ease;
+  }
+  &:focus {
+    outline: 2px solid rgba(22, 49, 248, 0.5);
+    outline-offset: 2px;
   }
 }
 button.cert {
