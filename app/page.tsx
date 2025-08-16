@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import '@/css/Common.scss'
 import '@/css/Home.scss'
@@ -35,23 +35,6 @@ import end from '@/assets/images/Home/new/end-img.png'
 import end02 from '@/assets/images/Home/new/end-img02.png'
 
 export default function HomePage() {
-  const router = useRouter()
-  
-  const handleLoginClick = () => {
-    console.log('Login button clicked at:', new Date().toISOString())
-    
-    // Next.js navigation
-    router.push('/login')
-  }
-  
-  const handleTermsClick = () => {
-    router.push('/terms')
-  }
-  
-  const handlePrivacyClick = () => {
-    router.push('/privacy')
-  }
-
   return (
     <div id="Home">
       <section id="header">
@@ -80,14 +63,9 @@ export default function HomePage() {
                 </a>
               </li>
             </ul>
-            <button 
-              onClick={handleLoginClick} 
-              className="submit"
-              type="button"
-              aria-label="로그인 페이지로 이동"
-            >
+            <Link href="/login" className="submit">
               로그인
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -144,14 +122,9 @@ export default function HomePage() {
                   영상 피드백은 익명일 때 가장 효과적입니다. 이제 익명으로
                   피드백해보세요!
                 </p>
-                <button 
-                  onClick={handleLoginClick} 
-                  className="submit"
-                  type="button"
-                  aria-label="로그인 페이지로 바로가기"
-                >
+                <Link href="/login" className="submit">
                   바로가기
-                </button>
+                </Link>
               </div>
               <div className="img">
                 <Image src={feedback} alt="Feedback feature" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
@@ -175,14 +148,9 @@ export default function HomePage() {
                   오늘 어떤 프로젝트가 진행되는지 쉽게 추적하고, 앞으로 해야 할
                   일이 무엇인지 정확하게 알려줍니다.
                 </p>
-                <button 
-                  onClick={handleLoginClick} 
-                  className="submit"
-                  type="button"
-                  aria-label="로그인 페이지로 바로가기"
-                >
+                <Link href="/login" className="submit">
                   바로가기
-                </button>
+                </Link>
               </div>
               <div className="img">
                 <Image src={project} alt="Project management" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
@@ -206,14 +174,9 @@ export default function HomePage() {
                   라이브코멘트 기능을 통해 영상을 보면서 실시간 미팅이
                   가능합니다.
                 </p>
-                <button 
-                  onClick={handleLoginClick} 
-                  className="submit"
-                  type="button"
-                  aria-label="로그인 페이지로 바로가기"
-                >
+                <Link href="/login" className="submit">
                   바로가기
-                </button>
+                </Link>
               </div>
               <div className="img">
                 <Image src={comment} alt="Live comment feature" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
@@ -238,14 +201,9 @@ export default function HomePage() {
                   체계적으로 영상을 만드는 방법을 알려드려요. <br />
                   고수의 제작 방법을 이용해보세요!
                 </p>
-                <button 
-                  onClick={handleLoginClick} 
-                  className="submit"
-                  type="button"
-                  aria-label="로그인 페이지로 바로가기"
-                >
+                <Link href="/login" className="submit">
                   바로가기
-                </button>
+                </Link>
               </div>
               <div className="list">
                 <ul>
@@ -550,10 +508,8 @@ export default function HomePage() {
               <li>전화번호 : 010-4156-8865</li>
             </ul>
             <div>
-              <span onClick={handleTermsClick}>이용약관</span>
-              <span onClick={handlePrivacyClick}>
-                개인정보 취급방침
-              </span>
+              <Link href="/terms">이용약관</Link>
+              <Link href="/privacy">개인정보 취급방침</Link>
             </div>
           </div>
 
