@@ -28,7 +28,9 @@ dist/
 build/
 eggs/
 .eggs/
-lib/
+# Python lib folders (not our lib folder)
+/vridge_back/lib/
+/vridge_back/lib64/
 lib64/
 parts/
 sdist/
