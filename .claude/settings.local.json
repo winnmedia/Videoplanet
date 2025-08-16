@@ -47,7 +47,8 @@
     "ask": [],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
-      "C:\\Users\\유석근PD\\linux_videoplanet"
+      "C:\\Users\\유석근PD\\linux_videoplanet",
+      "C:\\c\\Users\\유석근PD\\Desktop\\developments"
     ]
   }
 }

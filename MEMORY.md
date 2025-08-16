@@ -37,6 +37,31 @@ Videoplanet/
   - GitHub Actions 워크플로우 제외 (권한 이슈)
   - GitHub 리포지토리 푸시 완료: https://github.com/winnmedia/Videoplanet
 
+### 2025-08-16 Vercel/Railway 배포 이슈 및 UI 렌더링 문제 해결
+- **요청사항**: 
+  1. Vercel 배포 오류 해결 (dashboard 라우트 빌드 실패)
+  2. Railway 배포 스냅샷 실패 해결 (Docker 이미지 문제)
+  3. 랜딩페이지 UI 렌더링 및 로그인 버튼 네비게이션 문제 해결
+  
+- **문제 분석 및 해결**:
+  1. **Vercel 빌드 오류**: 
+     - 원인: Next.js route group `(dashboard)`가 루트 레벨에서 라우트를 생성하지 않음
+     - 해결: `app/(dashboard)/*` → `app/(main)/dashboard/*`로 이동
+  
+  2. **Railway 스냅샷 실패**:
+     - 원인: railway.json이 존재하지 않는 vridge_back 디렉토리 참조
+     - 해결: Linux 환경에서 vridge_back 전체 복사 및 railway.json 삭제
+  
+  3. **랜딩페이지 UI 문제**:
+     - 원인: Home.scss 클래스명 불일치 및 Common.scss 미포함
+     - 해결: Linux 환경에서 원본 Home.scss 복사, Common.scss 추가 및 import
+
+- **완료 사항**:
+  - Dashboard 라우트 구조 정상화
+  - Django 백엔드 파일 완전성 복구
+  - CSS 글로벌 스타일 및 유틸리티 클래스 적용
+  - Git 커밋 및 GitHub 푸시 완료
+
 ### 2025-08-15 종합 테스트 환경 구축 완료
 - **요청사항**: VideoPlanet 프로젝트에 종합적인 테스트 환경 구축
   1. Jest 및 React Testing Library 설정
