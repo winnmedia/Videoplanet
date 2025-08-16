@@ -65,7 +65,13 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-# React build output
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# React build output (legacy)
 /vridge_front/build/
 /vridge_front/.next/
 /vridge_front/out/
