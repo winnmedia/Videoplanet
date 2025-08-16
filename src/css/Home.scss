@@ -241,18 +241,32 @@
               word-break: keep-all;
             }
             .submit {
+              display: inline-flex;
+              justify-content: center;
+              align-items: center;
               margin-top: 30px;
               width: 130px;
               height: 50px;
               color: #fff;
-              background: #25282f;
+              background: #1631F8;
+              border-radius: 15px;
+              text-decoration: none;
+              font-size: 18px;
+              font-weight: 500;
               position: relative;
               z-index: 10;
               cursor: pointer;
               pointer-events: all;
+              transition: all 0.15s ease;
               &:hover {
-                background: #1631F8;
+                background: #0031ff;
+                box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+                transform: translateY(-1px);
                 transition: all 0.3s;
+              }
+              &:active {
+                transform: scale(0.95);
+                transition: all 0.1s ease;
               }
             }
           }
