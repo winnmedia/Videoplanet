@@ -1,9 +1,11 @@
 import { configureStore, combineReducers, Store } from '@reduxjs/toolkit'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import ProjectStore from './project'
+import auth from './auth'
 
 const rootReducer = combineReducers({
   ProjectStore,
+  auth,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

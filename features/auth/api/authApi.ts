@@ -98,11 +98,7 @@ export const authApi = {
   /**
    * 사용자 프로필 업데이트
    */
-  updateUserProfile: (data: Partial<{
-    name: string
-    phone: string
-    company: string
-  }>) => {
+  updateUserProfile: (data: Partial<User>) => {
     return axiosCredentials(
       'patch',
       `${API_BASE_URL}/users/profile/`,

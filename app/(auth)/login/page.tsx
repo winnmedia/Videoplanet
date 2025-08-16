@@ -189,7 +189,16 @@ function LoginPageContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={
+      <div className="Auth_Form">
+        <div className="form_wrap">
+          <div className="title">로그인</div>
+          <div style={{textAlign: 'center', padding: '50px 0'}}>
+            로딩 중...
+          </div>
+        </div>
+      </div>
+    }>
       <LoginPageContent />
     </Suspense>
   )
