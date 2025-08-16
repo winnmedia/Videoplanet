@@ -213,6 +213,9 @@ select::-ms-expand {
 
 button {
   cursor: pointer;
+  position: relative;
+  z-index: 10;
+  pointer-events: all;
 }
 button.submit {
   background: #0031ff;
@@ -220,6 +223,11 @@ button.submit {
   border-radius: 15px;
   height: 54px;
   font-size: 18px;
+  transition: all 0.3s;
+  &:hover {
+    background: #1631F8;
+    box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+  }
 }
 button.cert {
   position: absolute;

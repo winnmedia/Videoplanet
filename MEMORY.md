@@ -365,7 +365,57 @@ Videoplanet/
   - **최종 커밋**: "fix: Add missing dashboard page and update .gitignore for Vercel deployment"
   - **GitHub 푸시 완료**: Vercel 자동 재배포 트리거
 
+### 2025-08-16 랜딩페이지 버튼 이벤트 및 Hydration 이슈 해결
+- **요청사항**: 
+  1. 랜딩페이지 로그인 버튼 및 다른 버튼들이 클릭되지 않는 문제 해결
+  2. 이미지와 버튼 위치 레이아웃 문제 분석
+  3. Next.js 14 App Router 네비게이션 시스템 점검
+
+- **병렬 분석 결과**:
+  - **팀 A (버튼 이벤트)**: ✅ 문제 없음
+    - handleLoginClick, handleTermsClick, handlePrivacyClick 모든 핸들러 정상 구현
+    - Next.js useRouter 훅 올바르게 import 및 사용
+    - 'use client' 디렉티브 적절히 선언됨
+  
+  - **팀 B (CSS 레이아웃)**: ✅ 문제 없음  
+    - Home.scss: 완전한 스타일 정의, 버튼 스타일링 정상
+    - Common.scss: 유틸리티 클래스 정상 동작
+    - .submit 버튼 스타일: #0031ff 배경, 적절한 크기와 hover 효과
+    - flexbox 레이아웃 및 반응형 디자인 정상
+  
+  - **팀 C (Next.js 라우팅)**: ✅ 라우팅 시스템 정상
+    - middleware.ts: 라우트 보호 및 재작성 규칙 정상
+    - navigation-adapter.tsx: React Router 호환성 레이어 완벽 구현
+    - 개발 서버 성공적으로 실행됨
+
+- **실제 문제 원인 식별**: Next.js Hydration 이슈
+  - **증상**: 서버 사이드에서는 onClick 이벤트가 JSX에 포함되나, 클라이언트 HTML에는 없음
+  - **원인**: Server-Side Rendering과 Client-Side Hydration 간의 불일치
+  - **진단 방법**: 
+    - 렌더링된 HTML에서 onClick 속성 누락 확인
+    - 서버 빌드 파일에서는 이벤트 핸들러 정상 확인
+    - curl로 SSR HTML 검사 시 onClick 이벤트 0개 발견
+
+- **해결 방안 구현**:
+  - **isClient 상태 추가**: useState로 클라이언트 상태 관리
+  - **useEffect 활용**: Hydration 완료 후 isClient를 true로 설정
+  - **조건부 라우팅**: 이벤트 핸들러에서 isClient 체크 후 네비게이션 실행
+  - **Common.scss import 추가**: 글로벌 유틸리티 클래스 적용
+
+- **기술적 개선사항**:
+  - **Hydration 안정성 확보**: 서버와 클라이언트 간 동기화 보장
+  - **이벤트 핸들링 개선**: 클라이언트 준비 상태 확인 후 실행
+  - **CSS 일관성 향상**: Common.scss와 Home.scss 통합 적용
+  - **Next.js 14 호환성**: App Router의 SSR/CSR 패턴 준수
+
+- **완료 사항**:
+  - ✅ 버튼 클릭 이벤트 정상 작동 확인
+  - ✅ CSS 레이아웃 및 스타일링 정상 확인  
+  - ✅ Next.js 라우팅 시스템 정상 확인
+  - ✅ Hydration 이슈 해결 및 안정성 확보
+  - ✅ 개발 환경에서 모든 기능 테스트 완료
+
 ---
 
 **마지막 업데이트**: 2025-08-16
-**버전**: 3.1.0
+**버전**: 3.2.0

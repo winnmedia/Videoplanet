@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
+import '@/css/Common.scss'
 import '@/css/Home.scss'
 
 // Static imports for images
@@ -36,17 +37,29 @@ import end02 from '@/assets/images/Home/new/end-img02.png'
 
 export default function HomePage() {
   const router = useRouter()
+  const [isClient, setIsClient] = useState(false)
+  
+  // Hydration 완료 후 클라이언트 상태로 설정
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   const handleLoginClick = () => {
-    router.push('/login')
+    if (isClient) {
+      router.push('/login')
+    }
   }
   
   const handleTermsClick = () => {
-    router.push('/terms')
+    if (isClient) {
+      router.push('/terms')
+    }
   }
   
   const handlePrivacyClick = () => {
-    router.push('/privacy')
+    if (isClient) {
+      router.push('/privacy')
+    }
   }
 
   return (

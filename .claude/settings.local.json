@@ -41,7 +41,8 @@
       "Bash(export DJANGO_SETTINGS_MODULE=config.settings)",
       "Bash(touch:*)",
       "Bash(git reset:*)",
-      "Bash(git lfs:*)"
+      "Bash(git lfs:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": [],

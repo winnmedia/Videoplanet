@@ -79,8 +79,10 @@
       }
       .etc {
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
+        position: relative;
+        z-index: 10;
         ul {
           li {
             display: inline-block;
@@ -109,6 +111,10 @@
           width: 90px;
           height: 45px;
           margin-left: 40px;
+          position: relative;
+          z-index: 10;
+          cursor: pointer;
+          pointer-events: all;
         }
       }
     }
@@ -240,6 +246,14 @@
               height: 50px;
               color: #fff;
               background: #25282f;
+              position: relative;
+              z-index: 10;
+              cursor: pointer;
+              pointer-events: all;
+              &:hover {
+                background: #1631F8;
+                transition: all 0.3s;
+              }
             }
           }
         }
