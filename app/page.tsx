@@ -8,7 +8,7 @@ import '@/css/Common.scss'
 import '@/css/Home.scss'
 
 // Static imports for images
-import logo from '@/assets/images/Common/w_logo.svg'
+import logo from '@/assets/images/Common/vlanet-logo.svg'
 import icon01 from '@/assets/images/Home/icon01.svg'
 import icon02 from '@/assets/images/Home/icon02.svg'
 import icon03 from '@/assets/images/Home/icon03.svg'
@@ -291,25 +291,25 @@ export default function HomePage() {
             <ul>
               <li>
                 <div className="img">
-                  <Image src={identity} alt="Easy Management" style={{width: '100%', height: 'auto'}} />
+                  <Image src={identity} alt="Easy Management" style={{width: '120px', height: 'auto', objectFit: 'contain'}} />
                 </div>
                 <div className="txt">Easy Management</div>
               </li>
               <li>
                 <div className="img">
-                  <Image src={identity02} alt="Fast and Accurate Feedback" style={{width: '100%', height: 'auto'}} />
+                  <Image src={identity02} alt="Fast and Accurate Feedback" style={{width: '120px', height: 'auto', objectFit: 'contain'}} />
                 </div>
                 <div className="txt">Fast and Accurate Feedback</div>
               </li>
               <li>
                 <div className="img">
-                  <Image src={identity03} alt="Study Together" style={{width: '100%', height: 'auto'}} />
+                  <Image src={identity03} alt="Study Together" style={{width: '120px', height: 'auto', objectFit: 'contain'}} />
                 </div>
                 <div className="txt">Study Together</div>
               </li>
               <li>
                 <div className="img">
-                  <Image src={identity04} alt="Convenient Meeting" style={{width: '100%', height: 'auto'}} />
+                  <Image src={identity04} alt="Convenient Meeting" style={{width: '120px', height: 'auto', objectFit: 'contain'}} />
                 </div>
                 <div className="txt">Convenient Meeting</div>
               </li>
