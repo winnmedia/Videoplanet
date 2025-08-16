@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import queryString from 'query-string'
@@ -10,7 +10,7 @@ import { authApi } from '@/features/auth/api/authApi'
 import { checkSession, refetchProject } from '@/utils/util'
 // import './Login.scss' // Temporarily disabled for build
 
-export default function LoginPage() {
+function LoginPageContent() {
   const dispatch = useDispatch()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -184,5 +184,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="Auth_Form"><div className="form_wrap"><div className="title">로딩 중...</div></div></div>}>
+      <LoginPageContent />
+    </Suspense>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import '@/css/User/Auth.scss'
@@ -15,7 +15,7 @@ interface EmailCheckPageProps {
   }
 }
 
-export default function EmailCheckPage({ params }: EmailCheckPageProps) {
+function EmailCheckPageContent({ params }: EmailCheckPageProps) {
   const router = useRouter()
   const dispatch = useDispatch()
   const searchParams = useSearchParams()
@@ -103,5 +103,21 @@ export default function EmailCheckPage({ params }: EmailCheckPageProps) {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function EmailCheckPage({ params }: EmailCheckPageProps) {
+  return (
+    <Suspense fallback={
+      <div className="auth-container">
+        <div className="auth-form bg">
+          <div className="emailcheck">
+            <div className="ment">로딩 중...</div>
+          </div>
+        </div>
+      </div>
+    }>
+      <EmailCheckPageContent params={params} />
+    </Suspense>
   )
 }

@@ -6,7 +6,7 @@
 
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -36,7 +36,7 @@ interface RootState {
 /**
  * 프로젝트 생성 페이지 컴포넌트
  */
-export default function ProjectCreatePage() {
+function ProjectCreatePageContent() {
   const router = useRouter();
   const { sample_files } = useSelector((state: RootState) => state.ProjectStore);
   
@@ -221,5 +221,19 @@ export default function ProjectCreatePage() {
         </main>
       </div>
     </PageTemplate>
+  );
+}
+
+export default function ProjectCreatePage() {
+  return (
+    <Suspense fallback={
+      <div className="project-create-page">
+        <div className="container">
+          <div className="text-center">로딩 중...</div>
+        </div>
+      </div>
+    }>
+      <ProjectCreatePageContent />
+    </Suspense>
   );
 }

@@ -6,7 +6,7 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
@@ -29,7 +29,7 @@ interface RootState {
 /**
  * 프로젝트 목록 페이지 컴포넌트
  */
-export default function ProjectsPage() {
+function ProjectsPageContent() {
   const router = useRouter();
   const { projects, loading, fetchProjects } = useProjects();
   const { user } = useSelector((state: RootState) => state.ProjectStore);
@@ -267,5 +267,19 @@ export default function ProjectsPage() {
         </main>
       </div>
     </PageTemplate>
+  );
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={
+      <div className="projects-page">
+        <div className="container">
+          <div className="text-center">로딩 중...</div>
+        </div>
+      </div>
+    }>
+      <ProjectsPageContent />
+    </Suspense>
   );
 }

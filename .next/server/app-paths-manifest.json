@@ -2,16 +2,16 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/(main)/calendar/page": "app/(main)/calendar/page.js",
   "/(main)/feedback/[projectId]/page": "app/(main)/feedback/[projectId]/page.js",
-  "/(main)/projects/[id]/view/page": "app/(main)/projects/[id]/view/page.js",
   "/(main)/projects/[id]/edit/page": "app/(main)/projects/[id]/edit/page.js",
   "/(main)/projects/create/page": "app/(main)/projects/create/page.js",
   "/(main)/projects/page": "app/(main)/projects/page.js",
+  "/(main)/projects/[id]/view/page": "app/(main)/projects/[id]/view/page.js",
   "/page": "app/page.js",
   "/(auth)/email-check/[token]/page": "app/(auth)/email-check/[token]/page.js",
   "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(auth)/signup/page": "app/(auth)/signup/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js",
   "/(auth)/reset-password/page": "app/(auth)/reset-password/page.js",
-  "/(public)/privacy/page": "app/(public)/privacy/page.js",
-  "/(public)/terms/page": "app/(public)/terms/page.js"
+  "/(dashboard)/page": "app/(dashboard)/page.js",
+  "/(auth)/signup/page": "app/(auth)/signup/page.js",
+  "/(public)/terms/page": "app/(public)/terms/page.js",
+  "/(public)/privacy/page": "app/(public)/privacy/page.js"
 }
