@@ -106,7 +106,7 @@ export const useAuth = (): UseAuthReturn => {
         setError(errorMessage)
       }
     }
-  }, [dispatch, checkAuthStatus])
+  }, [dispatch])
 
   /**
    * 로그인
@@ -276,7 +276,7 @@ export const useAuth = (): UseAuthReturn => {
     }
 
     initAuth()
-  }, [checkAuthStatus, refreshUserData])
+  }, []) // 빈 의존성 배열로 마운트 시에만 실행
 
   return {
     user,

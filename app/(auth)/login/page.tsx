@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import queryString from 'query-string'
 import type { LoginCredentials, EmailVerificationParams } from '@/features/auth/types'
-import { useAuth } from '@/features/auth/hooks/useAuth'
+// useAuth import removed to prevent circular dependency
 import { authApi } from '@/features/auth/api/authApi'
 import { checkSession, refetchProject } from '@/utils/util'
 import './Login.scss'
@@ -14,7 +14,7 @@ function LoginPageContent() {
   const dispatch = useDispatch()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { login } = useAuth()
+  // Direct API call instead of useAuth hook to prevent circular dependency
   
   const initialInput: LoginCredentials = {
     email: '',
