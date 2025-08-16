@@ -1,0 +1,73 @@
+# Debug Dockerfile - Simplified for troubleshooting
+FROM python:3.9-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    DJANGO_SETTINGS_MODULE=config.settings.railway
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libpq-dev \
+    ffmpeg \
+    netcat-openbsd \
+    curl \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first (for better caching)
+COPY requirements.txt ./
+
+# Install Python dependencies with verbose output
+RUN pip install --no-cache-dir -r requirements.txt --verbose
+
+# Copy all application code
+COPY . .
+
+# Ensure all scripts are executable
+RUN find /app -name "*.sh" -exec chmod +x {} \; && \
+    echo "Executable scripts:" && \
+    find /app -name "*.sh" -exec ls -la {} \;
+
+# Create necessary directories
+RUN mkdir -p /app/staticfiles /app/media /app/logs /app/config/settings
+
+# Debug: List directory structure
+RUN echo "=== Directory Structure ===" && \
+    ls -la /app/ && \
+    echo "=== Config Directory ===" && \
+    ls -la /app/config/ || true && \
+    echo "=== Settings Directory ===" && \
+    ls -la /app/config/settings/ || true
+
+# Debug: Check Python imports
+RUN python -c "import sys; print('Python path:', sys.path)" && \
+    python -c "import django; print('Django version:', django.__version__)" || true
+
+# Create a debug entrypoint
+RUN echo '#!/bin/bash' > /app/debug-entrypoint.sh && \
+    echo 'echo "=== Debug Container Started ===="' >> /app/debug-entrypoint.sh && \
+    echo 'echo "Environment Variables:"' >> /app/debug-entrypoint.sh && \
+    echo 'env | grep -E "(DJANGO|RAILWAY|DATABASE|PORT)" | sort' >> /app/debug-entrypoint.sh && \
+    echo 'echo "=== Running pre-start.sh ===="' >> /app/debug-entrypoint.sh && \
+    echo 'bash /app/pre-start.sh' >> /app/debug-entrypoint.sh && \
+    echo 'echo "=== Starting application ===="' >> /app/debug-entrypoint.sh && \
+    echo 'exec bash /app/docker-entrypoint.sh' >> /app/debug-entrypoint.sh && \
+    chmod +x /app/debug-entrypoint.sh
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+    CMD curl -f http://localhost:${PORT:-8000}/health/?simple=true || exit 1
+
+# Expose port
+EXPOSE 8000
+
+# Use debug entrypoint
+ENTRYPOINT ["/bin/bash", "/app/debug-entrypoint.sh"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "config.asgi:application"]
