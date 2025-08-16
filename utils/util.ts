@@ -2,7 +2,7 @@ import axios from 'axios'
 import { updateProjectStore } from '@/redux/project'
 import { ProjectList } from '@/api/project'
 import moment from 'moment'
-import 'moment/locale/ko'
+// moment/locale/ko import 제거 - 타입 정의 파일 없음
 
 export function axiosOpts(method: string, url: string, data?: any, config?: any) {
   return {
@@ -47,13 +47,13 @@ export function refetchProject(dispatch: any, router: any) {
         const current_month = date.getMonth() + 1
         const this_month_project = result.filter(
           (i: any, index: number) =>
-            moment(i.first_date).format('M') == current_month ||
-            moment(i.end_date).format('M') == current_month,
+            moment(i.first_date).format('M') == String(current_month) ||
+            moment(i.end_date).format('M') == String(current_month),
         )
         const next_month_project = result.filter(
           (i: any, index: number) =>
-            moment(i.first_date).format('M') == current_month + 1 ||
-            moment(i.end_date).format('M') == current_month + 1,
+            moment(i.first_date).format('M') == String(current_month + 1) ||
+            moment(i.end_date).format('M') == String(current_month + 1),
         )
         dispatch(
           updateProjectStore({
