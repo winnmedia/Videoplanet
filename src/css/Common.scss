@@ -158,13 +158,13 @@ input[type='radio'].ty02 + label {
   display: inline-block;
   width: 100%;
   padding: 0 0 0 24px;
-  background: url('images/Common/check.png') no-repeat;
+  background: url('../assets/images/Common/check.png') no-repeat;
   background-size: 18px;
   background-position: left 0 top 1px;
   color: #c1c1c1;
 }
 input[type='radio'].ty02:checked + label {
-  background: url('images/Common/checked.png') no-repeat;
+  background: url('../assets/images/Common/checked.png') no-repeat;
   background-size: 18px;
   background-position: left 0 top 1px;
   color: #0058da;

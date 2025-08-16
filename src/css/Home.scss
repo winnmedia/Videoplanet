@@ -1,7 +1,7 @@
 #Home {
   // #header {
   //   padding: 20px 0;
-  //   background: url('../images/Home/w_bg02.png') no-repeat;
+  //   background: url('../assets/images/Home/w_bg02.png') no-repeat;
   //   background-size: cover;
   //   .inner {
   //     max-width: 1200px;
@@ -27,12 +27,12 @@
   //           text-indent: -9999px;
   //           cursor: pointer;
   //           &:nth-child(1) {
-  //             background: url('../images/Common/yt_icon02.svg') no-repeat;
+  //             background: url('../assets/images/Common/yt_icon02.svg') no-repeat;
   //             background-size: cover;
   //             background-position: center;
   //           }
   //           &:nth-child(2) {
-  //             background: url('../images/Common/insta_icon02.svg') no-repeat;
+  //             background: url('../assets/images/Common/insta_icon02.svg') no-repeat;
   //             background-size: cover;
   //             background-position: center;
   //           }
@@ -65,7 +65,7 @@
         display: block;
         width: 123px;
         height: 172px;
-        background: url('../images/Home/new/visual-img02.png') no-repeat;
+        background: url('../assets/images/Home/new/visual-img02.png') no-repeat;
         background-size: cover;
         position: absolute;
         left: -180px;
@@ -91,12 +91,12 @@
             text-indent: -9999px;
             cursor: pointer;
             &:nth-child(1) {
-              background: url('../images/Common/yt_icon02.svg') no-repeat;
+              background: url('../assets/images/Common/yt_icon02.svg') no-repeat;
               background-size: cover;
               background-position: center;
             }
             &:nth-child(2) {
-              background: url('../images/Common/insta_icon02.svg') no-repeat;
+              background: url('../assets/images/Common/insta_icon02.svg') no-repeat;
               background-size: cover;
               background-position: center;
             }
@@ -115,7 +115,7 @@
   }
   #container {
     .visual {
-      background: url('../images/Home/new/visual-bg.png') no-repeat;
+      background: url('../assets/images/Home/new/visual-bg.png') no-repeat;
       background-size: cover;
       padding: 180px 0 100px;
       .inner {
@@ -178,7 +178,7 @@
     }
 
     .function {
-      background: url('../images/Home/w_bg.png') no-repeat;
+      background: url('../assets/images/Home/w_bg.png') no-repeat;
       background-size: cover;
       background-position: center;
       padding: 150px 0 0;
@@ -254,7 +254,7 @@
                   display: block;
                   width: 50px;
                   height: 50px;
-                  background: url('../images/Home/new/feedback-img02.png')
+                  background: url('../assets/images/Home/new/feedback-img02.png')
                     no-repeat;
                   background-size: cover;
                   position: absolute;
@@ -277,7 +277,7 @@
                   display: block;
                   width: 50px;
                   height: 50px;
-                  background: url('../images/Home/new/project-img02.png')
+                  background: url('../assets/images/Home/new/project-img02.png')
                     no-repeat;
                   background-size: cover;
                   position: absolute;
@@ -299,7 +299,7 @@
                   display: block;
                   width: 50px;
                   height: 50px;
-                  background: url('../images/Home/new/comment-img02.png')
+                  background: url('../assets/images/Home/new/comment-img02.png')
                     no-repeat;
                   background-size: cover;
                   position: absolute;
@@ -330,32 +330,32 @@
                   position: Relative;
                   overflow: hidden;
                   &:nth-child(1) {
-                    background: url('../images/Home/img02.png') no-repeat;
+                    background: url('../assets/images/Home/img02.png') no-repeat;
                     background-size: cover;
                     background-position: center;
                   }
                   &:nth-child(2) {
-                    background: url('../images/Home/img03.png') no-repeat;
+                    background: url('../assets/images/Home/img03.png') no-repeat;
                     background-size: cover;
                     background-position: center;
                   }
                   &:nth-child(3) {
-                    background: url('../images/Home/img05.png') no-repeat;
+                    background: url('../assets/images/Home/img05.png') no-repeat;
                     background-size: cover;
                     background-position: center;
                   }
                   &:nth-child(4) {
-                    background: url('../images/Home/img04.png') no-repeat;
+                    background: url('../assets/images/Home/img04.png') no-repeat;
                     background-size: cover;
                     background-position: center;
                   }
                   &:nth-child(5) {
-                    background: url('../images/Home/img06.png') no-repeat;
+                    background: url('../assets/images/Home/img06.png') no-repeat;
                     background-size: cover;
                     background-position: center;
                   }
                   &:nth-child(6) {
-                    background: url('../images/Home/img07.png') no-repeat;
+                    background: url('../assets/images/Home/img07.png') no-repeat;
                     background-size: cover;
                     background-position: center;
                   }
@@ -384,7 +384,7 @@
                   display: block;
                   width: 50px;
                   height: 50px;
-                  background: url('../images/Home/new/contents-img.png')
+                  background: url('../assets/images/Home/new/contents-img.png')
                     no-repeat;
                   background-size: cover;
                   position: absolute;
@@ -458,7 +458,7 @@
     }
 
     .background {
-      background: url('../images/Home/w_bg.png') no-repeat;
+      background: url('../assets/images/Home/w_bg.png') no-repeat;
       background-size: cover;
       background-position: center;
       padding: 150px 0;
@@ -629,7 +629,7 @@
     }
 
     .end {
-      background: url('../images/Home/new/end-bg.png') no-repeat;
+      background: url('../assets/images/Home/new/end-bg.png') no-repeat;
       background-size: cover;
       padding: 80px 0 30px;
       .inner {
@@ -664,13 +664,13 @@
     }
 
     // .visual {
-    //   // background: url('../images/Home/bg07.png'), url('../images/Home/bg08.png');
+    //   // background: url('../assets/images/Home/bg07.png'), url('../assets/images/Home/bg08.png');
     //   // background-size: 900px, cover;
     //   // background-position: left 0 bottom 0, 0px 0px;
     //   // background-repeat: no-repeat;
     //   // height: 800px;
     //   // position: relative;
-    //   background: #000010 url('../images/Home/gif.gif');
+    //   background: #000010 url('../assets/images/Home/gif.gif');
     //   background-size: 1100px;
     //   background-position: right 0 center;
     //   background-repeat: no-repeat;
@@ -747,7 +747,7 @@
     //         }
     //         &:nth-child(1) {
     //           .img {
-    //             background: #2b2f38 url('../images/Home/communication_icon.svg')
+    //             background: #2b2f38 url('../assets/images/Home/communication_icon.svg')
     //               no-repeat;
     //             background-size: 100px;
     //             background-position: center;
@@ -755,14 +755,14 @@
     //         }
     //         &:nth-child(2) {
     //           .img {
-    //             background: #2b2f38 url('../images/Cms/f_p.svg') no-repeat;
+    //             background: #2b2f38 url('../assets/images/Cms/f_p.svg') no-repeat;
     //             background-size: 100px;
     //             background-position: center;
     //           }
     //         }
     //         &:nth-child(3) {
     //           .img {
-    //             background: #2b2f38 url('../images/Cms/oc_p.svg') no-repeat;
+    //             background: #2b2f38 url('../assets/images/Cms/oc_p.svg') no-repeat;
     //             background-size: 100px;
     //             background-position: center;
     //           }
@@ -804,7 +804,7 @@
     // }
 
     // .schedule {
-    //   background: url('../images/Home/w_bg.png') no-repeat;
+    //   background: url('../assets/images/Home/w_bg.png') no-repeat;
     //   background-size: cover;
     //   background-position: center;
     //   padding: 150px 0 200px;
@@ -918,7 +918,7 @@
     // }
 
     // .feedback {
-    //   background: url('../images/Home/w_bg.png') no-repeat;
+    //   background: url('../assets/images/Home/w_bg.png') no-repeat;
     //   background-size: cover;
     //   background-position: center;
     //   padding: 0;
@@ -994,7 +994,7 @@
     // }
 
     // .onlineclass {
-    //   background: url('../images/Home/w_bg.png') no-repeat;
+    //   background: url('../assets/images/Home/w_bg.png') no-repeat;
     //   background-size: cover;
     //   background-position: center;
     //   padding: 200px 0 150px;
@@ -1039,32 +1039,32 @@
     //             position: Relative;
     //             overflow: hidden;
     //             &:nth-child(1) {
-    //               background: url('../images/Home/img02.png') no-repeat;
+    //               background: url('../assets/images/Home/img02.png') no-repeat;
     //               background-size: cover;
     //               background-position: center;
     //             }
     //             &:nth-child(2) {
-    //               background: url('../images/Home/img03.png') no-repeat;
+    //               background: url('../assets/images/Home/img03.png') no-repeat;
     //               background-size: cover;
     //               background-position: center;
     //             }
     //             &:nth-child(3) {
-    //               background: url('../images/Home/img04.png') no-repeat;
+    //               background: url('../assets/images/Home/img04.png') no-repeat;
     //               background-size: cover;
     //               background-position: center;
     //             }
     //             &:nth-child(4) {
-    //               background: url('../images/Home/img05.png') no-repeat;
+    //               background: url('../assets/images/Home/img05.png') no-repeat;
     //               background-size: cover;
     //               background-position: center;
     //             }
     //             &:nth-child(5) {
-    //               background: url('../images/Home/img06.png') no-repeat;
+    //               background: url('../assets/images/Home/img06.png') no-repeat;
     //               background-size: cover;
     //               background-position: center;
     //             }
     //             &:nth-child(6) {
-    //               background: url('../images/Home/img07.png') no-repeat;
+    //               background: url('../assets/images/Home/img07.png') no-repeat;
     //               background-size: cover;
     //               background-position: center;
     //             }
@@ -1119,7 +1119,7 @@
     // }
 
     // .last {
-    //   background: url('../images/Home/bg07.png'), url('../images/Home/bg08.png');
+    //   background: url('../assets/images/Home/bg07.png'), url('../assets/images/Home/bg08.png');
     //   background-size: 900px, cover;
     //   background-position: left 0 bottom 0, 0px 0px;
     //   background-repeat: no-repeat;
@@ -1192,12 +1192,12 @@
           text-indent: -9999px;
           cursor: pointer;
           &:nth-child(1) {
-            background: #fff url('../images/Common/yt_icon.svg') no-repeat;
+            background: #fff url('../assets/images/Common/yt_icon.svg') no-repeat;
             background-size: 30px;
             background-position: center;
           }
           &:nth-child(2) {
-            background: #fff url('../images/Common/insta_icon.svg') no-repeat;
+            background: #fff url('../assets/images/Common/insta_icon.svg') no-repeat;
             background-size: 26px;
             background-position: center;
           }
@@ -1722,21 +1722,21 @@
       //         &:nth-child(1) {
       //           .img {
       //             background: #2b2f38
-      //               url('../images/Home/communication_icon.svg') no-repeat;
+      //               url('../assets/images/Home/communication_icon.svg') no-repeat;
       //             background-size: 50px;
       //             background-position: center;
       //           }
       //         }
       //         &:nth-child(2) {
       //           .img {
-      //             background: #2b2f38 url('../images/Cms/f_p.svg') no-repeat;
+      //             background: #2b2f38 url('../assets/images/Cms/f_p.svg') no-repeat;
       //             background-size: 50px;
       //             background-position: center;
       //           }
       //         }
       //         &:nth-child(3) {
       //           .img {
-      //             background: #2b2f38 url('../images/Cms/oc_p.svg') no-repeat;
+      //             background: #2b2f38 url('../assets/images/Cms/oc_p.svg') no-repeat;
       //             background-size: 50px;
       //             background-position: center;
       //           }
@@ -1961,32 +1961,32 @@
       //             padding: 14px;
       //             border-radius: 25px;
       //             &:nth-child(1) {
-      //               background: url('../images/Home/img02.png') no-repeat;
+      //               background: url('../assets/images/Home/img02.png') no-repeat;
       //               background-size: cover;
       //               background-position: center;
       //             }
       //             &:nth-child(2) {
-      //               background: url('../images/Home/img03.png') no-repeat;
+      //               background: url('../assets/images/Home/img03.png') no-repeat;
       //               background-size: cover;
       //               background-position: center;
       //             }
       //             &:nth-child(3) {
-      //               background: url('../images/Home/img04.png') no-repeat;
+      //               background: url('../assets/images/Home/img04.png') no-repeat;
       //               background-size: cover;
       //               background-position: center;
       //             }
       //             &:nth-child(4) {
-      //               background: url('../images/Home/img05.png') no-repeat;
+      //               background: url('../assets/images/Home/img05.png') no-repeat;
       //               background-size: cover;
       //               background-position: center;
       //             }
       //             &:nth-child(5) {
-      //               background: url('../images/Home/img06.png') no-repeat;
+      //               background: url('../assets/images/Home/img06.png') no-repeat;
       //               background-size: cover;
       //               background-position: center;
       //             }
       //             &:nth-child(6) {
-      //               background: url('../images/Home/img07.png') no-repeat;
+      //               background: url('../assets/images/Home/img07.png') no-repeat;
       //               background-size: cover;
       //               background-position: center;
       //             }
@@ -2042,8 +2042,8 @@
       // }
 
       .last {
-        background: url('../images/Home/bg07.png'),
-          url('../images/Home/bg08.png');
+        background: url('../assets/images/Home/bg07.png'),
+          url('../assets/images/Home/bg08.png');
         background-size: 400px, cover;
         background-position: left 0 bottom 0, 0px 0px;
         background-repeat: no-repeat;
@@ -2123,12 +2123,12 @@
             text-indent: -9999px;
             cursor: pointer;
             &:nth-child(1) {
-              background: #fff url('../images/Common/yt_icon.svg') no-repeat;
+              background: #fff url('../assets/images/Common/yt_icon.svg') no-repeat;
               background-size: 22px;
               background-position: center;
             }
             &:nth-child(2) {
-              background: #fff url('../images/Common/insta_icon.svg') no-repeat;
+              background: #fff url('../assets/images/Common/insta_icon.svg') no-repeat;
               background-size: 20px;
               background-position: center;
             }
