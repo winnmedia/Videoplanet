@@ -3,6 +3,9 @@ import { LoginCredentials, SignupData, AuthResponse, User } from '../types'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || process.env.REACT_APP_BACKEND_API_URL
 
+// 디버깅용 로그
+console.log('API_BASE_URL configured:', API_BASE_URL)
+
 export const authApi = {
   /**
    * 이메일 로그인

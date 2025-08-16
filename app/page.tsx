@@ -559,11 +559,11 @@ export default function HomePage() {
           <div>
             <div className="logo">vlanet</div>
             <ul>
-              <li>윈앤미디어</li>
-              <li>대전광역시 서구 청사로 228 청사오피스</li>
-              <li>사업자등록번호 : 725-08-01986</li>
+              <li>주식회사 윈앤미디어</li>
+              <li>대전광역시 대덕구 덕암로 125번안길 56, 1층</li>
+              <li>사업자등록번호 : 364-88-03234</li>
               <li>대표자 : 유석근 </li>
-              <li>전화번호 : 000-000-0000</li>
+              <li>전화번호 : 010-4156-8865</li>
             </ul>
             <div>
               <span onClick={handleTermsClick}>이용약관</span>
