@@ -1,0 +1,52 @@
+/* Service page styles - Terms & Privacy */
+.service-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.6;
+  
+  h1 {
+    color: #1631F8;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  h2 {
+    color: #25282f;
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem 0;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+  }
+  
+  h3 {
+    color: #25282f;
+    font-size: 1.4rem;
+    margin: 1.5rem 0 0.5rem 0;
+  }
+  
+  p {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+    
+    li {
+      margin-bottom: 0.5rem;
+      color: #666;
+    }
+  }
+  
+  .last-updated {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+  }
+}

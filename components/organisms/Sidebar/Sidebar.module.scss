@@ -1,0 +1,246 @@
+@import '../../../styles/design-tokens.scss';
+
+.sidebar {
+  position: relative;
+  width: $sidebar-width; // 300px
+  padding: $sidebar-padding; // 50px 30px
+  background: $sidebar-bg; // #ffffff
+  box-shadow: $sidebar-shadow; // 16px 0px 16px rgba(0, 0, 0, 0.06)
+  border-radius: $sidebar-border-radius; // 0 30px 30px 0
+  z-index: $z-sidebar; // 3
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: $transition-sidebar;
+
+  // Collapsed state
+  &--collapsed {
+    width: 80px;
+    padding: $spacing-lg $spacing-md;
+
+    .sidebar__nav {
+      .sidebar__list {
+        // 축소된 상태에서의 스타일
+      }
+    }
+
+    .sidebar__logout {
+      width: 48px;
+      font-size: 0; // 텍스트 숨기기
+      
+      &::before {
+        content: '↪';
+        font-size: $font-size-lg;
+      }
+    }
+  }
+
+  // Navigation container
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    
+    // Hide scrollbar
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  // Navigation list
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    role: menubar;
+  }
+
+  // Logout button
+  &__logout {
+    @include button-reset;
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    transform: translateX(-50%);
+    width: calc(100% - 60px);
+    height: $button-height-lg; // 54px
+    background: $color-gray-800; // #25282f
+    color: $color-white;
+    border-radius: $button-border-radius; // 15px
+    font-size: $font-size-md; // 16px
+    font-weight: $font-weight-medium;
+    transition: $transition-hover;
+    cursor: pointer;
+    @include flex-center;
+
+    &:hover {
+      background: lighten($color-gray-800, 10%);
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateX(-50%) translateY(0);
+      box-shadow: $shadow-sm;
+    }
+
+    // Icon for logout (optional)
+    &::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      background: url('/images/Cms/logout_icon.svg') no-repeat center;
+      background-size: contain;
+      margin-left: $spacing-sm;
+      opacity: 0.8;
+    }
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .sidebar {
+    width: 240px; // 모바일에서 사이드바 너비 줄이기
+    padding: $spacing-xl $spacing-md;
+
+    &--collapsed {
+      width: 60px;
+      padding: $spacing-lg $spacing-xs;
+    }
+
+    &__logout {
+      width: calc(100% - 32px);
+      height: 48px;
+      bottom: $spacing-lg;
+      font-size: $font-size-sm;
+
+      &::after {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}
+
+@include tablet-up {
+  .sidebar {
+    width: $sidebar-width;
+    padding: $sidebar-padding;
+  }
+}
+
+// Large screens - 더 넓은 사이드바
+@include large-desktop-up {
+  .sidebar {
+    width: 320px;
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+
+    &__logout {
+      transition: none;
+
+      &:hover {
+        transform: translateX(-50%);
+      }
+
+      &:active {
+        transform: translateX(-50%);
+      }
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .sidebar {
+    border: 2px solid currentColor;
+
+    &__logout {
+      border: 2px solid currentColor;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:focus {
+        outline: 3px solid currentColor;
+        outline-offset: 1px;
+      }
+    }
+  }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background: var(--color-bg-primary, #{$color-gray-900});
+    border-right: 1px solid var(--color-border-dark, #{$color-gray-700});
+
+    &__logout {
+      background: var(--color-gray-800, #{$color-gray-800});
+      color: var(--color-text-inverse, #{$color-white});
+
+      &:hover {
+        background: var(--color-gray-700, #{$color-gray-700});
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .sidebar {
+    display: none !important;
+  }
+}
+
+// Focus trap for accessibility
+.sidebar {
+  // 키보드 네비게이션 시 사이드바 내부에서만 포커스가 이동하도록
+  &:focus-within {
+    // 포커스가 사이드바 내부에 있을 때의 스타일
+  }
+}
+
+// Animation states
+.sidebar {
+  // 진입 애니메이션
+  @keyframes sidebar-slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  // 기본 애니메이션 적용
+  animation: sidebar-slide-in 0.3s ease-out;
+}
+
+// Loading state (스켈레톤)
+.sidebar {
+  &--loading {
+    .sidebar__nav {
+      opacity: 0.6;
+    }
+
+    .sidebar__logout {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}

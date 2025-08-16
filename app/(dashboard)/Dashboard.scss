@@ -1,0 +1,463 @@
+// Dashboard (CmsHome) 페이지 전용 스타일
+// 기존 Cms.scss UI/UX 100% 유지하면서 개선
+
+.cms_wrap {
+  display: flex;
+  justify-content: space-between;
+  height: calc(100vh - 120px);
+  height: calc((var(--vh, 1vh) * 100) - 120px);
+  margin-top: 40px;
+  position: relative;
+  
+  main {
+    width: 100%;
+    padding: 0 30px 0 80px;
+    overflow-y: auto;
+    position: relative;
+    
+    .title {
+      font-size: 34px;
+      font-weight: bold;
+      color: #25282f;
+      
+      span {
+        display: block;
+        font-size: 22px;
+        font-weight: normal;
+        color: #6c757d;
+      }
+    }
+    
+    .content {
+      margin: 50px 0 50px;
+      
+      &.home {
+        margin: 0 0 50px;
+        
+        // 실시간 시계 섹션
+        .today {
+          font-size: 120px;
+          letter-spacing: 8px;
+          line-height: 1.3;
+          font-family: 'psb', 'suit', sans-serif;
+          color: #25282f;
+          margin-bottom: 40px;
+          
+          .clock {
+            font-feature-settings: 'tnum';
+          }
+          
+          small {
+            color: rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            font-size: 50px;
+            letter-spacing: -4px;
+            font-family: 'suit', sans-serif;
+            vertical-align: baseline;
+            margin-left: 30px;
+          }
+        }
+        
+        // 메뉴 박스
+        .menu_box {
+          margin-top: 80px;
+          
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            
+            li {
+              cursor: pointer;
+              width: 150px;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+              
+              &:hover {
+                transform: translateY(-5px);
+              }
+              
+              &:focus-visible {
+                outline: 3px solid #1631F8;
+                outline-offset: 4px;
+                border-radius: 8px;
+              }
+              
+              .img {
+                border-radius: 35px;
+                height: 150px;
+                width: 150px;
+                transition: transform 0.3s ease;
+                
+                &:hover {
+                  transform: scale(1.05);
+                }
+              }
+              
+              span {
+                color: #bac4d1;
+                display: block;
+                font-size: 16px;
+                margin-top: 20px;
+                text-align: center;
+                font-weight: 500;
+                transition: color 0.3s ease;
+              }
+              
+              &:hover span {
+                color: #1631F8;
+              }
+              
+              // 메뉴 아이콘 스타일
+              &.menu_calendar .img {
+                background: #1631F8 url('/images/Cms/c_p.svg') no-repeat;
+                background-size: 76px;
+                background-position: center;
+              }
+              
+              &.menu_project .img {
+                background: #889cb1 url('/images/Cms/p_p.svg') no-repeat;
+                background-size: 76px;
+                background-position: center;
+              }
+              
+              &.menu_feedback .img {
+                background: #889cb1 url('/images/Cms/f_p.svg') no-repeat;
+                background-size: 76px;
+                background-position: center;
+              }
+              
+              &.menu_elearning .img {
+                background: #889cb1 url('/images/Cms/oc_p.svg') no-repeat;
+                background-size: 76px;
+                background-position: center;
+              }
+            }
+          }
+        }
+        
+        // 공통 파트 스타일
+        .part {
+          margin-top: 50px;
+          
+          &:first-child {
+            margin-top: 0;
+          }
+          
+          .s_title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #25282f;
+            display: flex;
+            align-items: center;
+            
+            span {
+              display: inline-block;
+              width: 28px;
+              height: 28px;
+              background: #1631F8 url('/images/Cms/wr_arrow_icon.png') no-repeat;
+              background-size: 9px;
+              background-position: center left 11px;
+              border-radius: 100%;
+              margin-left: 10px;
+              cursor: pointer;
+              transition: transform 0.3s ease, background-color 0.3s ease;
+              
+              &:hover {
+                transform: scale(1.1);
+                background-color: #0028e6;
+              }
+              
+              &:focus-visible {
+                outline: 2px solid #1631F8;
+                outline-offset: 2px;
+              }
+            }
+          }
+          
+          ul {
+            margin-top: 20px;
+            
+            // 프로젝트 진행사항 스타일
+            &.schedule {
+              display: grid;
+              grid-gap: 20px;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              
+              li {
+                background: #25282f;
+                border-radius: 25px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 140px;
+                padding: 0 30px;
+                color: #fff;
+                font-size: 22px;
+                font-weight: 500;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                
+                &:hover {
+                  transform: translateY(-3px);
+                  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                }
+                
+                span {
+                  font-weight: bold;
+                  font-size: 50px;
+                  font-feature-settings: 'tnum';
+                }
+                
+                &:first-child {
+                  background: linear-gradient(135deg, #1631F8, #4F46E5);
+                }
+              }
+            }
+            
+            // 온라인 클래스 스타일
+            &.oc {
+              display: grid;
+              grid-gap: 20px;
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              
+              li {
+                height: 340px;
+                padding: 30px;
+                color: #fff;
+                font-size: 30px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 25px;
+                font-weight: bold;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                cursor: pointer;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                
+                &:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+                }
+                
+                &:nth-child(2) {
+                  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                }
+                
+                &:nth-child(3) {
+                  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                }
+                
+                span {
+                  font-weight: normal;
+                  font-size: 18px;
+                  margin-top: auto;
+                  opacity: 0.9;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 1200px) {
+  .cms_wrap {
+    main {
+      padding: 0 20px 0 60px;
+      
+      .content.home {
+        .today {
+          font-size: 90px;
+          
+          small {
+            font-size: 40px;
+            margin-left: 20px;
+          }
+        }
+        
+        .menu_box ul {
+          gap: 20px;
+          
+          li {
+            width: 120px;
+            
+            .img {
+              width: 120px;
+              height: 120px;
+            }
+            
+            span {
+              font-size: 14px;
+              margin-top: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .cms_wrap {
+    flex-direction: column;
+    height: auto;
+    margin-top: 20px;
+    
+    main {
+      width: 100%;
+      padding: 20px;
+      
+      .content.home {
+        .today {
+          font-size: 60px;
+          text-align: center;
+          
+          small {
+            font-size: 24px;
+            margin-left: 0;
+            display: block;
+            margin-top: 10px;
+          }
+        }
+        
+        .menu_box {
+          margin-top: 40px;
+          
+          ul {
+            justify-content: center;
+            gap: 15px;
+            
+            li {
+              width: 100px;
+              
+              .img {
+                width: 100px;
+                height: 100px;
+                border-radius: 25px;
+              }
+              
+              span {
+                font-size: 12px;
+                margin-top: 10px;
+              }
+            }
+          }
+        }
+        
+        .part {
+          margin-top: 30px;
+          
+          .s_title {
+            font-size: 20px;
+          }
+          
+          ul {
+            &.schedule {
+              grid-template-columns: 1fr;
+              grid-gap: 15px;
+              
+              li {
+                height: 100px;
+                padding: 0 20px;
+                font-size: 18px;
+                
+                span {
+                  font-size: 36px;
+                }
+              }
+            }
+            
+            &.oc {
+              grid-template-columns: 1fr;
+              grid-gap: 15px;
+              
+              li {
+                height: 200px;
+                padding: 20px;
+                font-size: 20px;
+                
+                span {
+                  font-size: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 다크모드 지원
+@media (prefers-color-scheme: dark) {
+  .cms_wrap {
+    main {
+      .content.home {
+        .today {
+          color: #fff;
+          
+          small {
+            color: rgba(255, 255, 255, 0.5);
+          }
+        }
+        
+        .part {
+          .s_title {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 접근성 개선
+@media (prefers-reduced-motion: reduce) {
+  .cms_wrap {
+    main {
+      .content.home {
+        .menu_box ul li,
+        .part ul li {
+          transition: none;
+          
+          &:hover {
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 고대비 모드 지원
+@media (prefers-contrast: high) {
+  .cms_wrap {
+    main {
+      .content.home {
+        .menu_box ul li {
+          &:focus-visible {
+            outline-width: 4px;
+          }
+        }
+        
+        .part {
+          .s_title span {
+            &:focus-visible {
+              outline-width: 3px;
+            }
+          }
+          
+          ul.schedule li {
+            border: 2px solid transparent;
+            
+            &:hover {
+              border-color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

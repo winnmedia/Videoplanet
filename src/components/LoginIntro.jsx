@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'utils/navigation-adapter'
 import './LoginIntro.scss'
-import w_logo from 'images/Common/w_logo02.svg'
+import w_logo from 'src/assets/images/Common/w_logo02.svg'
 
 export default function LoginIntro() {
   const navigate = useNavigate()

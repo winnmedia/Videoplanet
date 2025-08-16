@@ -1,13 +1,13 @@
 import './PageTemplate.scss'
 import cx from 'classnames'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'utils/navigation-adapter'
 
-import logo from 'images/Common/b_logo.svg'
-import profile from 'images/Cms/profie_sample.png'
+import logo from 'src/assets/images/Common/b_logo.svg'
+import profile from 'src/assets/images/Cms/profie_sample.png'
 import Header from './Header'
 import LoginIntro from './LoginIntro'
 import { useEffect } from 'react'
-import { checkSession } from 'util/util'
+import { checkSession } from 'src/utils/util'
 import { useSelector } from 'react-redux'
 
 export default function PageTemplate({

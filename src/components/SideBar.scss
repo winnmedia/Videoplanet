@@ -32,14 +32,14 @@
         }
         &:nth-child(1) {
           &:before {
-            background: #e4e4e4 url('../images/Cms/h_l_b.svg') no-repeat;
+            background: #e4e4e4 url('/images/Cms/h_l_b.svg') no-repeat;
             background-size: 16px;
             background-position: center;
           }
           &.active {
             color: #012fff;
             &:before {
-              background: #012fff url('../images/Cms/h_l_w.svg') no-repeat;
+              background: #012fff url('/images/Cms/h_l_w.svg') no-repeat;
               background-size: 16px;
               background-position: center;
             }
@@ -50,14 +50,14 @@
         }
         &:nth-child(2) {
           &:before {
-            background: #e4e4e4 url('../images/Cms/c_l_b.svg') no-repeat;
+            background: #e4e4e4 url('/images/Cms/c_l_b.svg') no-repeat;
             background-size: 16px;
             background-position: center;
           }
           &.active {
             color: #012fff;
             &:before {
-              background: #012fff url('../images/Cms/c_l_w.svg') no-repeat;
+              background: #012fff url('/images/Cms/c_l_w.svg') no-repeat;
               background-size: 16px;
               background-position: center;
             }
@@ -68,14 +68,14 @@
         }
         &:nth-child(3) {
           &:before {
-            background: #e4e4e4 url('../images/Cms/p_l_b.svg') no-repeat;
+            background: #e4e4e4 url('/images/Cms/p_l_b.svg') no-repeat;
             background-size: 16px;
             background-position: center;
           }
           &.active {
             color: #012fff;
             &:before {
-              background: #012fff url('../images/Cms/p_l_w.svg') no-repeat;
+              background: #012fff url('/images/Cms/p_l_w.svg') no-repeat;
               background-size: 16px;
               background-position: center;
             }
@@ -86,14 +86,14 @@
         }
         &:nth-child(4) {
           &:before {
-            background: #e4e4e4 url('../images/Cms/f_l_b.svg') no-repeat;
+            background: #e4e4e4 url('/images/Cms/f_l_b.svg') no-repeat;
             background-size: 16px;
             background-position: center;
           }
           &.active {
             color: #012fff;
             &:before {
-              background: #012fff url('../images/Cms/f_l_w.svg') no-repeat;
+              background: #012fff url('/images/Cms/f_l_w.svg') no-repeat;
               background-size: 16px;
               background-position: center;
             }
@@ -104,14 +104,14 @@
         }
         &:nth-child(5) {
           &:before {
-            background: #e4e4e4 url('../images/Cms/oc_l_b.svg') no-repeat;
+            background: #e4e4e4 url('/images/Cms/oc_l_b.svg') no-repeat;
             background-size: 16px;
             background-position: center;
           }
           &.active {
             color: #012fff;
             &:before {
-              background: #012fff url('../images/Cms/oc_l_w.svg') no-repeat;
+              background: #012fff url('/images/Cms/oc_l_w.svg') no-repeat;
               background-size: 16px;
               background-position: center;
             }
@@ -197,12 +197,12 @@
         text-indent: -99999px;
         cursor: pointer;
         &.plus {
-          background: #efefef url('../images/Common/plus_icon.png') no-repeat;
+          background: #efefef url('/images/Common/plus_icon.png') no-repeat;
           background-size: 16px;
           background-position: center;
         }
         &.close {
-          background: #efefef url('../images/Common/close_icon.png') no-repeat;
+          background: #efefef url('/images/Common/close_icon.png') no-repeat;
           background-size: 12px;
           background-position: center;
           margin-left: 10px;

@@ -1,4 +1,4 @@
-import useInput from 'hooks/UseInput'
+import useInput from 'src/hooks/useInput'
 import React, { useState, useEffect, useMemo } from 'react'
 
 import moment from 'moment'

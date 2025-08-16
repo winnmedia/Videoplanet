@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="25" failures="0" errors="0" time="2.983">
+  <testsuite name="Navigation System" errors="0" failures="0" skipped="0" timestamp="2025-08-16T00:58:28" time="1.351" tests="16">
+    <testcase classname="Navigation System Page Navigation should navigate to login page" name="Navigation System Page Navigation should navigate to login page" time="0.055">
+    </testcase>
+    <testcase classname="Navigation System Page Navigation should navigate to dashboard after login" name="Navigation System Page Navigation should navigate to dashboard after login" time="0.004">
+    </testcase>
+    <testcase classname="Navigation System Page Navigation should handle protected routes" name="Navigation System Page Navigation should handle protected routes" time="0.006">
+    </testcase>
+    <testcase classname="Navigation System Page Navigation should preserve query parameters" name="Navigation System Page Navigation should preserve query parameters" time="0.003">
+    </testcase>
+    <testcase classname="Navigation System Page Navigation should handle back navigation" name="Navigation System Page Navigation should handle back navigation" time="0.005">
+    </testcase>
+    <testcase classname="Navigation System Dynamic Routes should handle project ID in URL" name="Navigation System Dynamic Routes should handle project ID in URL" time="0.003">
+    </testcase>
+    <testcase classname="Navigation System Dynamic Routes should handle feedback project ID" name="Navigation System Dynamic Routes should handle feedback project ID" time="0.002">
+    </testcase>
+    <testcase classname="Navigation System Dynamic Routes should handle 404 for invalid routes" name="Navigation System Dynamic Routes should handle 404 for invalid routes" time="0.002">
+    </testcase>
+    <testcase classname="Navigation System Dynamic Routes should handle nested dynamic routes" name="Navigation System Dynamic Routes should handle nested dynamic routes" time="0.004">
+    </testcase>
+    <testcase classname="Navigation System URL Parameters should extract project ID from URL" name="Navigation System URL Parameters should extract project ID from URL" time="0.002">
+    </testcase>
+    <testcase classname="Navigation System URL Parameters should handle search parameters" name="Navigation System URL Parameters should handle search parameters" time="0.002">
+    </testcase>
+    <testcase classname="Navigation System URL Parameters should maintain state during navigation" name="Navigation System URL Parameters should maintain state during navigation" time="0.003">
+    </testcase>
+    <testcase classname="Navigation System URL Parameters should update search parameters" name="Navigation System URL Parameters should update search parameters" time="0.003">
+    </testcase>
+    <testcase classname="Navigation System Navigation Guards should redirect unauthenticated users" name="Navigation System Navigation Guards should redirect unauthenticated users" time="0.004">
+    </testcase>
+    <testcase classname="Navigation System Navigation Guards should allow authenticated users to access protected routes" name="Navigation System Navigation Guards should allow authenticated users to access protected routes" time="0.002">
+    </testcase>
+    <testcase classname="Navigation System Prefetching should prefetch routes on hover" name="Navigation System Prefetching should prefetch routes on hover" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="Route Protection" errors="0" failures="0" skipped="0" timestamp="2025-08-16T00:58:28" time="1.959" tests="9">
+    <testcase classname="Route Protection Authentication Guard should redirect to login when not authenticated" name="Route Protection Authentication Guard should redirect to login when not authenticated" time="0.03">
+    </testcase>
+    <testcase classname="Route Protection Authentication Guard should allow access when authenticated" name="Route Protection Authentication Guard should allow access when authenticated" time="0.012">
+    </testcase>
+    <testcase classname="Route Protection Authentication Guard should preserve intended route after login" name="Route Protection Authentication Guard should preserve intended route after login" time="0.009">
+    </testcase>
+    <testcase classname="Route Protection Role-based Access Control should deny access for insufficient permissions" name="Route Protection Role-based Access Control should deny access for insufficient permissions" time="0.002">
+    </testcase>
+    <testcase classname="Route Protection Role-based Access Control should allow access for admin role" name="Route Protection Role-based Access Control should allow access for admin role" time="0.003">
+    </testcase>
+    <testcase classname="Route Protection Session Management should redirect to login on session expire" name="Route Protection Session Management should redirect to login on session expire" time="0.002">
+    </testcase>
+    <testcase classname="Route Protection Session Management should maintain session for valid token" name="Route Protection Session Management should maintain session for valid token" time="0.002">
+    </testcase>
+    <testcase classname="Route Protection Public Routes should allow access to public routes without authentication" name="Route Protection Public Routes should allow access to public routes without authentication" time="0.002">
+    </testcase>
+    <testcase classname="Route Protection Public Routes should redirect authenticated users from login to dashboard" name="Route Protection Public Routes should redirect authenticated users from login to dashboard" time="0.002">
+    </testcase>
+  </testsuite>
+</testsuites>

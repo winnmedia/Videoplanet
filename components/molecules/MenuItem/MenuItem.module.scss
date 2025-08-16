@@ -1,0 +1,230 @@
+@import '../../../styles/design-tokens.scss';
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: $border-radius-md;
+  color: $color-text-primary;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-base;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $transition-duration-fast $transition-timing-ease;
+  outline: none;
+  user-select: none;
+
+  // Hover state
+  &:hover {
+    background-color: $color-gray-100;
+    border-color: $color-border-light;
+    transform: translateY(-1px);
+  }
+
+  // Focus state
+  &:focus {
+    background-color: $color-gray-100;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
+  }
+
+  // Active state - 현재 선택된 메뉴
+  &--active {
+    background: $color-primary-gradient;
+    color: $color-text-inverse;
+    border-color: transparent;
+    box-shadow: $shadow-md;
+
+    &:hover {
+      background: $color-primary-gradient;
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
+    }
+
+    .menuItem__sublabel {
+      color: rgba($color-text-inverse, 0.8);
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+
+    &:hover {
+      background: transparent;
+      border-color: transparent;
+      transform: none;
+    }
+  }
+
+  // Content wrapper
+  &__content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: $spacing-sm;
+  }
+
+  // Icon container
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  &__iconImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: filter $transition-duration-fast $transition-timing-ease;
+  }
+
+  // Text container
+  &__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0; // flex 아이템에서 텍스트 오버플로우 방지
+  }
+
+  &__label {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    line-height: $line-height-tight;
+    color: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__sublabel {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-tight;
+    color: $color-text-secondary;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Right action container
+  &__action {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: auto;
+    
+    // 액션 버튼이 메인 클릭을 방해하지 않도록
+    > * {
+      pointer-events: auto;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .menuItem {
+    color: $color-text-inverse;
+    
+    &:hover {
+      background-color: rgba($color-white, 0.1);
+      border-color: rgba($color-white, 0.2);
+    }
+
+    &:focus {
+      background-color: rgba($color-white, 0.1);
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+
+    &__sublabel {
+      color: rgba($color-text-inverse, 0.7);
+    }
+
+    &--active {
+      .menuItem__sublabel {
+        color: rgba($color-text-inverse, 0.9);
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: $breakpoint-md) {
+  .menuItem {
+    padding: $spacing-md;
+    
+    &__icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__label {
+      font-size: $font-size-sm;
+    }
+
+    &__sublabel {
+      font-size: 11px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .menuItem {
+    padding: $spacing-sm $spacing-md;
+    
+    &__content {
+      gap: $spacing-xs;
+    }
+
+    &__icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .menuItem {
+    border-width: 2px;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.3);
+    }
+
+    &--active {
+      border-color: $color-primary;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .menuItem {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &--active:hover {
+      transform: none;
+    }
+
+    &__iconImage {
+      transition: none;
+    }
+  }
+}

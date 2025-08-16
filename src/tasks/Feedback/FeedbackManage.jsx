@@ -1,7 +1,7 @@
-import useInput from 'hooks/UseInput'
+import useInput from 'src/hooks/useInput'
 import React, { useState, useEffect } from 'react'
 
-import { DeleteFeedback } from 'api/feedback'
+import { DeleteFeedback } from 'src/api/feedback'
 
 export default function FeedbackManage({ refetch, current_project, user }) {
   function DropFeedback(feedback_id) {

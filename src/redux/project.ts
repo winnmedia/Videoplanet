@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 interface ProjectState {
   user: any
@@ -20,18 +20,18 @@ const initialState: ProjectState = {
   user_memos: [],
 }
 
-export const ProjectSlice = createSlice({
+export const ProjectSlice = createSlice<ProjectState, {
+  updateProjectStore: (state: ProjectState, action: PayloadAction<Partial<ProjectState>>) => void
+  resetProjectStore: (state: ProjectState, action: PayloadAction) => void
+}>({
   name: 'project',
-  initialState: initialState,
+  initialState,
   reducers: {
     // 툴킷에서 자체적으로 immer 사용해서 불변성 유지함
-    updateProjectStore: (state, action) => {
-      return {
-        ...state,
-        ...action.payload,
-      }
+    updateProjectStore: (state, action: PayloadAction<Partial<ProjectState>>) => {
+      Object.assign(state, action.payload)
     },
-    resetProjectStore: (state, action) => {
+    resetProjectStore: () => {
       return initialState
     },
   },

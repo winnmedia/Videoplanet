@@ -1,0 +1,268 @@
+// Login 페이지 전용 스타일
+.Auth_Form {
+  height: 100vh;
+  position: relative;
+  background: #fcfcfc;
+  
+  .form_wrap {
+    width: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+    .title {
+      font-size: 36px;
+      color: #000;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+    
+    // 입력 필드 스타일
+    input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 1px solid #e6e6e6;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+      
+      &:focus {
+        border-color: #1631F8;
+        box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
+      }
+      
+      &:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+      
+      &.ty01 {
+        background: #fff;
+        
+        &::placeholder {
+          color: #999;
+        }
+      }
+    }
+    
+    // 에러 메시지
+    .error {
+      color: #dc3545;
+      margin-top: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    // 비밀번호 찾기 링크
+    .find_link {
+      color: #6c757d;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: #495057;
+        text-decoration: underline;
+      }
+      
+      &.tr {
+        text-align: right;
+      }
+    }
+    
+    // 로그인 버튼
+    .submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #1631F8 0%, #4054FF 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #1428E0 0%, #3748E7 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+      }
+      
+      &:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      
+      &.loading {
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          right: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 16px;
+          height: 16px;
+          border: 2px solid transparent;
+          border-top: 2px solid #fff;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+    
+    // 회원가입 링크
+    .signup_link {
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+      
+      span {
+        display: inline-block;
+        margin-left: 5px;
+        color: #1631F8;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        
+        &:hover {
+          color: #1428E0;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  
+  // 마진 헬퍼 클래스
+  .mt10 {
+    margin-top: 10px !important;
+  }
+  
+  .mt20 {
+    margin-top: 20px !important;
+  }
+  
+  .mt50 {
+    margin-top: 50px !important;
+  }
+}
+
+// 로딩 애니메이션
+@keyframes spin {
+  0% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .Auth_Form {
+    .form_wrap {
+      width: 90%;
+      max-width: 400px;
+      padding: 0 20px;
+      
+      .title {
+        font-size: 28px;
+      }
+      
+      input {
+        padding: 14px 16px;
+        font-size: 14px;
+      }
+      
+      .submit {
+        padding: 14px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .Auth_Form {
+    .form_wrap {
+      width: 95%;
+      
+      .title {
+        font-size: 24px;
+      }
+      
+      input {
+        padding: 12px 14px;
+      }
+      
+      .submit {
+        padding: 12px;
+      }
+    }
+  }
+}
+
+// 접근성 개선
+@media (prefers-reduced-motion: reduce) {
+  .Auth_Form {
+    .form_wrap {
+      input, .submit, .find_link, .signup_link span {
+        transition: none;
+      }
+      
+      .submit.loading::after {
+        animation: none;
+      }
+    }
+  }
+}
+
+// 다크 모드 지원 (향후 확장용)
+@media (prefers-color-scheme: dark) {
+  .Auth_Form {
+    background: #1a1a1a;
+    
+    .form_wrap {
+      .title {
+        color: #fff;
+      }
+      
+      input {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #fff;
+        
+        &::placeholder {
+          color: #999;
+        }
+        
+        &:focus {
+          border-color: #1631F8;
+          background: #333;
+        }
+      }
+      
+      .signup_link {
+        color: #ccc;
+      }
+      
+      .find_link {
+        color: #ccc;
+        
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+}

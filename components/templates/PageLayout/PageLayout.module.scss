@@ -1,0 +1,418 @@
+@import '../../../styles/design-tokens.scss';
+
+.pageLayout {
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background: $color-bg-primary;
+
+  // Hide scrollbar by default (will be shown on main content)
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Layout variants
+  &--auth {
+    @include flex-center;
+    background: $color-bg-secondary;
+    
+    // Auth 레이아웃을 위한 그리드 (기존 호환성)
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    
+    @include mobile-only {
+      display: flex;
+      grid-template-columns: none;
+    }
+  }
+
+  &--noSidebar {
+    .pageLayout__main {
+      margin-left: 0;
+    }
+  }
+
+  &--noHeader {
+    .pageLayout__body {
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
+  }
+
+  &--loading {
+    overflow: hidden;
+  }
+
+  // CMS Home 배경 (기존 호환성)
+  &--cmshome {
+    background: url('/images/Home/bg02.png') no-repeat center center;
+    background-size: cover;
+  }
+
+  // Header
+  &__header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: $z-header;
+  }
+
+  // Body (header 아래 모든 콘텐츠)
+  &__body {
+    display: flex;
+    flex: 1;
+    margin-top: $header-height; // 80px - 헤더 높이만큼 마진
+    min-height: calc(100vh - #{$header-height});
+    position: relative;
+  }
+
+  // Sidebar
+  &__sidebar {
+    position: fixed;
+    top: $header-height;
+    left: 0;
+    height: calc(100vh - #{$header-height});
+    z-index: $z-sidebar;
+  }
+
+  // Main content area
+  &__main {
+    flex: 1;
+    margin-left: $sidebar-width; // 300px - 사이드바 너비만큼 마진
+    min-height: calc(100vh - #{$header-height});
+    overflow-y: auto;
+    padding: $spacing-2xl;
+    
+    // Show scrollbar on main content
+    &::-webkit-scrollbar {
+      display: block;
+      width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: $color-gray-100;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-300;
+      border-radius: $radius-sm;
+      
+      &:hover {
+        background: $color-gray-400;
+      }
+    }
+  }
+
+  // Page header section
+  &__pageHeader {
+    margin-bottom: $spacing-2xl;
+    padding-bottom: $spacing-lg;
+    border-bottom: 1px solid $color-border-light;
+    
+    @include flex-between;
+    flex-wrap: wrap;
+    gap: $spacing-lg;
+  }
+
+  // Breadcrumb
+  &__breadcrumb {
+    margin-bottom: $spacing-md;
+  }
+
+  &__breadcrumbList {
+    @include flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: $spacing-xs;
+    flex-wrap: wrap;
+  }
+
+  &__breadcrumbItem {
+    @include flex-start;
+    align-items: center;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+
+    &:not(:last-child)::after {
+      content: '>';
+      margin-left: $spacing-xs;
+      color: $color-text-tertiary;
+    }
+
+    &--active {
+      color: $color-text-primary;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  &__breadcrumbLink {
+    @include button-reset;
+    color: inherit;
+    text-decoration: none;
+    transition: $transition-hover;
+
+    &:hover {
+      color: $color-primary;
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+      border-radius: $radius-xs;
+    }
+  }
+
+  // Title section
+  &__titleSection {
+    flex: 1;
+  }
+
+  &__title {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    line-height: $line-height-tight;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    line-height: $line-height-base;
+  }
+
+  // Actions
+  &__actions {
+    @include flex-start;
+    gap: $spacing-md;
+    flex-shrink: 0;
+  }
+
+  // Content area
+  &__content {
+    flex: 1;
+    // 기본적으로 콘텐츠는 자유롭게 스타일링
+  }
+
+  // Auth content
+  &__authContent {
+    width: 100%;
+    height: 100%;
+    @include flex-center;
+  }
+
+  // Loading state
+  &__loading {
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-lg;
+    padding: $spacing-3xl;
+    color: $color-text-secondary;
+  }
+
+  &__spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-gray-200;
+    border-top-color: $color-primary;
+    border-radius: $radius-full;
+    animation: spin 1s linear infinite;
+  }
+
+  // Error state
+  &__error {
+    padding: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    background: rgba($color-error, 0.1);
+    border: 1px solid rgba($color-error, 0.3);
+    border-radius: $radius-md;
+    color: $color-error;
+    font-size: $font-size-md;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // Footer
+  &__footer {
+    margin-top: auto;
+    padding: $spacing-lg $spacing-2xl;
+    background: $color-bg-secondary;
+    border-top: 1px solid $color-border-light;
+    margin-left: $sidebar-width;
+  }
+}
+
+// Animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .pageLayout {
+    &__body {
+      margin-top: $header-height;
+    }
+
+    &__sidebar {
+      // 모바일에서는 오버레이 방식으로 변경할 수 있음
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+
+      &--open {
+        transform: translateX(0);
+      }
+    }
+
+    &__main {
+      margin-left: 0;
+      padding: $spacing-lg;
+    }
+
+    &__footer {
+      margin-left: 0;
+    }
+
+    &__pageHeader {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__title {
+      font-size: $font-size-xl;
+    }
+
+    &__actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@include tablet-up {
+  .pageLayout {
+    &__main {
+      padding: $spacing-2xl;
+    }
+  }
+}
+
+@include desktop-up {
+  .pageLayout {
+    &__main {
+      padding: $spacing-3xl;
+    }
+
+    &__pageHeader {
+      margin-bottom: $spacing-3xl;
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .pageLayout {
+    &__spinner {
+      animation: none;
+    }
+
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .pageLayout {
+    &__pageHeader {
+      border-bottom: 2px solid currentColor;
+    }
+
+    &__error {
+      border: 2px solid currentColor;
+    }
+
+    &__breadcrumbLink {
+      &:focus {
+        outline: 3px solid currentColor;
+        outline-offset: 1px;
+      }
+    }
+  }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+  .pageLayout {
+    background: var(--color-bg-primary, #{$color-gray-900});
+
+    &__main {
+      &::-webkit-scrollbar-track {
+        background: var(--color-gray-800, #{$color-gray-800});
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--color-gray-600, #{$color-gray-600});
+
+        &:hover {
+          background: var(--color-gray-500, #{$color-gray-500});
+        }
+      }
+    }
+
+    &__title {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &__description {
+      color: var(--color-text-secondary, #{$color-gray-300});
+    }
+
+    &__pageHeader {
+      border-bottom-color: var(--color-border-dark, #{$color-gray-700});
+    }
+
+    &__footer {
+      background: var(--color-bg-secondary, #{$color-gray-800});
+      border-top-color: var(--color-border-dark, #{$color-gray-700});
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .pageLayout {
+    &__sidebar {
+      display: none !important;
+    }
+
+    &__main {
+      margin-left: 0 !important;
+    }
+
+    &__header {
+      position: static !important;
+    }
+
+    &__body {
+      margin-top: 0 !important;
+    }
+  }
+}

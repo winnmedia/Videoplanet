@@ -1,0 +1,21 @@
+{
+  "vridge_session": {
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlRlc3QgVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlRlc3QgVXNlciIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoxNTE2MzI1NDIyfQ.h2AzgtYRbemPK6a5wYj-qzydPDcOQ2VVu3h2NJ0NfSY",
+    "token_type": "Bearer",
+    "expires_in": 3600
+  },
+  "user": {
+    "id": 1,
+    "email": "test@example.com",
+    "name": "테스트 사용자",
+    "company": "테스트 회사",
+    "phone": "010-1234-5678",
+    "is_admin": false,
+    "is_active": true,
+    "created_at": "2025-01-01T00:00:00Z",
+    "updated_at": "2025-01-01T00:00:00Z",
+    "last_login": "2025-01-15T12:00:00Z"
+  },
+  "message": "로그인에 성공했습니다."
+}

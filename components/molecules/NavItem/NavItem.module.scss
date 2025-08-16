@@ -1,0 +1,220 @@
+@import '../../../styles/design-tokens.scss';
+
+.navItem {
+  margin-top: 50px;
+  padding: 0;
+  list-style: none;
+  cursor: pointer;
+  transition: $transition-hover;
+  border-radius: $radius-xl;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  // Content container
+  &__content {
+    @include flex-between;
+    padding: $sidebar-item-padding; // 0px 0px 0px 50px
+    position: relative;
+    align-items: center;
+    min-height: 44px; // 터치 타겟 크기 보장
+  }
+
+  // Icon container
+  &__icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: $sidebar-icon-size; // 34px
+    height: $sidebar-icon-size;
+    border-radius: $sidebar-icon-border-radius; // 10px
+    background: $color-gray-300; // #e4e4e4
+    @include flex-center;
+    transition: $transition-hover;
+  }
+
+  &__iconImage {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+
+  // Label text
+  &__label {
+    font-size: $sidebar-item-font-size; // 18px
+    color: $color-text-primary;
+    font-weight: $font-weight-regular;
+    transition: $transition-hover;
+    flex: 1;
+  }
+
+  // Badge positioning
+  &__badge {
+    margin-left: auto;
+    margin-right: $spacing-sm;
+  }
+
+  // Submenu arrow
+  &__arrow {
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    transition: $transition-hover;
+    margin-left: $spacing-xs;
+  }
+
+  // Hover state
+  &:hover:not(&--disabled) {
+    .navItem__label {
+      color: $color-primary; // #012fff (호버 시 파란색)
+    }
+
+    .navItem__arrow {
+      color: $color-primary;
+    }
+  }
+
+  // Active state
+  &--active {
+    .navItem__icon {
+      background: $color-primary; // #012fff (활성 상태 파란색 배경)
+    }
+
+    .navItem__label {
+      color: $color-primary; // #012fff (활성 상태 파란색 텍스트)
+    }
+
+    .navItem__badge {
+      // 활성 상태에서도 배지는 기본 색상 유지
+    }
+  }
+
+  // Submenu variant
+  &--hasSubmenu {
+    .navItem__content {
+      padding-right: $spacing-lg; // 화살표 공간 확보
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    .navItem__label,
+    .navItem__arrow {
+      color: $color-text-tertiary;
+    }
+
+    .navItem__icon {
+      background: $color-gray-200;
+    }
+  }
+
+  // Focus state (접근성)
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  // Active interaction state
+  &:active:not(&--disabled) {
+    transform: translateY(1px);
+  }
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .navItem {
+    margin-top: $spacing-xl; // 모바일에서 간격 줄이기
+
+    &__content {
+      padding-left: 40px; // 모바일에서 아이콘 공간 줄이기
+    }
+
+    &__icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    &__iconImage {
+      width: 14px;
+      height: 14px;
+    }
+
+    &__label {
+      font-size: $font-size-md; // 모바일에서 폰트 크기 줄이기
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .navItem {
+    transition: none;
+
+    * {
+      transition: none;
+    }
+
+    &:active:not(&--disabled) {
+      transform: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .navItem {
+    &:hover:not(&--disabled) {
+      .navItem__label {
+        text-decoration: underline;
+      }
+    }
+
+    &--active {
+      .navItem__icon {
+        border: 2px solid currentColor;
+      }
+
+      .navItem__label {
+        font-weight: $font-weight-bold;
+      }
+    }
+
+    &:focus {
+      outline: 3px solid currentColor;
+      outline-offset: 1px;
+    }
+  }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+  .navItem {
+    &__icon {
+      background: var(--color-gray-600, #{$color-gray-600});
+    }
+
+    &__label {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &:hover:not(&--disabled) {
+      .navItem__label {
+        color: var(--color-primary, #{$color-primary});
+      }
+    }
+
+    &--active {
+      .navItem__icon {
+        background: var(--color-primary, #{$color-primary});
+      }
+
+      .navItem__label {
+        color: var(--color-primary, #{$color-primary});
+      }
+    }
+  }
+}

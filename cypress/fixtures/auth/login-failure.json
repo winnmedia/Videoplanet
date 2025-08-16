@@ -1,0 +1,9 @@
+{
+  "message": "이메일 또는 비밀번호가 일치하지 않습니다.",
+  "detail": "제공된 인증 정보가 유효하지 않습니다.",
+  "code": "INVALID_CREDENTIALS",
+  "field_errors": {
+    "email": ["등록되지 않은 이메일입니다."],
+    "password": ["비밀번호가 일치하지 않습니다."]
+  }
+}

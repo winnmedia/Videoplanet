@@ -1,0 +1,141 @@
+@import '../../../styles/design-tokens.scss';
+
+.badge {
+  @include flex-center;
+  display: inline-flex;
+  min-width: fit-content;
+  border-radius: $radius-lg;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  // Size variants
+  &--sm {
+    min-width: 16px;
+    height: 16px;
+    padding: 0 $spacing-xs;
+    font-size: 10px;
+  }
+
+  &--md {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 $spacing-sm;
+    font-size: $font-size-xs;
+  }
+
+  &--lg {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 $spacing-sm;
+    font-size: $font-size-sm;
+  }
+
+  // Variant colors
+  &--default {
+    background-color: $color-secondary; // #3dcdbf
+    color: $color-white;
+  }
+
+  &--primary {
+    background-color: $color-primary;
+    color: $color-white;
+  }
+
+  &--secondary {
+    background-color: $color-gray-500;
+    color: $color-white;
+  }
+
+  &--success {
+    background-color: $color-success;
+    color: $color-white;
+  }
+
+  &--warning {
+    background-color: $color-warning;
+    color: $color-gray-900;
+  }
+
+  &--error {
+    background-color: $color-error;
+    color: $color-white;
+  }
+
+  &--info {
+    background-color: $color-info;
+    color: $color-white;
+  }
+
+  // Shape variants
+  &--circular {
+    border-radius: $radius-full;
+  }
+
+  // Dot variant
+  &--dot {
+    min-width: 8px;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: $radius-full;
+
+    &.badge--sm {
+      width: 6px;
+      height: 6px;
+    }
+
+    &.badge--md {
+      width: 8px;
+      height: 8px;
+    }
+
+    &.badge--lg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  // Content
+  &__content {
+    display: block;
+    line-height: 1;
+  }
+}
+
+// Animation for new badges (optional)
+@keyframes badge-appear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.badge {
+  animation: badge-appear 0.2s ease-out;
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    animation: none;
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .badge {
+    border: 1px solid currentColor;
+
+    &--warning {
+      border-color: $color-gray-900;
+    }
+  }
+}

@@ -1,0 +1,994 @@
+/**
+ * 프로젝트 관리 스타일
+ * VideoPlanet 프로젝트 - Next.js 14 App Router 통합
+ * 기존 UI/UX 100% 유지
+ */
+
+// ===== 변수 정의 =====
+$primary-color: #1631F8;
+$success-color: #28a745;
+$warning-color: #ffc107;
+$danger-color: #dc3545;
+$info-color: #17a2b8;
+
+$border-radius: 8px;
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// ===== 프로젝트 메인 레이아웃 =====
+.project {
+  min-height: 100vh;
+  padding: 20px;
+  
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .create-btn {
+      background: linear-gradient(135deg, $primary-color, #4f46e5);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: $border-radius;
+      cursor: pointer;
+      transition: $transition;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba($primary-color, 0.3);
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+    }
+  }
+}
+
+// ===== 로딩 스피너 =====
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 16px;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ===== 프로젝트 정보 컴포넌트 =====
+.info_wrap {
+  margin-bottom: 30px;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  overflow: hidden;
+  
+  .name_box {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9ff, #e8f0ff);
+    border-bottom: 1px solid #eee;
+    
+    .toggle-btn {
+      background: $primary-color;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: $transition;
+      
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+      
+      &.on {
+        background: $success-color;
+      }
+      
+      .toggle-icon {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+    
+    .s_title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .update-info {
+      font-size: 14px;
+      color: #666;
+      
+      time {
+        font-weight: 500;
+        color: $primary-color;
+      }
+    }
+  }
+  
+  .box {
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+    
+    .inner {
+      padding: 20px;
+    }
+  }
+  
+  // 설명 섹션
+  .explanation {
+    margin-bottom: 30px;
+    
+    .ss_title {
+      margin-bottom: 15px;
+      
+      span {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        padding-bottom: 8px;
+        border-bottom: 2px solid $primary-color;
+        display: inline-block;
+      }
+    }
+    
+    p {
+      line-height: 1.6;
+      color: #555;
+    }
+  }
+  
+  // 멤버 섹션
+  .member {
+    margin-bottom: 30px;
+    
+    .ss_title {
+      margin-bottom: 15px;
+      
+      span {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        padding-bottom: 8px;
+        border-bottom: 2px solid $success-color;
+        display: inline-block;
+      }
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    li {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .img {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #6b73ff, #9b59b6);
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+      
+      .txt {
+        flex: 1;
+        
+        strong {
+          display: block;
+          color: #333;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+        
+        .role {
+          color: $primary-color;
+          font-size: 12px;
+          font-weight: 500;
+          margin-right: 8px;
+        }
+        
+        .email {
+          color: #666;
+          font-size: 14px;
+        }
+      }
+      
+      &.admin .img {
+        background: linear-gradient(135deg, $primary-color, #4f46e5);
+      }
+      
+      &.basic .img {
+        background: linear-gradient(135deg, #6c757d, #495057);
+      }
+    }
+  }
+  
+  // 프로젝트 정보 섹션
+  .info {
+    .ss_title {
+      margin-bottom: 15px;
+      
+      span {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        padding-bottom: 8px;
+        border-bottom: 2px solid $info-color;
+        display: inline-block;
+      }
+    }
+    
+    .info-list {
+      display: grid;
+      gap: 15px;
+      
+      .info-item {
+        display: flex;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        dt {
+          min-width: 100px;
+          font-weight: 600;
+          color: #333;
+          margin-right: 20px;
+        }
+        
+        dd {
+          flex: 1;
+          color: #555;
+          line-height: 1.4;
+          
+          .no-files {
+            color: #999;
+            font-style: italic;
+          }
+          
+          .files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          
+          .file-download {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: $transition;
+            text-align: left;
+            
+            &:hover {
+              background: #f8f9fa;
+              border-color: $primary-color;
+            }
+            
+            .file-name {
+              flex: 1;
+              color: #333;
+            }
+            
+            .download-icon {
+              margin-left: 8px;
+              opacity: 0.7;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // 액션 버튼 영역
+  .action-buttons {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+  }
+}
+
+// ===== 프로젝트 폼 스타일 =====
+.project.edit {
+  .content {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    padding: 30px;
+    
+    .group {
+      margin-bottom: 40px;
+      
+      &.grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+      
+      .part {
+        .s_title {
+          font-size: 16px;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 12px;
+        }
+        
+        input, textarea, select {
+          width: 100%;
+          padding: 12px 16px;
+          border: 2px solid #e1e5e9;
+          border-radius: $border-radius;
+          font-size: 14px;
+          transition: $transition;
+          
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+          }
+          
+          &:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+          }
+          
+          &.error {
+            border-color: $danger-color;
+          }
+        }
+        
+        textarea {
+          min-height: 100px;
+          resize: vertical;
+        }
+        
+        .error-message {
+          color: $danger-color;
+          font-size: 12px;
+          margin-top: 4px;
+        }
+        
+        .char-count {
+          text-align: right;
+          font-size: 12px;
+          color: #999;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+}
+
+// ===== 멤버 관리 스타일 =====
+.part.authority {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: $border-radius;
+      margin-bottom: 10px;
+      background: white;
+      
+      .member-info {
+        flex: 1;
+        
+        strong {
+          display: block;
+          color: #333;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+        
+        .email {
+          color: #666;
+          font-size: 14px;
+        }
+      }
+      
+      select {
+        width: auto;
+        min-width: 100px;
+      }
+    }
+  }
+}
+
+// ===== 초대 입력 스타일 =====
+.invite-input-container {
+  .pr {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    
+    input[type="email"] {
+      flex: 1;
+      
+      &.pending {
+        background: #f8f9fa;
+        color: #6c757d;
+      }
+    }
+    
+    .pend {
+      background: $warning-color;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .cert {
+      background: $success-color;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: $transition;
+      
+      &:hover:not(:disabled) {
+        background: darken($success-color, 10%);
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+    
+    .del {
+      background: $danger-color;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: $transition;
+      
+      &:hover:not(:disabled) {
+        background: darken($danger-color, 10%);
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .add {
+    background: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: $transition;
+    margin-top: 15px;
+    
+    &:hover:not(:disabled) {
+      background: darken($primary-color, 10%);
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+  
+  .invite-help {
+    small {
+      color: #6c757d;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+  }
+}
+
+// ===== 파일 관리 스타일 =====
+.part.file {
+  .sample {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    
+    li {
+      margin-bottom: 10px;
+      
+      &.no-files {
+        color: #999;
+        font-style: italic;
+        padding: 20px;
+        text-align: center;
+        border: 2px dashed #ddd;
+        border-radius: $border-radius;
+      }
+      
+      .sample-file,
+      .file-download {
+        background: none;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: $transition;
+        color: $primary-color;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 5px;
+        
+        &:hover {
+          background: #f8f9fa;
+          border-color: $primary-color;
+        }
+      }
+    }
+    
+    .uploaded-file,
+    .existing-file,
+    .new-file {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: $border-radius;
+      background: white;
+      
+      .file-name {
+        flex: 1;
+        color: #333;
+      }
+      
+      .file-size {
+        color: #999;
+        font-size: 12px;
+      }
+      
+      .delete-btn {
+        background: $danger-color;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: $transition;
+        
+        &:hover:not(:disabled) {
+          background: darken($danger-color, 10%);
+        }
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+    
+    .upload_button {
+      .file-upload-label {
+        display: block;
+        cursor: pointer;
+        
+        .btn-upload {
+          background: linear-gradient(135deg, #6c757d, #495057);
+          color: white;
+          padding: 12px 20px;
+          border-radius: $border-radius;
+          text-align: center;
+          transition: $transition;
+          
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+      
+      input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+}
+
+// ===== 프로젝트 일정 스타일 =====
+.dataprocess {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    display: grid;
+    grid-template-columns: 150px 1fr 1fr;
+    gap: 15px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .type {
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .select {
+      .example-custom-input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: $border-radius;
+        background: white;
+        cursor: pointer;
+        transition: $transition;
+        text-align: left;
+        font-size: 14px;
+        
+        &:hover:not(:disabled) {
+          border-color: $primary-color;
+        }
+        
+        &.off {
+          color: #999;
+          background: #f8f9fa;
+        }
+        
+        &.disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+      
+      &.start .example-custom-input {
+        border-color: $success-color;
+        
+        &:hover:not(:disabled) {
+          border-color: darken($success-color, 10%);
+        }
+      }
+      
+      &.end .example-custom-input {
+        border-color: $danger-color;
+        
+        &:hover:not(:disabled) {
+          border-color: darken($danger-color, 10%);
+        }
+      }
+    }
+  }
+}
+
+// ===== 프로젝트 목록 스타일 =====
+.list_box {
+  margin-top: 50px;
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    
+    p {
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+  
+  .process {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    
+    .s_title {
+      min-width: 120px;
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.3;
+      margin-right: 20px;
+    }
+    
+    .swiper {
+      flex: 1;
+      
+      .swiper-slide {
+        height: auto;
+        
+        .inner03 {
+          background: linear-gradient(135deg, #f8f9ff, #e8f0ff);
+          border: 1px solid #e1e5e9;
+          border-radius: $border-radius;
+          padding: 15px;
+          cursor: pointer;
+          transition: $transition;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: $box-shadow;
+            border-color: $primary-color;
+          }
+          
+          .name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 14px;
+          }
+          
+          .day {
+            font-size: 12px;
+            color: #666;
+            
+            span {
+              display: block;
+              margin-bottom: 2px;
+              
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
+          
+          .no-date {
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ===== 버튼 스타일 =====
+.btn_wrap {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #eee;
+  
+  .submit {
+    padding: 12px 30px;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+    
+    &:not(.del):not(.cancel) {
+      background: linear-gradient(135deg, $primary-color, #4f46e5);
+      color: white;
+      
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba($primary-color, 0.3);
+      }
+    }
+    
+    &.del {
+      background: $danger-color;
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background: darken($danger-color, 10%);
+      }
+    }
+    
+    &.cancel {
+      background: #6c757d;
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background: darken(#6c757d, 10%);
+      }
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// ===== 에러 메시지 스타일 =====
+.error-message {
+  text-align: center;
+  padding: 60px 20px;
+  
+  h2 {
+    color: $danger-color;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    color: #666;
+    margin-bottom: 30px;
+  }
+}
+
+// ===== 반응형 디자인 =====
+@media (max-width: 768px) {
+  .project {
+    padding: 15px;
+    
+    .project-header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+  }
+  
+  .project.edit .content .group.grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .dataprocess li {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    
+    .type {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+  }
+  
+  .info_wrap {
+    .info .info-list .info-item {
+      flex-direction: column;
+      gap: 8px;
+      
+      dt {
+        min-width: auto;
+        margin-right: 0;
+      }
+    }
+  }
+  
+  .btn_wrap {
+    flex-direction: column;
+    
+    .submit {
+      width: 100%;
+    }
+  }
+  
+  .invite-input-container .pr {
+    flex-direction: column;
+    gap: 8px;
+    
+    input[type="email"] {
+      width: 100%;
+    }
+  }
+}
+
+// ===== 접근성 개선 =====
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ===== 다크 모드 지원 =====
+@media (prefers-color-scheme: dark) {
+  .project {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    
+    .project-header .title {
+      color: #e0e0e0;
+    }
+  }
+  
+  .info_wrap,
+  .project.edit .content,
+  .list_box .process {
+    background: #2d2d2d;
+    color: #e0e0e0;
+    
+    .name_box {
+      background: linear-gradient(135deg, #2a2a3a, #1e1e2e);
+    }
+    
+    .s_title, .ss_title span {
+      color: #e0e0e0;
+    }
+  }
+  
+  input, textarea, select {
+    background: #3a3a3a;
+    border-color: #4a4a4a;
+    color: #e0e0e0;
+    
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+}

@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
-import { WriteMemo, DeleteMemo, UpdateDate } from 'api/project'
-import { WriteUserMemo, DeleteUserMemo } from 'api/auth'
-import { useParams } from 'react-router-dom'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { WriteMemo, DeleteMemo, UpdateDate } from 'src/api/project'
+import { WriteUserMemo, DeleteUserMemo } from 'src/api/auth'
+import { useParams, useNavigate, useLocation } from 'utils/navigation-adapter'
 import moment from 'moment'
 import 'moment/locale/ko'
 import cx from 'classnames'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import 'tasks/Calendar/ModalStyle.scss'
+import 'src/tasks/Calendar/ModalStyle.scss'
 
 import styled from 'styled-components'
 

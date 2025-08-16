@@ -1,0 +1,325 @@
+@import '../../../styles/design-tokens.scss';
+
+.submenu {
+  position: absolute;
+  left: -30px; // 기본적으로 숨겨진 위치
+  top: 0;
+  width: $submenu-width; // 330px
+  height: 100%;
+  padding: $submenu-padding; // 20px 20px 20px 70px
+  background: $submenu-bg; // #f8f8f8
+  box-shadow: $submenu-shadow; // 16px 0px 16px rgba(0, 0, 0, 0.06)
+  border-radius: $submenu-border-radius; // 0 30px 30px 0
+  overflow-y: auto;
+  transition: $transition-sidebar; // all 0.5s ease
+  z-index: $z-submenu; // 2
+  transform: translateX(0);
+
+  // Hide scrollbar
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  // Active state (visible)
+  &--active {
+    left: calc(0% + 280px); // 사이드바 너비만큼 이동
+  }
+
+  // Header section
+  &__header {
+    @include flex-between;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  &__title {
+    font-size: $font-size-xl; // 20px
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  &__actions {
+    @include flex-start;
+    gap: $spacing-sm;
+  }
+
+  &__actionButton {
+    @include button-reset;
+    @include flex-center;
+    width: $sidebar-icon-size; // 34px
+    height: $sidebar-icon-size;
+    border-radius: $radius-full;
+    background: $color-gray-200; // #efefef
+    transition: $transition-hover;
+
+    &:hover {
+      background: $color-gray-300;
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      background: $color-gray-400;
+    }
+  }
+
+  &__actionIcon {
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    line-height: 1;
+  }
+
+  // Content area
+  &__content {
+    flex: 1;
+    min-height: 0; // Allow flex child to shrink
+  }
+
+  // Navigation
+  &__nav {
+    // Navigation styles
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    @include flex-between;
+    margin-top: 30px;
+    padding: $spacing-sm $spacing-xs;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: $transition-hover;
+    line-height: $line-height-base;
+    position: relative;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:hover {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.05);
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+      color: $color-primary;
+    }
+
+    &:active {
+      background-color: rgba($color-primary, 0.1);
+    }
+  }
+
+  &__itemText {
+    font-size: $font-size-lg; // 18px
+    color: inherit;
+    flex: 1;
+    
+    // 텍스트 말줄임
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  &__itemStatus {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+    margin-left: $spacing-sm;
+
+    // 상태별 색상
+    &--active {
+      background: $color-success;
+    }
+
+    &--completed {
+      background: $color-info;
+    }
+
+    &--paused {
+      background: $color-warning;
+    }
+  }
+
+  // Empty state
+  &__empty {
+    @include flex-center;
+    height: 200px;
+    text-align: center;
+  }
+
+  &__emptyContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xl;
+  }
+
+  &__emptyText {
+    font-size: $font-size-lg; // 18px
+    color: $color-text-secondary;
+    margin: 0;
+    line-height: $line-height-base;
+  }
+
+  &__emptyButton {
+    @include button-reset;
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    color: $color-white;
+    background: $color-primary-gradient;
+    border-radius: $radius-xl;
+    transition: $transition-hover;
+    box-shadow: $shadow-sm;
+
+    &:hover {
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .submenu {
+    width: 280px; // 모바일에서 너비 줄이기
+    padding: $spacing-md; // 모바일에서 패딩 줄이기
+
+    &--active {
+      left: calc(0% + 240px); // 모바일 사이드바 너비에 맞춰 조정
+    }
+
+    &__header {
+      margin-bottom: $spacing-xl;
+    }
+
+    &__title {
+      font-size: $font-size-lg;
+    }
+
+    &__actionButton {
+      width: 28px;
+      height: 28px;
+    }
+
+    &__item {
+      margin-top: $spacing-lg;
+      padding: $spacing-xs;
+    }
+
+    &__itemText {
+      font-size: $font-size-md;
+      max-width: 150px;
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .submenu {
+    transition: none;
+
+    &__actionButton,
+    &__item,
+    &__emptyButton {
+      transition: none;
+    }
+
+    &__emptyButton:hover {
+      transform: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .submenu {
+    border-left: 2px solid currentColor;
+
+    &__actionButton {
+      border: 2px solid currentColor;
+
+      &:focus {
+        outline: 3px solid currentColor;
+        outline-offset: 1px;
+      }
+    }
+
+    &__item {
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:focus {
+        outline: 3px solid currentColor;
+        outline-offset: 1px;
+      }
+    }
+
+    &__emptyButton {
+      border: 2px solid currentColor;
+
+      &:focus {
+        outline: 3px solid currentColor;
+        outline-offset: 1px;
+      }
+    }
+  }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+  .submenu {
+    background: var(--color-bg-secondary, #{$color-gray-800});
+
+    &__title {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &__actionButton {
+      background: var(--color-gray-600, #{$color-gray-600});
+
+      &:hover {
+        background: var(--color-gray-500, #{$color-gray-500});
+      }
+    }
+
+    &__actionIcon {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &__itemText {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &__emptyText {
+      color: var(--color-text-secondary, #{$color-gray-300});
+    }
+  }
+}

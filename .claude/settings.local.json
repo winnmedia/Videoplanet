@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wsl:*)",
+      "Bash(winver)",
+      "Bash(powershell:*)",
+      "Bash(find:*)",
+      "Bash(wc:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm install)",
+      "Bash(npm test:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run cypress:headless:*)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(npm run dev:*)",
+      "Bash(echo $OS)",
+      "Bash(sed:*)",
+      "Bash(xcopy:*)",
+      "Bash(robocopy:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(mv:*)",
+      "Bash(ren:*)",
+      "Bash(cp:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits"
+  }
+}

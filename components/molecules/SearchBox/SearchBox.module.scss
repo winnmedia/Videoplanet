@@ -1,0 +1,429 @@
+@import '../../../styles/design-tokens.scss';
+
+.searchBox {
+  position: relative;
+  width: 100%;
+  font-family: $font-family-primary;
+
+  // Container for input and buttons
+  &__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: $color-bg-primary;
+    border: 1px solid $color-border-light;
+    border-radius: $border-radius-md;
+    transition: all $transition-duration-fast $transition-timing-ease;
+    overflow: hidden;
+
+    &:hover {
+      border-color: $color-border-medium;
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  // Search button (icon)
+  &__searchButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color $transition-duration-fast $transition-timing-ease;
+    
+    &:hover {
+      background-color: $color-gray-100;
+    }
+
+    &:focus {
+      outline: none;
+      background-color: $color-gray-100;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &__searchIcon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    opacity: 0.6;
+    transition: opacity $transition-duration-fast $transition-timing-ease;
+
+    .searchBox__searchButton:hover &,
+    .searchBox__searchButton:focus & {
+      opacity: 0.8;
+    }
+  }
+
+  // Input field
+  &__input {
+    flex: 1;
+    padding: $spacing-sm $spacing-xs;
+    background: transparent;
+    border: none;
+    color: $color-text-primary;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-base;
+    outline: none;
+    
+    &::placeholder {
+      color: $color-text-tertiary;
+      opacity: 1;
+    }
+
+    &:disabled {
+      color: $color-text-tertiary;
+      cursor: not-allowed;
+      
+      &::placeholder {
+        color: rgba($color-text-tertiary, 0.6);
+      }
+    }
+  }
+
+  // Loading state
+  &__loading {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: 0 $spacing-sm;
+    flex-shrink: 0;
+  }
+
+  &__spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid $color-gray-300;
+    border-top: 2px solid $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  &__loadingText {
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    white-space: nowrap;
+  }
+
+  // Clear button
+  &__clearButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    margin-right: $spacing-xs;
+    background: transparent;
+    border: none;
+    border-radius: $border-radius-sm;
+    color: $color-text-tertiary;
+    cursor: pointer;
+    transition: all $transition-duration-fast $transition-timing-ease;
+    
+    &:hover {
+      background-color: $color-gray-100;
+      color: $color-text-secondary;
+    }
+
+    &:focus {
+      outline: none;
+      background-color: $color-gray-100;
+      color: $color-text-primary;
+    }
+  }
+
+  &__clearIcon {
+    width: 14px;
+    height: 14px;
+  }
+
+  // Auto-complete suggestions
+  &__suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin: $spacing-xs 0 0 0;
+    padding: 0;
+    background: $color-bg-primary;
+    border: 1px solid $color-border-light;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-lg;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    
+    // 스크롤바 스타일링
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: $color-gray-100;
+      border-radius: $border-radius-sm;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-400;
+      border-radius: $border-radius-sm;
+      
+      &:hover {
+        background: $color-gray-500;
+      }
+    }
+  }
+}
+
+// Suggestions items
+.suggestions {
+  &__item {
+    padding: $spacing-sm $spacing-md;
+    cursor: pointer;
+    transition: background-color $transition-duration-fast $transition-timing-ease;
+    border-bottom: 1px solid $color-gray-200;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover,
+    &--active {
+      background-color: $color-gray-100;
+    }
+
+    &--active {
+      background-color: rgba($color-primary, 0.1);
+      
+      .suggestions__text {
+        color: $color-primary;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+
+  &__text {
+    display: block;
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    line-height: $line-height-base;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// State variations
+.searchBox {
+  // Focused state
+  &--focused {
+    .searchBox__container {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
+    }
+
+    .searchBox__searchIcon {
+      opacity: 1;
+    }
+  }
+
+  // Loading state
+  &--loading {
+    .searchBox__container {
+      border-color: $color-primary;
+    }
+
+    .searchBox__input {
+      padding-right: 80px; // 로딩 텍스트 공간 확보
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    opacity: 0.6;
+    
+    .searchBox__container {
+      background-color: $color-gray-100;
+      border-color: $color-border-light;
+      cursor: not-allowed;
+      
+      &:hover {
+        border-color: $color-border-light;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// Keyframe animations
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .searchBox {
+    &__container {
+      background: $color-bg-dark;
+      border-color: rgba($color-white, 0.2);
+      
+      &:hover {
+        border-color: rgba($color-white, 0.3);
+      }
+    }
+
+    &__input {
+      color: $color-text-inverse;
+      
+      &::placeholder {
+        color: rgba($color-text-inverse, 0.6);
+      }
+    }
+
+    &__loadingText {
+      color: rgba($color-text-inverse, 0.7);
+    }
+
+    &__clearButton {
+      color: rgba($color-text-inverse, 0.6);
+      
+      &:hover {
+        background-color: rgba($color-white, 0.1);
+        color: rgba($color-text-inverse, 0.8);
+      }
+    }
+
+    &__suggestions {
+      background: $color-bg-dark;
+      border-color: rgba($color-white, 0.2);
+    }
+
+    &--disabled {
+      .searchBox__container {
+        background-color: rgba($color-gray-800, 0.5);
+      }
+    }
+  }
+
+  .suggestions {
+    &__item {
+      border-bottom-color: rgba($color-white, 0.1);
+      
+      &:hover {
+        background-color: rgba($color-white, 0.1);
+      }
+      
+      &--active {
+        background-color: rgba($color-primary, 0.2);
+      }
+    }
+
+    &__text {
+      color: $color-text-inverse;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: $breakpoint-md) {
+  .searchBox {
+    &__container {
+      height: 44px; // 모바일에서 터치하기 쉬운 크기
+    }
+
+    &__searchButton {
+      width: 44px;
+      height: 44px;
+    }
+
+    &__input {
+      font-size: $font-size-md; // iOS에서 줌 방지
+    }
+
+    &__suggestions {
+      max-height: 160px; // 모바일에서 화면을 덜 가림
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .searchBox {
+    &__loadingText {
+      display: none; // 작은 화면에서는 로딩 텍스트 숨김
+    }
+
+    &--loading {
+      .searchBox__input {
+        padding-right: 40px; // 로딩 텍스트가 없으므로 패딩 조정
+      }
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .searchBox {
+    &__container {
+      border-width: 2px;
+    }
+
+    &--focused {
+      .searchBox__container {
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.3);
+      }
+    }
+
+    &__suggestions {
+      border-width: 2px;
+    }
+  }
+
+  .suggestions {
+    &__item {
+      border-bottom-width: 2px;
+
+      &--active {
+        background-color: $color-primary;
+        
+        .suggestions__text {
+          color: $color-white;
+        }
+      }
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .searchBox {
+    &__container,
+    &__searchButton,
+    &__clearButton,
+    &__searchIcon {
+      transition: none;
+    }
+
+    &__spinner {
+      animation: none;
+    }
+  }
+
+  .suggestions__item {
+    transition: none;
+  }
+}

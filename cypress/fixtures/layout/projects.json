@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "name": "Test Project 1",
+    "created": "2024-01-01T00:00:00Z",
+    "status": "active",
+    "color": "#1631F8",
+    "description": "첫 번째 테스트 프로젝트",
+    "owner": "test@example.com",
+    "members": [
+      {
+        "id": "1",
+        "email": "test@example.com",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "2", 
+    "name": "Test Project 2",
+    "created": "2024-01-02T00:00:00Z",
+    "status": "completed",
+    "color": "#28a745",
+    "description": "완료된 테스트 프로젝트",
+    "owner": "test@example.com",
+    "members": [
+      {
+        "id": "1",
+        "email": "test@example.com",
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Test Project 3",
+    "created": "2024-01-03T00:00:00Z", 
+    "status": "paused",
+    "color": "#ffc107",
+    "description": "일시 정지된 테스트 프로젝트",
+    "owner": "test@example.com",
+    "members": [
+      {
+        "id": "1",
+        "email": "test@example.com",
+        "role": "owner"
+      }
+    ]
+  }
+]

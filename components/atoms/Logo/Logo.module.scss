@@ -1,0 +1,131 @@
+@import '../../../styles/design-tokens.scss';
+
+.logo {
+  @include flex-center;
+  transition: $transition-hover;
+  user-select: none;
+
+  // Size variants
+  &--sm {
+    .logo__image {
+      width: 100px;
+      height: auto;
+    }
+  }
+
+  &--md {
+    .logo__image {
+      width: 150px;
+      height: auto;
+    }
+  }
+
+  &--lg {
+    .logo__image {
+      width: 200px;
+      height: auto;
+    }
+  }
+
+  // Variant styles (주로 필터나 특수 효과용)
+  &--primary {
+    // 기본 로고 스타일
+  }
+
+  &--white {
+    // 흰색 로고 스타일 (어두운 배경용)
+  }
+
+  &--black {
+    // 검은색 로고 스타일 (밝은 배경용)
+  }
+
+  // Interactive state
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+      border-radius: $radius-sm;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // Link wrapper
+  &__link {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: $radius-sm;
+    transition: $transition-hover;
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+  }
+
+  // Image
+  &__image {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+}
+
+// Responsive
+@include mobile-only {
+  .logo {
+    &--md {
+      .logo__image {
+        width: 120px;
+      }
+    }
+
+    &--lg {
+      .logo__image {
+        width: 150px;
+      }
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .logo {
+    transition: none;
+
+    &--clickable {
+      &:hover {
+        transform: none;
+      }
+
+      &:active {
+        transform: none;
+      }
+    }
+
+    &__link {
+      transition: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .logo {
+    &--clickable:focus,
+    &__link:focus {
+      outline: 3px solid currentColor;
+      outline-offset: 1px;
+    }
+  }
+}

@@ -1,9 +1,9 @@
 import './SideBar.scss'
 import cx from 'classnames'
 import React, { useEffect, useState, useMemo } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'utils/navigation-adapter'
 import { useSelector } from 'react-redux'
-import { checkSession } from 'util/util'
+import { checkSession } from 'src/utils/util'
 
 export default function SideBar({ tab, on_menu }) {
   const navigate = useNavigate()

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { SendAuthNumber, EmailAuth } from 'api/auth'
-import { useLocation } from 'react-router-dom'
+import { SendAuthNumber, EmailAuth } from 'src/api/auth'
+import { useLocation } from 'utils/navigation-adapter'
 
 export default function AuthEmail({
   email,

@@ -1,4 +1,4 @@
-import { axiosOpts, axiosCredentials } from 'util/util'
+import { axiosOpts, axiosCredentials } from '../utils/util'
 
 // 이메일 회원가입
 export function SignUp(data) {

@@ -1,6 +1,5 @@
 import cx from 'classnames'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'utils/navigation-adapter'
 import './Header.scss'
 
 export default function Header({

@@ -1,0 +1,183 @@
+@import '../../../styles/design-tokens.scss';
+
+.userProfile {
+  @include flex-start;
+  gap: $spacing-sm;
+  transition: $transition-hover;
+  user-select: none;
+
+  // Layout variants
+  &--horizontal {
+    @include flex-start;
+    flex-direction: row;
+  }
+
+  &--vertical {
+    @include flex-center;
+    flex-direction: column;
+    text-align: center;
+
+    .userProfile__info {
+      text-align: center;
+    }
+  }
+
+  // Interactive state
+  &--clickable {
+    cursor: pointer;
+    border-radius: $radius-md;
+    padding: $spacing-xs;
+    margin: -#{$spacing-xs};
+
+    &:hover {
+      background-color: rgba($color-primary, 0.05);
+    }
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+      background-color: rgba($color-primary, 0.1);
+    }
+
+    &:active {
+      background-color: rgba($color-primary, 0.15);
+    }
+  }
+
+  // Info container
+  &__info {
+    @include flex-start;
+    flex-direction: column;
+    min-width: 0; // flexbox truncation
+    gap: 2px;
+  }
+
+  // Name styling
+  &__name {
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+    line-height: $line-height-tight;
+    
+    // Text truncation
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+
+    .userProfile--vertical & {
+      max-width: 100px;
+      text-align: center;
+    }
+  }
+
+  // Email/subtitle styling
+  &__email {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: $line-height-tight;
+    
+    // Text truncation
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+
+    .userProfile--vertical & {
+      max-width: 100px;
+      text-align: center;
+    }
+  }
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .userProfile {
+    &__name,
+    &__email {
+      max-width: 100px;
+    }
+
+    &--horizontal {
+      gap: $spacing-xs;
+    }
+  }
+}
+
+@include tablet-up {
+  .userProfile {
+    &__name,
+    &__email {
+      max-width: 150px;
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .userProfile {
+    transition: none;
+
+    &--clickable {
+      &:hover,
+      &:focus,
+      &:active {
+        transition: none;
+      }
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .userProfile {
+    &--clickable {
+      &:hover {
+        background-color: transparent;
+        outline: 2px solid currentColor;
+      }
+
+      &:focus {
+        outline: 3px solid currentColor;
+        outline-offset: 1px;
+        background-color: transparent;
+      }
+    }
+
+    &__name {
+      color: currentColor;
+    }
+
+    &__email {
+      color: currentColor;
+      opacity: 0.7;
+    }
+  }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+  .userProfile {
+    &__name {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &__email {
+      color: var(--color-text-secondary, #{$color-gray-300});
+    }
+
+    &--clickable {
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      &:focus {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &:active {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+}

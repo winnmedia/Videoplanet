@@ -1,7 +1,7 @@
-import useInput from 'hooks/UseInput'
+import useInput from 'src/hooks/useInput'
 import React, { useState, useEffect } from 'react'
 
-import { CreateFeedback } from 'api/feedback'
+import { CreateFeedback } from 'src/api/feedback'
 
 export default function FeedbackInput({ project_id, refetch }) {
   const initial = {

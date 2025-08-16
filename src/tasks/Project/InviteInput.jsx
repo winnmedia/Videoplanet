@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { GetProject, InviteProject, InviteCancel } from 'api/project'
+import { GetProject, InviteProject, InviteCancel } from 'src/api/project'
 
 export default function InviteInput({
   project_id,

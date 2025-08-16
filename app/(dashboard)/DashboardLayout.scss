@@ -1,0 +1,402 @@
+// Dashboard Layout 스타일
+// Header와 SideBar 통합 레이아웃
+
+// @import 'src/styles/variables'; // 임시 제거
+
+.dashboard-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fcfcfc;
+  
+  // 스킵 네비게이션 (접근성)
+  .skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: color(primary);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    z-index: 100;
+    transition: top 0.3s ease;
+    
+    &:focus {
+      top: 6px;
+    }
+  }
+  
+  // 대시보드 헤더
+  .dashboard-header {
+    background: #fff;
+    border-bottom: 1px solid #e6e6e6;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 80px;
+    
+    .header__container {
+      max-width: none;
+      padding: 0 30px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .header__left {
+      display: flex;
+      align-items: center;
+      
+      .logo {
+        height: 40px;
+        
+        img {
+          height: 100%;
+          width: auto;
+        }
+      }
+    }
+    
+    .header__right {
+      display: flex;
+      align-items: center;
+      
+      .header-user-profile {
+        .user-profile {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          padding: 8px 16px;
+          border-radius: 25px;
+          background: #f8f9fa;
+          transition: background-color 0.3s ease;
+          
+          &:hover {
+            background: #e9ecef;
+          }
+          
+          .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            
+            .user-name {
+              font-size: 16px;
+              font-weight: 600;
+              color: color(text-primary);
+              line-height: 1.2;
+            }
+            
+            .user-role {
+              font-size: 12px;
+              color: color(text-secondary);
+              line-height: 1.2;
+            }
+          }
+          
+          .user-actions {
+            display: flex;
+            gap: 8px;
+            
+            button {
+              width: 32px;
+              height: 32px;
+              border: none;
+              border-radius: 50%;
+              background: transparent;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 16px;
+              transition: background-color 0.3s ease, transform 0.2s ease;
+              
+              &:hover {
+                background: rgba(0, 0, 0, 0.1);
+                transform: scale(1.1);
+              }
+              
+              &:focus-visible {
+                outline: 2px solid color(primary);
+                outline-offset: 2px;
+              }
+              
+              &.settings-btn:hover {
+                background: rgba(108, 117, 125, 0.2);
+              }
+              
+              &.logout-btn:hover {
+                background: rgba(220, 53, 69, 0.2);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // 메인 콘텐츠 영역
+  .dashboard-content {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+    
+    // main 요소에 id 추가 (스킵 네비게이션 대상)
+    #main-content {
+      min-height: calc(100vh - 80px);
+    }
+  }
+  
+  // 로딩 상태
+  .dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #fcfcfc;
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid color(primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    p {
+      color: color(text-secondary);
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+  
+  // 에러 상태
+  .dashboard-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #fcfcfc;
+    padding: 40px;
+    text-align: center;
+    
+    h2 {
+      color: #dc3545;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    
+    p {
+      color: color(text-secondary);
+      font-size: 16px;
+      margin-bottom: 32px;
+      max-width: 500px;
+      line-height: 1.5;
+    }
+    
+    .retry-btn,
+    .login-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0 8px;
+      transition: all 0.3s ease;
+      
+      &:focus-visible {
+        outline: 2px solid color(primary);
+        outline-offset: 2px;
+      }
+    }
+    
+    .retry-btn {
+      background: color(primary);
+      color: white;
+      
+      &:hover {
+        background: color(primary-hover);
+        transform: translateY(-2px);
+      }
+    }
+    
+    .login-btn {
+      background: #6c757d;
+      color: white;
+      
+      &:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .dashboard-layout {
+    .dashboard-header {
+      height: 60px;
+      
+      .header__container {
+        padding: 0 20px;
+      }
+      
+      .header__left .logo {
+        height: 32px;
+      }
+      
+      .header__right .header-user-profile .user-profile {
+        padding: 6px 12px;
+        gap: 10px;
+        
+        .user-info {
+          .user-name {
+            font-size: 14px;
+          }
+          
+          .user-role {
+            font-size: 11px;
+          }
+        }
+        
+        .user-actions button {
+          width: 28px;
+          height: 28px;
+          font-size: 14px;
+        }
+      }
+    }
+    
+    .dashboard-content #main-content {
+      min-height: calc(100vh - 60px);
+    }
+    
+    .dashboard-loading,
+    .dashboard-error {
+      padding: 20px;
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      p {
+        font-size: 14px;
+      }
+      
+      .retry-btn,
+      .login-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-layout {
+    .dashboard-header {
+      .header__right .header-user-profile .user-profile {
+        .user-info {
+          display: none; // 모바일에서는 사용자 정보 숨김
+        }
+      }
+    }
+  }
+}
+
+// 다크모드 지원
+@media (prefers-color-scheme: dark) {
+  .dashboard-layout {
+    background: #1a1a1a;
+    
+    .dashboard-header {
+      background: #2d2d2d;
+      border-bottom-color: #404040;
+      
+      .header__right .header-user-profile .user-profile {
+        background: #404040;
+        
+        &:hover {
+          background: #4a4a4a;
+        }
+        
+        .user-name {
+          color: #fff;
+        }
+        
+        .user-role {
+          color: #ccc;
+        }
+      }
+    }
+    
+    .dashboard-loading,
+    .dashboard-error {
+      background: #1a1a1a;
+      
+      p {
+        color: #ccc;
+      }
+      
+      .spinner {
+        border-color: #404040;
+        border-top-color: color(primary);
+      }
+    }
+    
+    .dashboard-error h2 {
+      color: #ff6b6b;
+    }
+  }
+}
+
+// 접근성 개선
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-layout {
+    .dashboard-loading .spinner {
+      animation: none;
+    }
+    
+    .header__right .user-profile button,
+    .retry-btn,
+    .login-btn {
+      transition: none;
+      
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+// 고대비 모드 지원
+@media (prefers-contrast: high) {
+  .dashboard-layout {
+    .dashboard-header {
+      border-bottom-width: 2px;
+      
+      .header__right .header-user-profile .user-profile {
+        border: 2px solid currentColor;
+      }
+    }
+    
+    .retry-btn,
+    .login-btn {
+      border: 2px solid currentColor;
+    }
+  }
+}

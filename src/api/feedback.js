@@ -1,4 +1,4 @@
-import { axiosOpts, axiosCredentials } from 'util/util'
+import { axiosOpts, axiosCredentials } from '../utils/util'
 
 // 피드백 detail
 export function GetFeedBack(id) {
