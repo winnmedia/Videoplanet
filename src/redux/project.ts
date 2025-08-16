@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
-interface ProjectState {
+export interface ProjectState {
   user: any
   nickname: string | null
   sample_files: any[]

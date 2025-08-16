@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { configureStore, combineReducers, Store } from '@reduxjs/toolkit'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import ProjectStore from './project'
 
@@ -6,8 +6,10 @@ const rootReducer = combineReducers({
   ProjectStore,
 })
 
+export type RootState = ReturnType<typeof rootReducer>
+
 // SSR 호환을 위한 조건부 persist 설정
-const makeStore = () => {
+const makeStore = (): Store => {
   const isServer = typeof window === 'undefined'
   
   if (isServer) {
@@ -53,10 +55,16 @@ const makeStore = () => {
   })
 }
 
-export const store = makeStore() as any
+// Create store instance
+const store: Store = makeStore()
+
+// Default export for Next.js compatibility
+export default store
+
+// Named export as well for backward compatibility
+export { store }
 
 // persistor는 클라이언트에서만 생성 (providers.tsx에서 처리)
 export const persistor = typeof window !== 'undefined' ? persistStore(store) : null
 
-export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
