@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
@@ -37,35 +36,20 @@ import end02 from '@/assets/images/Home/new/end-img02.png'
 
 export default function HomePage() {
   const router = useRouter()
-  const [isClient, setIsClient] = useState(false)
   
-  // Hydration 완료 후 클라이언트 상태로 설정
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-  
-  const handleLoginClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    console.log('Login button clicked')
-    if (isClient) {
-      console.log('Navigating to login page')
-      router.push('/login')
-    } else {
-      console.log('Client not ready, waiting for hydration')
-    }
+  const handleLoginClick = () => {
+    console.log('Login button clicked at:', new Date().toISOString())
+    
+    // Next.js navigation
+    router.push('/login')
   }
   
   const handleTermsClick = () => {
-    if (isClient) {
-      router.push('/terms')
-    }
+    router.push('/terms')
   }
   
   const handlePrivacyClick = () => {
-    if (isClient) {
-      router.push('/privacy')
-    }
+    router.push('/privacy')
   }
 
   return (

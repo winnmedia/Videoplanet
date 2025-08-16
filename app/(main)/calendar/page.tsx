@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Calendar Page
  * 캘린더 메인 페이지 - Next.js 14 App Router

@@ -5,6 +5,12 @@ import { Link } from '../../utils/navigation-adapter';
 import { useNavigate } from '../../utils/navigation-adapter';
 import './Header.scss';
 
+// 라우트 상수
+const ROUTES = {
+  HOME: '/dashboard',
+  LOGIN: '/login',
+} as const;
+
 // TypeScript 타입 정의
 interface HeaderItem {
   type: 'img' | 'string';
@@ -50,7 +56,7 @@ function makeHtml(items: HeaderItem[] = [], navigate: (path: string) => void) {
         <div key={i} className={item.className}>
           <img
             style={{ cursor: 'pointer' }}
-            onClick={() => navigate('/CmsHome')}
+            onClick={() => navigate(ROUTES.HOME)}
             alt={item.alt || `img_${i}`}
             src={item.src}
           />

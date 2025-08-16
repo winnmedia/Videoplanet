@@ -48,7 +48,13 @@
       "Bash(if exist .env type .env)",
       "Bash(npm run start:*)",
       "Bash(set PORT=3005)",
-      "Bash(npx next start:*)"
+      "Bash(npx next start:*)",
+      "Bash(timeout 10 curl -s http://localhost:3001/login)",
+      "Bash(timeout:*)",
+      "Bash(node:*)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": [],
