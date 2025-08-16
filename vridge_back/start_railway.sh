@@ -17,6 +17,20 @@ export STARTUP_PHASE=true
 export HEALTH_CHECK_SIMPLE=true
 
 echo "Running database migrations..."
+# First ensure Django can load
+python manage.py check --deploy --quiet || echo "Django check failed, continuing..."
+
+# Run migrations with explicit ordering for better reliability
+echo "Running content types migration first..."
+python manage.py migrate contenttypes --noinput || echo "Content types migration failed, continuing..."
+
+echo "Running auth migration..."
+python manage.py migrate auth --noinput || echo "Auth migration failed, continuing..."
+
+echo "Running admin migration..."
+python manage.py migrate admin --noinput || echo "Admin migration failed, continuing..."
+
+echo "Running all remaining migrations..."
 python manage.py migrate --noinput || echo "Migration failed, continuing..."
 
 echo "Collecting static files..."

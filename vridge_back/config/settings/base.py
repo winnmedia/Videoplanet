@@ -46,10 +46,10 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
-    "core",
-    "users",
+    "core",  # Core utilities and managers must come first
+    "users",  # User model that may be referenced by other apps
     "projects",
-    "feedbacks",
+    "feedbacks", 
     "onlines",
 ]
 
