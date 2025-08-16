@@ -121,7 +121,9 @@ my_settings.py
 .DS_Store
 .AppleDouble
 .LSOverride
+# Icon files (not the component folder)
 Icon
+!components/atoms/Icon/
 ._*
 .DocumentRevisions-V100
 .fseventsd
