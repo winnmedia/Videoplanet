@@ -4,7 +4,7 @@
  */
 
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, validateEnvironment, isValidUrl } from '@/lib/config';
 
 /**
  * 토큰 파싱 유틸리티
@@ -28,16 +28,54 @@ function getAuthToken(): string | null {
 }
 
 /**
+ * API 클라이언트 초기화 및 검증
+ */
+const initializeApiClient = () => {
+  // 환경변수 검증
+  try {
+    validateEnvironment();
+  } catch (error) {
+    console.error('[API Client] Environment validation failed:', error);
+    throw error;
+  }
+
+  // API_BASE_URL 유효성 검사
+  if (!isValidUrl(API_BASE_URL)) {
+    const error = new Error(`Invalid API_BASE_URL: ${API_BASE_URL}`);
+    console.error('[API Client] URL validation failed:', error);
+    throw error;
+  }
+
+  // 상대 경로로 해석되는 것을 방지하기 위한 추가 검증
+  if (!API_BASE_URL.startsWith('http://') && !API_BASE_URL.startsWith('https://')) {
+    const error = new Error(`API_BASE_URL must include protocol: ${API_BASE_URL}`);
+    console.error('[API Client] Protocol missing:', error);
+    throw error;
+  }
+
+  // 잘못된 도메인 패턴 검사 (www.vlanet.net 같은 상대 경로 문제)
+  if (API_BASE_URL.includes('www.vlanet.net') || API_BASE_URL.includes('///')) {
+    const error = new Error(`API_BASE_URL contains invalid pattern: ${API_BASE_URL}`);
+    console.error('[API Client] Invalid URL pattern detected:', error);
+    throw error;
+  }
+
+  console.log(`[API Client] Initialized with baseURL: ${API_BASE_URL}`);
+  
+  return axios.create({
+    baseURL: API_BASE_URL,
+    withCredentials: true, // 쿠키 포함
+    timeout: 30000, // 30초 타임아웃
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+/**
  * 메인 API 클라이언트 인스턴스
  */
-export const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true, // 쿠키 포함
-  timeout: 30000, // 30초 타임아웃
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export const apiClient: AxiosInstance = initializeApiClient();
 
 /**
  * 요청 인터셉터 - 토큰 자동 첨부
@@ -193,7 +231,7 @@ export const api = {
  * 파일 업로드용 API 클라이언트
  */
 export const fileApiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_BASE_URL, // 이미 검증된 URL 사용
   withCredentials: true,
   timeout: 300000, // 5분 (대용량 파일 고려)
 });

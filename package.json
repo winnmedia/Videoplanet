@@ -17,7 +17,9 @@
     "cypress:component": "cypress open --component",
     "e2e": "start-server-and-test dev http://localhost:3000 cypress:headless",
     "e2e:open": "start-server-and-test dev http://localhost:3000 cypress",
-    "test:all": "npm run test:ci && npm run e2e"
+    "test:all": "npm run test:ci && npm run e2e",
+    "validate-env": "node scripts/validate-env.js",
+    "vercel-check": "npm run validate-env"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",

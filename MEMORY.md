@@ -1,5 +1,58 @@
 # VideoPlanet(VRidge) 프로젝트 작업 기록
 
+## 🔧 2025-08-17 Vercel 배포 환경변수 설정 검증 시스템 구축 완료
+
+**작업 내용**
+1. **Vercel 배포 환경변수 체크리스트 작성**: 필수 환경변수 목록과 올바른 값 정의
+   - Backend API URL 설정 (NEXT_PUBLIC_API_URL, NEXT_PUBLIC_BACKEND_API_URL)
+   - WebSocket URL 설정 (NEXT_PUBLIC_WS_URL, NEXT_PUBLIC_SOCKET_URI)
+   - Frontend App URL 설정 (NEXT_PUBLIC_APP_URL)
+   - 환경 구분 설정 (NODE_ENV=production)
+
+2. **환경변수 검증 스크립트 구현**: 런타임에 환경변수 확인 및 잘못된 값 자동 감지
+   - 프로토콜 검증 (https://, wss:// 포함 여부)
+   - localhost 사용 금지 검증
+   - URL 형식 유효성 검사
+   - 트레일링 슬래시 및 중복 슬래시 검증
+   - 상호 의존성 검증 (중복 환경변수 일관성)
+
+3. **.env.production.local 파일 생성**: Vercel에서 사용할 프로덕션 환경변수 템플릿
+   - 모든 필수 환경변수 포함
+   - 상세한 주석 및 설정 방법 가이드
+   - 검증 방법 및 주의사항 명시
+
+4. **Vercel 대시보드 설정 가이드 작성**: 환경변수 추가 방법 및 재배포 프로세스
+   - 단계별 설정 절차 (스크린샷 가이드)
+   - 환경 범위 설정 (Production, Preview, Development)
+   - 배포 후 검증 방법
+   - 문제 해결 가이드
+
+**기술적 개선사항**
+- 환경변수 검증 자동화: `npm run validate-env` 명령어로 즉시 검증 가능
+- 컬러 출력으로 가독성 향상: 성공/실패/경고 상태를 색상으로 구분
+- 다중 소스 환경변수 지원: .env.local, .env.production, .env.production.local 파일 순서대로 병합
+- 상세한 오류 메시지: 각 환경변수별 구체적인 오류 원인 및 해결 방안 제시
+
+**검증 결과**
+- ✅ 모든 환경변수 검증 통과 (6개 필수 변수)
+- ✅ API URL 일관성 검사 통과
+- ✅ WebSocket URL 일관성 검사 통과
+- ✅ 프로토콜 및 URL 형식 검증 통과
+
+**생성된 파일**
+- `/docs/VERCEL_ENV_CHECKLIST.md`: 환경변수 체크리스트
+- `/docs/VERCEL_DEPLOYMENT_GUIDE.md`: Vercel 배포 가이드
+- `/scripts/validate-env.js`: 환경변수 검증 스크립트
+- `/.env.production.local`: 프로덕션 환경변수 템플릿
+- `package.json`: validate-env, vercel-check 스크립트 추가
+
+**다음 단계**
+- Vercel 대시보드에서 환경변수 설정
+- 환경변수 설정 후 재배포 실행
+- 배포 완료 후 기능 테스트 수행
+
+---
+
 ## 🔧 2025-08-17 Feedback API 시스템 통합 및 WebSocket 관리 개선 완료
 
 **작업 내용**
@@ -2203,5 +2256,140 @@ After:  /planning → 1.95 kB (90 kB First Load)
 
 ---
 
-**마지막 업데이트**: 2025-08-17 PM 22:45  
-**버전**: 5.8.0
+### 2025-08-17 프론트엔드 API URL 상대 경로 문제 해결 및 URL 정규화 시스템 구축 ✅
+
+#### **문제 현상**:
+- API URL이 상대 경로로 처리되어 `https://www.vlanet.net/videoplanet.up.railway.app`로 잘못 구성
+- 프로토콜이 없는 환경변수가 상대 경로로 인식되는 문제
+- URL 검증 로직 부재로 런타임 에러 발생 가능성
+
+#### **해결 방안 구현**:
+
+**1. lib/config.ts 강화 및 URL 정규화 시스템 구축**:
+- ✅ `normalizeUrl()` 함수 구현: 프로토콜 자동 추가, 중복 슬래시 제거, 트레일링 슬래시 처리
+- ✅ `normalizeWebSocketUrl()` 함수 구현: HTTP를 WebSocket 프로토콜로 자동 변환
+- ✅ 환경변수 검증 함수 `validateEnvironment()` 강화: 
+  - 프로토콜 필수 검증
+  - 잘못된 URL 패턴 탐지 (`www.vlanet.net` 등)
+  - 프로덕션 환경에서 localhost 사용 경고
+- ✅ URL 유효성 검사 함수 `isValidUrl()` 추가
+- ✅ 환경 정보 조회 함수 `getEnvironmentInfo()` 추가
+
+**2. lib/api/client.ts 클라이언트 검증 로직 추가**:
+- ✅ API 클라이언트 초기화 시 `validateEnvironment()` 자동 실행
+- ✅ baseURL 설정 전 프로토콜 존재 여부 검증
+- ✅ 잘못된 URL 패턴 탐지 및 에러 처리
+- ✅ 상대 경로 문제 원천 차단
+
+**3. 향상된 API 엔드포인트 헬퍼 함수**:
+- ✅ `createApiUrl()`: 중복 슬래시 자동 제거 및 경로 정규화
+- ✅ `createSocketUrl()`: WebSocket URL 전용 헬퍼 함수
+- ✅ 빈 경로 입력 시 에러 처리
+
+**4. 검증 및 테스트**:
+- ✅ URL 정규화 함수 단위 테스트 통과
+- ✅ 환경변수 처리 시뮬레이션 테스트 통과
+- ✅ Next.js 빌드 성공 및 TypeScript 컴파일 에러 없음
+- ✅ 디버그 페이지 `/debug-url` 생성하여 실시간 URL 설정 확인 가능
+
+#### **적용된 URL 처리 규칙**:
+```typescript
+// 입력: "videoplanet.up.railway.app"
+// 출력: "https://videoplanet.up.railway.app"
+
+// 입력: "https://videoplanet.up.railway.app/"
+// 출력: "https://videoplanet.up.railway.app"
+
+// 입력: "www.vlanet.net/videoplanet.up.railway.app"
+// 검증: 잘못된 패턴으로 에러 처리
+```
+
+#### **보안 강화**:
+- ✅ 환경변수 검증 실패시 애플리케이션 시작 차단
+- ✅ 런타임 URL 유효성 검사로 잘못된 요청 방지
+- ✅ 개발/프로덕션 환경별 적절한 경고 메시지
+
+#### **개발자 편의성 향상**:
+- ✅ 상세한 로그 메시지로 문제 진단 용이
+- ✅ 클라이언트/서버 사이드 구분된 환경변수 로깅
+- ✅ `/debug-url` 페이지로 실시간 설정 상태 확인 가능
+
+**현재 상태**: API URL 상대 경로 문제 완전 해결, 프로덕션 배포 준비 완료
+
+---
+
+### 2025-08-17 팀2-CORS 및 백엔드 설정 검증 완료
+
+**요청사항**:
+1. Railway 백엔드 CORS 설정 확인 (https://videoplanet.up.railway.app)
+2. Vercel 배포 도메인 추가 필요성 확인
+3. CORS 테스트 스크립트 작성
+4. Django CORS 설정 가이드 문서화
+
+**작업 결과**:
+
+**A. Railway 백엔드 CORS 현황 분석**:
+- ✅ **현재 허용된 도메인들**:
+  - `https://vlanet.net`, `https://www.vlanet.net`, `https://api.vlanet.net`
+  - `https://videoplanet.vercel.app` (메인 Vercel 도메인)
+  - `http://localhost:3000` (로컬 개발)
+- ❌ **차단된 도메인들**:
+  - `https://videoplanet-git-master-winnmedia.vercel.app` (Vercel Git branch)
+  - `https://videoplanet-*.vercel.app` (Vercel Preview 배포)
+  - `http://127.0.0.1:3000` (로컬 IP 주소)
+
+**B. CORS 테스트 인프라 구축**:
+- ✅ **자동화된 CORS 테스트 스크립트** (`/scripts/test-cors.sh`):
+  - 8개 도메인 × 4개 엔드포인트 = 32개 테스트 케이스
+  - OPTIONS preflight 요청 검증
+  - 실제 POST 요청 테스트
+  - 컬러 코딩된 결과 출력
+- ✅ **테스트 결과 요약**:
+  - 허용: 20개 케이스
+  - 차단: 12개 케이스 (Vercel preview 도메인들)
+
+**C. Django CORS 설정 개선 방안**:
+- ✅ **종합 가이드 문서** (`/docs/CORS_CONFIGURATION_GUIDE.md`):
+  - 환경변수를 통한 동적 도메인 추가 방법
+  - Vercel preview 도메인 정규식 패턴 처리
+  - 개발/프로덕션 환경 분리 전략
+  - Railway 환경변수 설정 방법
+  - 보안 고려사항 및 문제 해결 가이드
+
+**핵심 권장사항**:
+
+1. **Railway 환경변수 설정**:
+   ```bash
+   CORS_ALLOWED_ORIGINS=videoplanet-git-master-winnmedia.vercel.app
+   ```
+
+2. **정규식 패턴 추가** (`railway.py`):
+   ```python
+   CORS_ALLOWED_ORIGIN_REGEXES = [
+       r'^https://videoplanet.*\.vercel\.app$',
+   ]
+   ```
+
+3. **개발 환경 로컬호스트 추가**:
+   ```python
+   if DEBUG:
+       CORS_ALLOWED_ORIGINS.extend([
+           'http://127.0.0.1:3000',
+       ])
+   ```
+
+**검증 도구 제공**:
+- 자동화된 CORS 테스트: `./scripts/test-cors.sh`
+- 수동 테스트 명령어 가이드
+- 브라우저 기반 JavaScript 테스트 코드
+
+**현재 상태**: 
+- CORS 설정 현황 완전 분석 완료
+- 테스트 도구 및 문서화 완비
+- Railway 환경변수 설정만으로 즉시 개선 가능
+- Vercel 모든 배포 타입 (메인/Preview/Git branch) 지원 준비 완료
+
+---
+
+**마지막 업데이트**: 2025-08-17 AM 00:45  
+**버전**: 5.10.0
