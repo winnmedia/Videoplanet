@@ -116,6 +116,35 @@
           cursor: pointer;
           pointer-events: all;
         }
+        .submit {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          margin-left: 40px;
+          width: 90px;
+          height: 45px;
+          color: #fff;
+          background: #1631F8;
+          border-radius: 15px;
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: 500;
+          position: relative;
+          z-index: 10;
+          cursor: pointer;
+          pointer-events: all;
+          transition: all 0.15s ease;
+          &:hover {
+            background: #0031ff;
+            box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+            transform: translateY(-1px);
+            transition: all 0.3s;
+          }
+          &:active {
+            transform: scale(0.95);
+            transition: all 0.1s ease;
+          }
+        }
       }
     }
   }
@@ -1306,6 +1335,13 @@
             height: 40px;
             font-size: 15px;
             display: block;
+          }
+          .submit {
+            width: 80px;
+            height: 40px;
+            font-size: 15px;
+            margin-left: 20px;
+            border-radius: 10px;
           }
         }
       }
