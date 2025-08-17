@@ -37,7 +37,7 @@ interface PlanningProject {
 
 export default function PlanningPage() {
   const searchParams = useSearchParams()
-  const isDemoMode = searchParams.get('demo') === 'true'
+  const isDemoMode = searchParams?.get('demo') === 'true'
   const [currentProject, setCurrentProject] = useState<PlanningProject | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [savedProjects, setSavedProjects] = useState<PlanningProject[]>([])

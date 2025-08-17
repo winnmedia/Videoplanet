@@ -1,0 +1,164 @@
+@import '../../../../styles/design-tokens.scss';
+
+.header {
+  width: 100%;
+  background-color: $header-bg; // #ffffff
+  border: $header-border; // none
+  transition: $transition-base;
+  z-index: $z-header; // 4
+
+  // Fixed positioning variant
+  &--fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: $z-fixed;
+  }
+
+  // Shadow variant
+  &--shadow {
+    box-shadow: $shadow-sm;
+  }
+
+  // Container
+  &__container {
+    @include flex-between;
+    height: $header-height; // 80px
+    padding: $header-padding; // 0 30px
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  // Layout sections
+  &__left,
+  &__center,
+  &__right {
+    @include flex-start;
+    gap: $spacing-md;
+  }
+
+  &__left {
+    flex: 0 0 auto;
+  }
+
+  &__center {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  &__right {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+  }
+
+  // Legacy support for specific classes
+  :global(.logo) {
+    @include flex-center;
+    
+    img {
+      width: 150px;
+      height: auto;
+      cursor: pointer;
+    }
+  }
+
+  :global(.profile) {
+    @include flex-start;
+    gap: $spacing-sm;
+
+    // Legacy profile styles for backward compatibility
+    .nick {
+      width: $profile-avatar-size; // 40px
+      height: $profile-avatar-size;
+      background: $profile-avatar-bg; // #516e8b
+      border-radius: $radius-full;
+      @include flex-center;
+      font-size: $font-size-md;
+      color: $profile-avatar-color; // #ffffff
+      margin-right: $spacing-sm;
+      line-height: 1;
+    }
+
+    .mail {
+      font-size: $font-size-sm; // 13px
+      color: $color-text-secondary;
+    }
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .header {
+    &__container {
+      padding: 0 $spacing-md; // 모바일에서 패딩 줄이기
+    }
+
+    :global(.logo) img {
+      width: 120px; // 모바일에서 로고 크기 줄이기
+    }
+  }
+}
+
+@include tablet-up {
+  .header {
+    &__container {
+      padding: $header-padding; // 태블릿 이상에서 기본 패딩
+    }
+  }
+}
+
+// Large screens
+@include desktop-up {
+  .header {
+    &__container {
+      max-width: 1400px; // 대화면에서 최대 너비 제한
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transition: none;
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .header {
+    border-bottom: 1px solid currentColor;
+
+    &--shadow {
+      border-bottom: 2px solid currentColor;
+      box-shadow: none;
+    }
+  }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+  .header {
+    background-color: var(--color-bg-primary, #{$color-gray-900});
+    border-bottom: 1px solid var(--color-border-dark, #{$color-gray-700});
+
+    :global(.profile) {
+      .mail {
+        color: var(--color-text-secondary, #{$color-gray-300});
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .header {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #000 !important;
+
+    &--fixed {
+      position: static !important;
+    }
+  }
+}

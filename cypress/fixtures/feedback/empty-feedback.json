@@ -1,0 +1,17 @@
+{
+  "data": {
+    "feedback": [],
+    "stats": {
+      "total": 0,
+      "averageRating": 0,
+      "sentimentDistribution": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0
+      },
+      "responseRate": 0
+    }
+  },
+  "success": true,
+  "message": "피드백 목록을 성공적으로 조회했습니다."
+}

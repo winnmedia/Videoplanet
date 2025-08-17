@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import type { LoginCredentials } from '@/features/auth/types'
-import { authApi } from '@/features/auth/api/authApi'
+import type { LoginCredentials } from '@features/auth/sign-in'
+import { signInApi } from '@features/auth/sign-in'
 import { API_BASE_URL } from '@/lib/config'
 import logo from '@/assets/images/Common/b_sb_logo.svg'
 import './LoginPage.scss'
@@ -72,7 +72,7 @@ export default function LoginPage() {
     
     try {
       console.log('[LoginPage] Making API call to:', `${API_BASE_URL}/users/login`)
-      const response = await authApi.signIn(inputs)
+      const response = await signInApi.signIn(inputs)
       console.log('[LoginPage] API response received:', response.status)
       console.log('[LoginPage] API response data:', response.data)
       

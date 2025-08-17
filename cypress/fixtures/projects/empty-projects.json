@@ -1,0 +1,10 @@
+{
+  "data": {
+    "projects": [],
+    "total": 0,
+    "page": 1,
+    "limit": 10
+  },
+  "success": true,
+  "message": "프로젝트 목록을 성공적으로 조회했습니다."
+}

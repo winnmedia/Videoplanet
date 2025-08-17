@@ -1,0 +1,131 @@
+{
+  "data": {
+    "steps": [
+      {
+        "id": "welcome",
+        "title": "환영합니다!",
+        "description": "VideoPlanet에 오신 것을 환영합니다.",
+        "required": true,
+        "completed": false
+      },
+      {
+        "id": "purpose",
+        "title": "사용 목적을 알려주세요",
+        "description": "어떤 용도로 VideoPlanet을 사용하실 예정인가요?",
+        "required": true,
+        "completed": false,
+        "options": [
+          {
+            "id": "video-production",
+            "label": "비디오 제작",
+            "description": "영상 콘텐츠 제작 및 편집"
+          },
+          {
+            "id": "marketing",
+            "label": "마케팅",
+            "description": "마케팅 캠페인용 영상"
+          },
+          {
+            "id": "education",
+            "label": "교육",
+            "description": "교육용 콘텐츠 제작"
+          },
+          {
+            "id": "entertainment",
+            "label": "엔터테인먼트",
+            "description": "오락용 콘텐츠"
+          }
+        ]
+      },
+      {
+        "id": "team-size",
+        "title": "팀 규모를 선택해주세요",
+        "description": "함께 작업할 팀원이 몇 명 정도인가요?",
+        "required": true,
+        "completed": false,
+        "options": [
+          {
+            "id": "individual",
+            "label": "개인",
+            "description": "혼자 작업합니다"
+          },
+          {
+            "id": "small",
+            "label": "소규모 팀 (2-5명)",
+            "description": "작은 팀으로 작업합니다"
+          },
+          {
+            "id": "medium",
+            "label": "중간 팀 (6-20명)",
+            "description": "중간 규모 팀입니다"
+          },
+          {
+            "id": "large",
+            "label": "대규모 팀 (20명 이상)",
+            "description": "큰 조직입니다"
+          }
+        ]
+      },
+      {
+        "id": "features",
+        "title": "관심 있는 기능을 선택해주세요",
+        "description": "어떤 기능들을 주로 사용하실 예정인가요?",
+        "required": false,
+        "completed": false,
+        "multiSelect": true,
+        "options": [
+          {
+            "id": "feedback",
+            "label": "피드백 수집",
+            "description": "영상에 대한 피드백을 받고 관리"
+          },
+          {
+            "id": "planning",
+            "label": "프로젝트 기획",
+            "description": "영상 프로젝트 계획 및 관리"
+          },
+          {
+            "id": "analytics",
+            "label": "분석 및 리포트",
+            "description": "데이터 분석 및 성과 측정"
+          },
+          {
+            "id": "collaboration",
+            "label": "팀 협업",
+            "description": "팀원들과의 실시간 협업"
+          }
+        ]
+      },
+      {
+        "id": "notifications",
+        "title": "알림 설정",
+        "description": "어떤 방식으로 알림을 받고 싶으신가요?",
+        "required": false,
+        "completed": false,
+        "multiSelect": true,
+        "options": [
+          {
+            "id": "email",
+            "label": "이메일 알림",
+            "description": "중요한 업데이트를 이메일로 받기"
+          },
+          {
+            "id": "push",
+            "label": "푸시 알림",
+            "description": "실시간 푸시 알림 받기"
+          },
+          {
+            "id": "slack",
+            "label": "Slack 연동",
+            "description": "Slack으로 알림 받기"
+          }
+        ]
+      }
+    ],
+    "currentStep": 0,
+    "totalSteps": 5,
+    "completionPercentage": 0
+  },
+  "success": true,
+  "message": "온보딩 단계 정보를 조회했습니다."
+}

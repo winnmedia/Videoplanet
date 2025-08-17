@@ -5,14 +5,20 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/components/*": ["./src/components/*", "./components/*"],
-      "@/features/*": ["./features/*"],
+      "@/features/*": ["./features/*", "./src/features/*"],
+      "@features/*": ["./src/features/*"],
       "@/app/*": ["./app/*"],
       "@/lib/*": ["./lib/*"],
       "@/types/*": ["./types/*"],
       "@/styles/*": ["./styles/*"],
       "@/utils/*": ["./src/utils/*"],
       "@/tasks/*": ["./src/tasks/*"],
-      "@/assets/*": ["./src/assets/*"]
+      "@/assets/*": ["./src/assets/*"],
+      "@processes/*": ["./src/processes/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@widgets/*": ["./src/widgets/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@shared/*": ["./src/shared/*"]
     },
     // File Layout
     // "rootDir": "./src",

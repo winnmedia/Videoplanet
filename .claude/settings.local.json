@@ -74,7 +74,10 @@
       "Bash(npx vercel:*)",
       "Bash(npm run type-check:*)",
       "Bash(npm run:*)",
-      "Bash(/home/winnmedia/videoplanet/Videoplanet/scripts/test-cors.sh:*)"
+      "Bash(/home/winnmedia/videoplanet/Videoplanet/scripts/test-cors.sh:*)",
+      "Bash(tree:*)",
+      "Bash(scripts/test-cors.sh:*)",
+      "Bash(NODE_ENV=development node -e \"\nconst config = require(''./lib/config.ts'');\nconsole.log(''Client-side Environment Check:'');\nconsole.log(''API_BASE_URL:'', config.API_BASE_URL);\nconsole.log(''SOCKET_URL:'', config.SOCKET_URL);\nconsole.log(''APP_URL:'', config.APP_URL);\nconsole.log(''Environment validation:'', config.validateEnvironment());\n\")"
     ],
     "deny": [],
     "ask": [],

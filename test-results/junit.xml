@@ -1,41 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="18" failures="0" errors="0" time="1.562">
-  <testsuite name="프로토콜 누락 문제 해결 검증" errors="0" failures="0" skipped="0" timestamp="2025-08-17T16:06:35" time="1.159" tests="18">
-    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 프로토콜 없는 URL에 자동으로 https:// 추가" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 프로토콜 없는 URL에 자동으로 https:// 추가" time="0.005">
+<testsuites name="jest tests" tests="25" failures="7" errors="0" time="4.838">
+  <testsuite name="Team 2: API Connection and 500 Error Validation" errors="0" failures="7" skipped="0" timestamp="2025-08-17T22:39:42" time="4.415" tests="25">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 1. API Client Configuration Tests API_BASE_URL should be configured correctly" name="Team 2: API Connection and 500 Error Validation 1. API Client Configuration Tests API_BASE_URL should be configured correctly" time="0.003">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 이미 프로토콜이 있는 경우 그대로 유지" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 이미 프로토콜이 있는 경우 그대로 유지" time="0.002">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 1. API Client Configuration Tests API client should have correct default configuration" name="Team 2: API Connection and 500 Error Validation 1. API Client Configuration Tests API client should have correct default configuration" time="0.001">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 위험한 패턴 감지 및 차단" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 위험한 패턴 감지 및 차단" time="0.013">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 1. API Client Configuration Tests API client should include Content-Type header" name="Team 2: API Connection and 500 Error Validation 1. API Client Configuration Tests API client should include Content-Type header" time="0.001">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 빈 값이나 잘못된 값 처리" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 빈 값이나 잘못된 값 처리" time="0.003">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 2. Authentication API Connection Tests authApi should use correct endpoints" name="Team 2: API Connection and 500 Error Validation 2. Authentication API Connection Tests authApi should use correct endpoints" time="0.047">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 트레일링 슬래시 제거" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 트레일링 슬래시 제거" time="0.002">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 2. Authentication API Connection Tests authApi should handle 401 errors correctly" name="Team 2: API Connection and 500 Error Validation 2. Authentication API Connection Tests authApi should handle 401 errors correctly" time="0.001">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 상대 경로 문제 시뮬레이션" name="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 상대 경로 문제 시뮬레이션" time="0.003">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 3. Projects API Connection Tests projectsApi should use correct endpoints" name="Team 2: API Connection and 500 Error Validation 3. Projects API Connection Tests projectsApi should use correct endpoints" time="0.009">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: &quot;/projects&quot;, Any&lt;Object&gt;
+
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:92:22)
+    at Promise.then.completed (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
+    at run (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 Fetch API URL 구성 테스트" name="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 Fetch API URL 구성 테스트" time="0.003">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 3. Projects API Connection Tests projectsApi should handle network errors with retry" name="Team 2: API Connection and 500 Error Validation 3. Projects API Connection Tests projectsApi should handle network errors with retry" time="0.029">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: &quot;ERR_NETWORK&quot;
+Received: undefined
+    at Object.toBe (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:104:28)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL이 올바른 프로토콜을 포함해야 함" name="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL이 올바른 프로토콜을 포함해야 함" time="0.001">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 4. Feedback API Connection Tests feedbackApi should use correct endpoints" name="Team 2: API Connection and 500 Error Validation 4. Feedback API Connection Tests feedbackApi should use correct endpoints" time="0.003">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL로 정상적인 URL 구성 가능" name="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL로 정상적인 URL 구성 가능" time="0.002">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 4. Feedback API Connection Tests feedbackApi should handle file upload errors" name="Team 2: API Connection and 500 Error Validation 4. Feedback API Connection Tests feedbackApi should handle file upload errors" time="0.002">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;status&apos;)
+    at Object.status (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:134:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 실제 API 요청 URL 형식 검증" name="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 실제 API 요청 URL 형식 검증" time="0.001">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 5. WebSocket Connection Tests WebSocket URL should be configured correctly" name="Team 2: API Connection and 500 Error Validation 5. WebSocket Connection Tests WebSocket URL should be configured correctly" time="0.005">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 4. 환경변수 우선순위 테스트 환경변수 우선순위가 올바르게 작동해야 함" name="프로토콜 누락 문제 해결 검증 4. 환경변수 우선순위 테스트 환경변수 우선순위가 올바르게 작동해야 함" time="0.001">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 5. WebSocket Connection Tests WebSocket manager should prevent duplicate connections" name="Team 2: API Connection and 500 Error Validation 5. WebSocket Connection Tests WebSocket manager should prevent duplicate connections" time="0.001">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 위험한 환경변수 패턴 감지 시 에러 발생" name="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 위험한 환경변수 패턴 감지 시 에러 발생" time="0.001">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 5. WebSocket Connection Tests WebSocket should handle connection errors gracefully" name="Team 2: API Connection and 500 Error Validation 5. WebSocket Connection Tests WebSocket should handle connection errors gracefully" time="0.001">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 URL 검증 실패 시 명확한 에러 메시지" name="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 URL 검증 실패 시 명확한 에러 메시지" time="0">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 6. 500 Error Handling Tests API client should handle 500 errors correctly" name="Team 2: API Connection and 500 Error Validation 6. 500 Error Handling Tests API client should handle 500 errors correctly" time="2.926">
+      <failure>Error: NETWORK_TIMEOUT: Network Error
+    at createFeedbackError (/home/winnmedia/videoplanet/Videoplanet/features/feedback/api/feedbackApi.ts:80:25)
+    at Object.createFeedbackError [as getFeedbackProject] (/home/winnmedia/videoplanet/Videoplanet/features/feedback/api/feedbackApi.ts:123:11)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+      <failure>AxiosError: Network Error
+    at XMLHttpRequest.handleError (/home/winnmedia/videoplanet/Videoplanet/node_modules/axios/lib/adapters/xhr.js:110:14)
+    at XMLHttpRequest.invokeTheCallbackFunction (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/generated/EventHandlerNonNull.js:14:28)
+    at XMLHttpRequest.&lt;anonymous&gt; (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/helpers/create-event-accessor.js:35:32)
+    at innerInvokeEventListeners (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+    at invokeEventListeners (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at XMLHttpRequestImpl._dispatch (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+    at fireAnEvent (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at requestErrorSteps (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:131:3)
+    at dispatchError (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:60:3)
+    at Object.validCORSHeaders (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:75:5)
+    at receiveResponse (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:794:19)
+    at Request.&lt;anonymous&gt; (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:658:43)
+    at Request.emit (node:events:517:28)
+    at Request._processResponse (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:228:12)
+    at ClientRequest.&lt;anonymous&gt; (/home/winnmedia/videoplanet/Videoplanet/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:101:12)
+    at Object.onceWrapper (node:events:632:26)
+    at ClientRequest.emit (node:events:529:35)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:700:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:119:17)
+    at TLSSocket.socketOnData (node:_http_client:541:22)
+    at TLSSocket.emit (node:events:517:28)
+    at addChunk (node:internal/streams/readable:368:12)
+    at readableAddChunk (node:internal/streams/readable:341:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:278:10)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:190:23)
+    at Axios.request (/home/winnmedia/videoplanet/Videoplanet/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;서버 오류가 발생했습니다&quot;
+Received string:    &quot;네트워크 연결을 확인해 주세요&quot;
+    at Object.toContain (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:179:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 로그인 API 호출 URL 구성" name="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 로그인 API 호출 URL 구성" time="0">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 6. 500 Error Handling Tests Error boundary should catch and display 500 errors" name="Team 2: API Connection and 500 Error Validation 6. 500 Error Handling Tests Error boundary should catch and display 500 errors" time="0">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 프로젝트 API 호출 URL 구성" name="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 프로젝트 API 호출 URL 구성" time="0.001">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 6. 500 Error Handling Tests Multiple 500 errors should trigger circuit breaker" name="Team 2: API Connection and 500 Error Validation 6. 500 Error Handling Tests Multiple 500 errors should trigger circuit breaker" time="0.023">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 피드백 API 호출 URL 구성" name="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 피드백 API 호출 URL 구성" time="0">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 7. Retry Logic and Fallback Mechanisms apiClientWithRetry should retry on network errors" name="Team 2: API Connection and 500 Error Validation 7. Retry Logic and Fallback Mechanisms apiClientWithRetry should retry on network errors" time="0.005">
+      <failure>문제가 지속되면 고객센터에 문의하세요</failure>
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 통합 테스트 전체 워크플로우 검증: 환경변수 → 정규화 → API 호출" name="프로토콜 누락 문제 해결 통합 테스트 전체 워크플로우 검증: 환경변수 → 정규화 → API 호출" time="0.002">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 7. Retry Logic and Fallback Mechanisms Retry should use exponential backoff" name="Team 2: API Connection and 500 Error Validation 7. Retry Logic and Fallback Mechanisms Retry should use exponential backoff" time="0">
     </testcase>
-    <testcase classname="프로토콜 누락 문제 해결 통합 테스트 다양한 입력 시나리오에서 일관된 결과" name="프로토콜 누락 문제 해결 통합 테스트 다양한 입력 시나리오에서 일관된 결과" time="0.006">
+    <testcase classname="Team 2: API Connection and 500 Error Validation 7. Retry Logic and Fallback Mechanisms Should fallback to error page after max retries" name="Team 2: API Connection and 500 Error Validation 7. Retry Logic and Fallback Mechanisms Should fallback to error page after max retries" time="0.006">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;status&apos;)
+    at Object.status (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:257:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    </testcase>
+    <testcase classname="Team 2: API Connection and 500 Error Validation 8. Error Message Localization Error messages should be in Korean" name="Team 2: API Connection and 500 Error Validation 8. Error Message Localization Error messages should be in Korean" time="0.001">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;네트워크&quot;
+Received string:    &quot;NETWORK_ERROR&quot;
+    at toContain (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:274:35)
+    at Array.forEach (&lt;anonymous&gt;)
+    at Object.forEach (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/api-500-error-validation.test.ts:271:17)
+    at Promise.then.completed (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
+    at run (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Team 2: API Connection and 500 Error Validation 9. CORS and Environment Configuration CORS should be properly configured" name="Team 2: API Connection and 500 Error Validation 9. CORS and Environment Configuration CORS should be properly configured" time="0.001">
+    </testcase>
+    <testcase classname="Team 2: API Connection and 500 Error Validation 9. CORS and Environment Configuration Environment variables should be validated" name="Team 2: API Connection and 500 Error Validation 9. CORS and Environment Configuration Environment variables should be validated" time="0.001">
+    </testcase>
+    <testcase classname="Team 2: API Connection and 500 Error Validation 10. Real API Connection Health Check Backend health endpoint should be accessible" name="Team 2: API Connection and 500 Error Validation 10. Real API Connection Health Check Backend health endpoint should be accessible" time="0">
+    </testcase>
+    <testcase classname="Error Page Component Tests Error page should display user-friendly message" name="Error Page Component Tests Error page should display user-friendly message" time="0">
+    </testcase>
+    <testcase classname="Error Page Component Tests Error page should have retry functionality" name="Error Page Component Tests Error page should have retry functionality" time="0.001">
+    </testcase>
+    <testcase classname="Error Page Component Tests Error page should have home navigation" name="Error Page Component Tests Error page should have home navigation" time="0">
     </testcase>
   </testsuite>
 </testsuites>

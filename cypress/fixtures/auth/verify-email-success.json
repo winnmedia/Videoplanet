@@ -1,0 +1,15 @@
+{
+  "data": {
+    "user": {
+      "id": "user-newuser-789",
+      "email": "newuser@videoplanet.com",
+      "fullName": "홍길동",
+      "status": "verified",
+      "verifiedAt": "2025-08-17T12:05:00Z"
+    },
+    "accessToken": "test-access-token-123",
+    "refreshToken": "test-refresh-token-456"
+  },
+  "success": true,
+  "message": "이메일 인증이 완료되었습니다."
+}

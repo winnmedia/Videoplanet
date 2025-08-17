@@ -1,0 +1,22 @@
+{
+  "data": {
+    "project": {
+      "id": "proj-test-123",
+      "name": "테스트 비디오 프로젝트",
+      "description": "E2E 테스트를 위한 샘플 프로젝트입니다.",
+      "type": "video-production",
+      "status": "active",
+      "createdAt": "2025-08-17T12:00:00Z",
+      "updatedAt": "2025-08-17T12:00:00Z",
+      "ownerId": "user-test-456",
+      "feedbackLink": "https://videoplanet.vercel.app/feedback/public/proj-test-123-share",
+      "settings": {
+        "allowAnonymousFeedback": true,
+        "enableEmailNotifications": true,
+        "feedbackDeadline": null
+      }
+    }
+  },
+  "success": true,
+  "message": "프로젝트가 성공적으로 생성되었습니다."
+}

@@ -1,0 +1,35 @@
+{
+  "data": {
+    "onboarding": {
+      "userId": "user-newuser-789",
+      "completedAt": "2025-08-17T12:30:00Z",
+      "responses": {
+        "purpose": "video-production",
+        "teamSize": "small",
+        "features": ["feedback", "planning", "analytics"],
+        "notifications": ["email", "push"]
+      },
+      "personalizedRecommendations": [
+        {
+          "type": "feature",
+          "title": "피드백 수집 시작하기",
+          "description": "첫 번째 프로젝트에서 피드백을 수집해보세요.",
+          "actionUrl": "/projects/create?template=feedback"
+        },
+        {
+          "type": "tutorial",
+          "title": "프로젝트 기획 가이드",
+          "description": "효과적인 비디오 프로젝트 기획 방법을 알아보세요.",
+          "actionUrl": "/tutorials/project-planning"
+        }
+      ]
+    },
+    "nextStep": {
+      "type": "project-creation",
+      "title": "첫 번째 프로젝트 만들기",
+      "description": "가이드와 함께 첫 프로젝트를 생성해보세요."
+    }
+  },
+  "success": true,
+  "message": "온보딩이 성공적으로 완료되었습니다."
+}

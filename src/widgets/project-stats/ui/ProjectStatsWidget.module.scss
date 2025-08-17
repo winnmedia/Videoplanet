@@ -1,0 +1,177 @@
+@import '../../../../styles/design-tokens.scss';
+
+.widget {
+  background: $color-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+  transition: $transition-hover;
+  cursor: pointer;
+  border: 1px solid $color-border-light;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &--error {
+    border-color: $color-error;
+    background: $color-error-light;
+  }
+
+  &__header {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  &__icon {
+    font-size: $font-size-xl;
+    opacity: 0.7;
+  }
+
+  &__content {
+    margin-bottom: $spacing-md;
+  }
+
+  &__error {
+    color: $color-error;
+    text-align: center;
+    padding: $spacing-lg 0;
+    font-weight: $font-weight-medium;
+  }
+
+  &__footer {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    text-align: center;
+    opacity: 0.8;
+  }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.stat {
+  text-align: center;
+  padding: $spacing-md;
+  background: $color-gray-50;
+  border-radius: $radius-md;
+  transition: $transition-base;
+
+  &--primary {
+    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    color: $color-white;
+    grid-column: 1 / -1;
+
+    .stat__label {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .stat__value {
+      color: $color-white;
+    }
+  }
+
+  &__label {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__value {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    line-height: 1;
+  }
+}
+
+.loading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.skeleton {
+  height: 60px;
+  background: linear-gradient(90deg, $color-gray-200 25%, $color-gray-100 50%, $color-gray-200 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: $radius-md;
+
+  &:first-child {
+    grid-column: 1 / -1;
+    height: 80px;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .widget {
+    padding: $spacing-md;
+  }
+
+  .stats {
+    gap: $spacing-sm;
+  }
+
+  .stat {
+    padding: $spacing-sm;
+
+    &__value {
+      font-size: $font-size-xl;
+    }
+  }
+}
+
+// Dark mode
+@media (prefers-color-scheme: dark) {
+  .widget {
+    background: var(--color-bg-secondary, #{$color-gray-800});
+    border-color: var(--color-border-dark, #{$color-gray-700});
+
+    &__title {
+      color: var(--color-text-primary, #{$color-white});
+    }
+
+    &__footer {
+      color: var(--color-text-secondary, #{$color-gray-300});
+    }
+  }
+
+  .stat {
+    background: var(--color-bg-tertiary, #{$color-gray-700});
+
+    &__label {
+      color: var(--color-text-secondary, #{$color-gray-300});
+    }
+
+    &__value {
+      color: var(--color-text-primary, #{$color-white});
+    }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-gray-600, #{$color-gray-600}) 25%, var(--color-gray-500, #{$color-gray-500}) 50%, var(--color-gray-600, #{$color-gray-600}) 75%);
+    background-size: 200% 100%;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "data": {
+    "feedback": {
+      "id": "feedback-test-789",
+      "projectId": "proj-test-123",
+      "content": "이 비디오는 매우 좋습니다. 음질과 화질 모두 뛰어나네요.",
+      "rating": 5,
+      "isAnonymous": true,
+      "createdAt": "2025-08-17T12:15:00Z",
+      "sentiment": "positive",
+      "keywords": ["비디오", "좋습니다", "음질", "화질", "뛰어나네요"],
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "ipAddress": "127.0.0.1",
+        "timestamp": "2025-08-17T12:15:00Z"
+      }
+    }
+  },
+  "success": true,
+  "message": "피드백이 성공적으로 제출되었습니다."
+}

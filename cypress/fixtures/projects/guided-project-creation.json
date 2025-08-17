@@ -1,0 +1,48 @@
+{
+  "data": {
+    "project": {
+      "id": "proj-guided-123",
+      "name": "나의 첫 번째 비디오 프로젝트",
+      "description": "온보딩 과정에서 생성된 첫 프로젝트입니다.",
+      "type": "video-production",
+      "template": "basic-video",
+      "status": "active",
+      "createdAt": "2025-08-17T12:35:00Z",
+      "ownerId": "user-newuser-789",
+      "isFirstProject": true,
+      "settings": {
+        "allowAnonymousFeedback": true,
+        "enableEmailNotifications": true,
+        "guidedMode": true,
+        "showTutorials": true
+      },
+      "feedbackLink": "https://videoplanet.vercel.app/feedback/public/proj-guided-123-share",
+      "tutorialProgress": {
+        "completed": ["project-creation"],
+        "next": "upload-video"
+      }
+    },
+    "tutorialSteps": [
+      {
+        "id": "upload-video",
+        "title": "비디오 업로드하기",
+        "description": "프로젝트에 첫 번째 비디오를 업로드해보세요.",
+        "completed": false
+      },
+      {
+        "id": "collect-feedback",
+        "title": "피드백 수집하기",
+        "description": "팀원들에게 피드백 링크를 공유해보세요.",
+        "completed": false
+      },
+      {
+        "id": "analyze-results",
+        "title": "결과 분석하기",
+        "description": "수집된 피드백을 분석해보세요.",
+        "completed": false
+      }
+    ]
+  },
+  "success": true,
+  "message": "가이드 프로젝트가 성공적으로 생성되었습니다."
+}
