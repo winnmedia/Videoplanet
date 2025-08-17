@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 테스트</title>
+    <style>
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-button {
+            background: #1631F8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .test-button:hover {
+            background: #0031ff;
+        }
+        .result {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 50px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>VideoPlanet 로그인 테스트 페이지</h1>
+    
+    <div class="test-section">
+        <h2>1. API 연결 테스트</h2>
+        <button class="test-button" onclick="testHealthCheck()">Health Check 테스트</button>
+        <button class="test-button" onclick="testLoginAPI()">로그인 API 테스트</button>
+        <div id="api-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. 페이지 요소 테스트</h2>
+        <button class="test-button" onclick="checkPageElements()">페이지 요소 확인</button>
+        <button class="test-button" onclick="checkEventListeners()">이벤트 리스너 확인</button>
+        <div id="element-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 수동 로그인 테스트</h2>
+        <input type="email" id="test-email" placeholder="이메일" style="padding: 10px; margin-right: 10px;">
+        <input type="password" id="test-password" placeholder="비밀번호" style="padding: 10px; margin-right: 10px;">
+        <button class="test-button" onclick="manualLogin()">로그인 시도</button>
+        <div id="login-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. React Hydration 테스트</h2>
+        <button class="test-button" onclick="checkHydration()">Hydration 상태 확인</button>
+        <button class="test-button" onclick="triggerButtonClick()">버튼 강제 클릭</button>
+        <div id="hydration-result" class="result"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://videoplanet.up.railway.app';
+
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : 'info';
+            element.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+        }
+
+        async function testHealthCheck() {
+            log('api-result', 'Health Check 시작...', 'info');
+            try {
+                const response = await fetch(`${API_BASE_URL}/health/`);
+                const data = await response.json();
+                log('api-result', `✅ Health Check 성공: ${JSON.stringify(data, null, 2)}`, 'success');
+            } catch (error) {
+                log('api-result', `❌ Health Check 실패: ${error.message}`, 'error');
+            }
+        }
+
+        async function testLoginAPI() {
+            log('api-result', 'Login API 테스트 시작...', 'info');
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'test123'
+                    })
+                });
+                const data = await response.json();
+                log('api-result', `응답 상태: ${response.status}`, 'info');
+                log('api-result', `응답 데이터: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'error');
+            } catch (error) {
+                log('api-result', `❌ Login API 실패: ${error.message}`, 'error');
+            }
+        }
+
+        function checkPageElements() {
+            log('element-result', '페이지 요소 검색 중...', 'info');
+            
+            // 이메일 입력 필드
+            const emailInput = document.querySelector('input[type="email"]');
+            log('element-result', `이메일 입력: ${emailInput ? '✅ 발견' : '❌ 없음'}`, emailInput ? 'success' : 'error');
+            
+            // 비밀번호 입력 필드
+            const passwordInput = document.querySelector('input[type="password"]');
+            log('element-result', `비밀번호 입력: ${passwordInput ? '✅ 발견' : '❌ 없음'}`, passwordInput ? 'success' : 'error');
+            
+            // 로그인 버튼
+            const loginButton = document.querySelector('.submit-button');
+            log('element-result', `로그인 버튼: ${loginButton ? '✅ 발견' : '❌ 없음'}`, loginButton ? 'success' : 'error');
+            
+            if (loginButton) {
+                log('element-result', `버튼 텍스트: "${loginButton.textContent}"`, 'info');
+                log('element-result', `버튼 disabled: ${loginButton.disabled}`, loginButton.disabled ? 'error' : 'success');
+                log('element-result', `버튼 style: ${loginButton.getAttribute('style')}`, 'info');
+            }
+        }
+
+        function checkEventListeners() {
+            log('element-result', '이벤트 리스너 확인 중...', 'info');
+            
+            const button = document.querySelector('.submit-button');
+            if (button) {
+                // 이벤트 리스너 가져오기 (Chrome DevTools API)
+                const listeners = getEventListeners ? getEventListeners(button) : null;
+                if (listeners) {
+                    log('element-result', `이벤트 리스너: ${JSON.stringify(Object.keys(listeners))}`, 'info');
+                } else {
+                    log('element-result', 'getEventListeners API 사용 불가 (브라우저 콘솔에서 실행 필요)', 'error');
+                }
+                
+                // onclick 속성 확인
+                log('element-result', `onclick 속성: ${button.onclick ? '있음' : '없음'}`, button.onclick ? 'success' : 'error');
+            }
+        }
+
+        async function manualLogin() {
+            const email = document.getElementById('test-email').value;
+            const password = document.getElementById('test-password').value;
+            
+            if (!email || !password) {
+                log('login-result', '❌ 이메일과 비밀번호를 입력하세요', 'error');
+                return;
+            }
+            
+            log('login-result', `로그인 시도: ${email}`, 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                log('login-result', `응답 상태: ${response.status}`, response.ok ? 'success' : 'error');
+                log('login-result', `응답: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'info');
+            } catch (error) {
+                log('login-result', `❌ 로그인 실패: ${error.message}`, 'error');
+            }
+        }
+
+        function checkHydration() {
+            log('hydration-result', 'React Hydration 상태 확인...', 'info');
+            
+            // React DevTools 확인
+            const hasReact = window.React || window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+            log('hydration-result', `React 감지: ${hasReact ? '✅' : '❌'}`, hasReact ? 'success' : 'error');
+            
+            // Next.js 확인
+            const hasNext = window.__NEXT_DATA__;
+            log('hydration-result', `Next.js 감지: ${hasNext ? '✅' : '❌'}`, hasNext ? 'success' : 'error');
+            
+            if (hasNext) {
+                log('hydration-result', `Next.js 빌드 ID: ${window.__NEXT_DATA__.buildId}`, 'info');
+                log('hydration-result', `페이지: ${window.__NEXT_DATA__.page}`, 'info');
+            }
+            
+            // DOM 준비 상태
+            log('hydration-result', `DOM 상태: ${document.readyState}`, 'info');
+        }
+
+        function triggerButtonClick() {
+            log('hydration-result', '버튼 강제 클릭 시도...', 'info');
+            
+            const button = document.querySelector('.submit-button');
+            if (button) {
+                // 1. 직접 클릭
+                button.click();
+                log('hydration-result', '✅ button.click() 실행됨', 'success');
+                
+                // 2. 이벤트 디스패치
+                const clickEvent = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                button.dispatchEvent(clickEvent);
+                log('hydration-result', '✅ MouseEvent dispatched', 'success');
+                
+                // 3. 콘솔 확인
+                setTimeout(() => {
+                    log('hydration-result', '콘솔에 로그가 출력되었는지 확인하세요', 'info');
+                }, 100);
+            } else {
+                log('hydration-result', '❌ 버튼을 찾을 수 없습니다', 'error');
+            }
+        }
+
+        // 페이지 로드 시 자동 실행
+        window.addEventListener('load', () => {
+            console.log('테스트 페이지 로드 완료');
+            if (window.location.pathname.includes('/login')) {
+                setTimeout(() => {
+                    checkPageElements();
+                    checkHydration();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

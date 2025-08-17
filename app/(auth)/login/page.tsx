@@ -1,21 +1,23 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import queryString from 'query-string'
 import Image from 'next/image'
 import type { LoginCredentials, EmailVerificationParams } from '@/features/auth/types'
 // useAuth import removed to prevent circular dependency
 import { authApi } from '@/features/auth/api/authApi'
+import { API_BASE_URL } from '@/lib/config'
 import { checkSession, refetchProject } from '@/utils/util'
-import logo from '@/assets/images/Common/vlanet-logo.svg'
+import logo from '@/assets/images/Common/b_sb_logo.svg'
+import wLogo from '@/assets/images/Common/w_logo.svg'
 import './AuthForm.scss'
+import './LoginPage.scss'
 
 function LoginPageContent() {
   const dispatch = useDispatch()
   const router = useRouter()
-  const searchParams = useSearchParams()
   // Direct API call instead of useAuth hook to prevent circular dependency
   
   const initialInput: LoginCredentials = {
@@ -26,14 +28,21 @@ function LoginPageContent() {
   const [inputs, setInputs] = useState<LoginCredentials>(initialInput)
   const [loginMessage, setLoginMessage] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [inviteParams, setInviteParams] = useState<EmailVerificationParams | null>(null)
   
   const { email, password } = inputs
   
-  // URL 파라미터에서 초대 링크 정보 추출
-  const uid = searchParams?.get('uid')
-  const token = searchParams?.get('token')
-  const inviteParams: EmailVerificationParams | null = 
-    uid && token ? { uid, token } : null
+  // URL 파라미터 처리
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const uid = params.get('uid')
+      const token = params.get('token')
+      if (uid && token) {
+        setInviteParams({ uid, token })
+      }
+    }
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
@@ -69,13 +78,18 @@ function LoginPageContent() {
 
   // 로그인 성공 처리
   const handleLoginSuccess = (jwt: string) => {
+    console.log('[Login] 로그인 성공, JWT 저장')
     window.localStorage.setItem('VGID', JSON.stringify(jwt))
+    
+    console.log('[Login] 프로젝트 목록 가져오기 시작')
     refetchProject(dispatch, router)
     
     if (inviteParams) {
       // 초대 링크 처리 페이지로 이동
+      console.log('[Login] 초대 링크 파라미터 있음, email-check로 이동')
       router.push(`/email-check?uid=${inviteParams.uid}&token=${inviteParams.token}`)
     } else {
+      console.log('[Login] 대시보드로 이동')
       router.push('/dashboard')
     }
   }
@@ -92,24 +106,31 @@ function LoginPageContent() {
 
   // 로그인 처리
   const handleLogin = async () => {
+    console.log('[Login] 로그인 버튼 클릭됨', { email, hasPassword: !!password })
+    
     // 입력 검증
     if (!email.trim()) {
       setLoginMessage('이메일을 입력해주세요.')
+      console.log('[Login] 이메일 입력 필요')
       return
     }
     
     if (!password.trim()) {
       setLoginMessage('비밀번호를 입력해주세요.')
+      console.log('[Login] 비밀번호 입력 필요')
       return
     }
 
     setIsLoading(true)
     setLoginMessage('')
+    console.log('[Login] API 호출 시작:', API_BASE_URL)
     
     try {
       const response = await authApi.signIn(inputs)
+      console.log('[Login] API 응답 성공:', response.status)
       handleLoginSuccess(response.data.vridge_session)
     } catch (error) {
+      console.error('[Login] API 호출 오류:', error)
       handleLoginError(error)
     } finally {
       setIsLoading(false)
@@ -124,80 +145,127 @@ function LoginPageContent() {
   }
 
   return (
-    <div className="Auth_Form">
-      <div className="form_wrap">
-        <div className="logo">
-          <Image src={logo} alt="Vlanet Logo" width={150} height={50} />
-        </div>
-        <div className="title">로그인</div>
-        
-        <input
-          type="email"
-          name="email"
-          placeholder="이메일"
-          className="ty01 mt50"
-          value={email}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-          autoComplete="email"
-          disabled={isLoading}
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="비밀번호"
-          className="ty01 mt10"
-          value={password}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-          autoComplete="current-password"
-          disabled={isLoading}
-        />
-        
-        {loginMessage && (
-          <div className="error" role="alert" aria-live="polite">
-            {loginMessage}
+    <div className="login-page-container">
+      {/* 왼쪽: 인트로 섹션 */}
+      <div className="login-intro">
+        <div className="intro-wrap">
+          <div className="slogan">
+            당신의 창의력에
+            <br />
+            날개를 달아 줄<br />
+            <span>콘텐츠 제작 협업툴</span>
           </div>
-        )}
-        
-        <div 
-          className="find_link tr" 
-          onClick={() => router.push('/reset-password')}
-          role="button"
-          tabIndex={0}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              router.push('/reset-password')
-            }
-          }}
-        >
-          비밀번호 찾기
+          <div className="features">
+            <ul>
+              <li>
+                Connect
+                <br /> with each other
+              </li>
+              <li>
+                Easy
+                <br /> Feedback
+              </li>
+              <li>
+                Study
+                <br /> Together
+              </li>
+            </ul>
+            <div className="tagline">
+              vlanet to
+              <br /> connection
+            </div>
+          </div>
         </div>
-        
-        <button 
-          className={`submit mt20 ${isLoading ? 'loading' : ''}`}
-          onClick={handleLogin}
-          disabled={isLoading}
-          type="button"
-        >
-          {isLoading ? '로그인 중...' : '로그인'}
-        </button>
-        
-        <div className="mt20 signup_link">
-          브이릿지가 처음이신가요?{' '}
-          <span 
-            onClick={() => router.push('/signup')}
-            role="button"
-            tabIndex={0}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                router.push('/signup')
-              }
+      </div>
+
+      {/* 오른쪽: 로그인 폼 */}
+      <div className="login-form-section">
+        <div className="form-wrap">
+          <div className="form-logo">
+            <Image src={logo} alt="Vlanet Logo" width={60} height={60} />
+          </div>
+          <div className="form-title">로그인</div>
+          
+          <input
+            type="email"
+            name="email"
+            placeholder="이메일"
+            className="input-field"
+            value={email}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+            autoComplete="email"
+            disabled={isLoading}
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            className="input-field"
+            value={password}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+            autoComplete="current-password"
+            disabled={isLoading}
+          />
+          
+          {loginMessage && (
+            <div className="error-message" role="alert" aria-live="polite">
+              {loginMessage}
+            </div>
+          )}
+          
+          <button 
+            className="forgot-link" 
+            onClick={(e) => {
+              e.preventDefault()
+              console.log('[Login] 비밀번호 찾기 클릭')
+              console.log('[Debug] localStorage VGID:', localStorage.getItem('VGID'))
+              
+              // localStorage 토큰 제거 후 이동
+              localStorage.removeItem('VGID')
+              console.log('[Debug] VGID 제거 후 이동 시도')
+              
+              // window.location.href로 직접 이동
+              window.location.href = '/reset-password'
             }}
+            type="button"
           >
-            간편 가입하기
-          </span>
+            비밀번호 찾기
+          </button>
+          
+          <button 
+            className={`submit-button ${isLoading ? 'loading' : ''}`}
+            onClick={handleLogin}
+            disabled={isLoading}
+            type="button"
+          >
+            {isLoading ? '로그인 중...' : '로그인'}
+          </button>
+          
+          <div className="signup-link">
+            브이래닛이 처음이신가요?{' '}
+            <button 
+              className="signup-btn"
+              onClick={(e) => {
+                e.preventDefault()
+                console.log('[Login] 회원가입 버튼 클릭됨')
+                console.log('[Debug] localStorage VGID:', localStorage.getItem('VGID'))
+                console.log('[Debug] 현재 URL:', window.location.href)
+                
+                // localStorage 토큰 제거 후 이동
+                localStorage.removeItem('VGID')
+                console.log('[Debug] VGID 제거 후 이동 시도')
+                
+                // window.location.href로 직접 이동
+                window.location.href = '/signup'
+              }}
+              type="button"
+            >
+              간편 가입하기
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -207,21 +275,5 @@ function LoginPageContent() {
 export default function LoginPage() {
   console.log('[Login] LoginPage component rendered')
   
-  return (
-    <Suspense fallback={
-      <div className="Auth_Form">
-        <div className="form_wrap">
-          <div className="title">로그인</div>
-          <div style={{textAlign: 'center', padding: '50px 0'}}>
-            <div>로딩 중...</div>
-            <div style={{fontSize: '12px', color: '#666', marginTop: '10px'}}>
-              {new Date().toLocaleTimeString()}
-            </div>
-          </div>
-        </div>
-      </div>
-    }>
-      <LoginPageContent />
-    </Suspense>
-  )
+  return <LoginPageContent />
 }

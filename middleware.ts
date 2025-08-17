@@ -34,7 +34,11 @@ const publicRoutes = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('token')?.value || 
+  
+  // VGID 쿠키 확인 (localStorage 대신 쿠키 사용)
+  const vgidCookie = request.cookies.get('VGID')?.value;
+  const token = vgidCookie || 
+                request.cookies.get('token')?.value || 
                 request.headers.get('authorization')?.replace('Bearer ', '');
 
   // 토큰 검증 (localStorage는 서버에서 접근 불가하므로 쿠키 또는 헤더에서 확인)
@@ -63,11 +67,12 @@ export function middleware(request: NextRequest) {
   }
 
   // 2. 인증된 사용자가 로그인/회원가입 페이지에 접근하는 경우
-  if (isAuthRoute && isAuthenticated) {
-    const returnUrl = request.nextUrl.searchParams.get('returnUrl');
-    const redirectUrl = returnUrl || '/dashboard';
-    return NextResponse.redirect(new URL(redirectUrl, request.url));
-  }
+  // 임시로 비활성화 - localStorage 기반 인증이므로 서버에서 확인 불가
+  // if (isAuthRoute && isAuthenticated) {
+  //   const returnUrl = request.nextUrl.searchParams.get('returnUrl');
+  //   const redirectUrl = returnUrl || '/dashboard';
+  //   return NextResponse.redirect(new URL(redirectUrl, request.url));
+  // }
 
   // 3. API 라우트 보호 (선택사항)
   if (pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) {
