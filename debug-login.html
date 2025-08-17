@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지 디버깅 도구</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .debug-box { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffe6e6; border-left: 4px solid #ff0000; }
+        .success { background: #e6ffe6; border-left: 4px solid #00ff00; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>VideoPlanet 로그인 페이지 디버깅</h1>
+    
+    <div class="debug-box">
+        <h3>현재 상태</h3>
+        <p>시간: <span id="current-time"></span></p>
+        <p>사용자 에이전트: <span id="user-agent"></span></p>
+        <p>현재 URL: <span id="current-url"></span></p>
+    </div>
+
+    <div class="debug-box">
+        <h3>테스트 도구</h3>
+        <button onclick="testLoginPageAccess()">로그인 페이지 접근 테스트</button>
+        <button onclick="testNetworkRequests()">네트워크 요청 테스트</button>
+        <button onclick="testLocalStorage()">로컬 스토리지 테스트</button>
+        <button onclick="clearCacheAndReload()">캐시 초기화 후 새로고침</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        // 기본 정보 표시
+        document.getElementById('current-time').textContent = new Date().toLocaleString();
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+        document.getElementById('current-url').textContent = window.location.href;
+
+        function addResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `debug-box ${type}`;
+            div.innerHTML = `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            resultsDiv.appendChild(div);
+        }
+
+        function testLoginPageAccess() {
+            addResult('로그인 페이지 접근 테스트 시작...', 'warning');
+            
+            fetch('/login')
+                .then(response => {
+                    if (response.ok) {
+                        addResult(`로그인 페이지 접근 성공 (상태: ${response.status})`, 'success');
+                        return response.text();
+                    } else {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                })
+                .then(html => {
+                    const hasLoginForm = html.includes('Auth_Form');
+                    const hasLoginButton = html.includes('class="submit"');
+                    const hasLoadingText = html.includes('로딩 중...');
+                    
+                    addResult(`로그인 폼 존재: ${hasLoginForm ? '✓' : '✗'}`, hasLoginForm ? 'success' : 'error');
+                    addResult(`로그인 버튼 존재: ${hasLoginButton ? '✓' : '✗'}`, hasLoginButton ? 'success' : 'error');
+                    addResult(`로딩 텍스트 존재: ${hasLoadingText ? '✓ (문제 가능성)' : '✗ (정상)'}`, hasLoadingText ? 'warning' : 'success');
+                })
+                .catch(error => {
+                    addResult(`로그인 페이지 접근 실패: ${error.message}`, 'error');
+                });
+        }
+
+        function testNetworkRequests() {
+            addResult('네트워크 요청 테스트 시작...', 'warning');
+            
+            // CSS 파일 테스트
+            fetch('/_next/static/css/app/(auth)/login/page.css')
+                .then(response => {
+                    addResult(`CSS 파일 로드: ${response.ok ? '✓' : '✗'} (${response.status})`, response.ok ? 'success' : 'error');
+                })
+                .catch(error => {
+                    addResult(`CSS 파일 로드 실패: ${error.message}`, 'error');
+                });
+
+            // JavaScript 파일 테스트
+            fetch('/_next/static/chunks/app/(auth)/login/page.js')
+                .then(response => {
+                    addResult(`JS 파일 로드: ${response.ok ? '✓' : '✗'} (${response.status})`, response.ok ? 'success' : 'error');
+                })
+                .catch(error => {
+                    addResult(`JS 파일 로드 실패: ${error.message}`, 'error');
+                });
+        }
+
+        function testLocalStorage() {
+            addResult('로컬 스토리지 테스트 시작...', 'warning');
+            
+            try {
+                // VGID 토큰 확인
+                const vgid = localStorage.getItem('VGID');
+                addResult(`VGID 토큰: ${vgid ? '존재' : '없음'}`, vgid ? 'warning' : 'success');
+                
+                if (vgid) {
+                    try {
+                        const parsed = JSON.parse(vgid);
+                        addResult(`토큰 파싱: 성공 (타입: ${typeof parsed})`, 'success');
+                    } catch (e) {
+                        addResult(`토큰 파싱: 실패 - ${e.message}`, 'error');
+                    }
+                }
+
+                // 테스트 쓰기/읽기
+                localStorage.setItem('test', 'test-value');
+                const testValue = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                
+                addResult(`로컬 스토리지 기능: ${testValue === 'test-value' ? '✓' : '✗'}`, testValue === 'test-value' ? 'success' : 'error');
+                
+            } catch (error) {
+                addResult(`로컬 스토리지 테스트 실패: ${error.message}`, 'error');
+            }
+        }
+
+        function clearCacheAndReload() {
+            addResult('캐시 초기화 중...', 'warning');
+            
+            // Service Worker 정리
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for (let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+            }
+            
+            // 로컬 스토리지 정리 (선택사항)
+            const clearStorage = confirm('로컬 스토리지도 초기화하시겠습니까? (로그인 정보가 삭제됩니다)');
+            if (clearStorage) {
+                localStorage.clear();
+                sessionStorage.clear();
+            }
+            
+            // 하드 리로드
+            window.location.reload(true);
+        }
+
+        // 페이지 로드 시 자동 테스트
+        window.addEventListener('load', () => {
+            addResult('디버깅 도구 로드 완료', 'success');
+            addResult('로그인 페이지를 브라우저에서 직접 테스트하려면 http://localhost:3003/login 으로 이동하세요.', 'warning');
+        });
+
+        // 에러 캐치
+        window.addEventListener('error', (event) => {
+            addResult(`JavaScript 에러: ${event.error.message} (${event.filename}:${event.lineno})`, 'error');
+        });
+
+        // Promise 에러 캐치
+        window.addEventListener('unhandledrejection', (event) => {
+            addResult(`Promise 에러: ${event.reason}`, 'error');
+        });
+    </script>
+</body>
+</html>

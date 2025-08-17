@@ -813,5 +813,84 @@ Videoplanet/
 
 ---
 
+### 2025-08-17 API_BASE_URL undefined 문제 해결 및 통합 환경변수 관리 시스템 구축 ✅
+
+#### **문제 현상**:
+- 프로덕션 환경(Vercel)에서 API_BASE_URL이 undefined로 나타남
+- 각 API 파일마다 다른 방식으로 환경변수 처리
+- 개발 환경에서는 정상, 프로덕션에서만 발생
+
+#### **문제 원인 분석**:
+1. **Vercel 환경변수 미설정**: 
+   - `NEXT_PUBLIC_BACKEND_API_URL` 환경변수가 Vercel 대시보드에 설정되지 않음
+   - 프로덕션 빌드 시 환경변수가 undefined로 처리됨
+
+2. **환경변수 처리 방식 불일치**:
+   - authApi.ts: `NEXT_PUBLIC_BACKEND_API_URL` 또는 `REACT_APP_BACKEND_API_URL`
+   - projectsApi.ts: `NEXT_PUBLIC_BACKEND_API_URL` 또는 기본값 `localhost:8000`
+   - feedbackApi.ts: `NEXT_PUBLIC_BACKEND_API_URL` 또는 `REACT_APP_BACKEND_API_URL`
+
+3. **환경변수 검증 시스템 부재**:
+   - 각 파일에서 개별적으로 환경변수 처리
+   - 일관된 에러 처리 및 검증 로직 없음
+
+#### **해결 방안 구현**:
+
+1. **통합 환경변수 관리 시스템 구축**:
+   - ✅ `lib/config.ts` 생성: 중앙집중식 환경변수 관리
+   - ✅ API_BASE_URL, SOCKET_URL, APP_URL 통합 관리
+   - ✅ 환경변수 검증 함수 `validateEnvironment()` 구현
+   - ✅ 개발/프로덕션 환경 구분 로직 추가
+
+2. **API 파일들 환경변수 처리 통일**:
+   - ✅ `features/auth/api/authApi.ts`: 공통 config 사용
+   - ✅ `features/projects/api/projectsApi.ts`: 공통 config 사용
+   - ✅ `features/feedback/api/feedbackApi.ts`: 공통 config 사용
+   - ✅ 모든 API에서 동일한 환경변수 검증 로직 적용
+
+3. **배포 가이드 문서화**:
+   - ✅ `VERCEL_DEPLOYMENT_GUIDE.md` 생성
+   - ✅ Vercel 환경변수 설정 방법 상세 기술
+   - ✅ 문제 해결 가이드 및 검증 방법 제공
+   - ✅ CORS 설정 확인 사항 추가
+
+#### **기술적 개선사항**:
+- **환경변수 우선순위 체계화**:
+  1. `NEXT_PUBLIC_BACKEND_API_URL` (최우선)
+  2. `REACT_APP_BACKEND_API_URL` (레거시 호환)
+  3. 기본값: `https://videoplanet-backend.railway.app`
+
+- **에러 핸들링 강화**:
+  - 환경변수 미설정 시 명확한 에러 메시지
+  - 프로덕션 환경에서 localhost 사용 시 경고
+  - 콘솔 로그를 통한 환경변수 상태 확인
+
+- **타입 안전성 향상**:
+  - TypeScript를 활용한 환경변수 타입 정의
+  - 런타임 검증을 통한 안전성 확보
+
+#### **Vercel 배포를 위한 필수 설정**:
+```bash
+# Vercel 대시보드 → Settings → Environment Variables
+NEXT_PUBLIC_BACKEND_API_URL=https://videoplanet-backend.railway.app
+NEXT_PUBLIC_SOCKET_URI=wss://videoplanet-backend.railway.app
+NEXT_PUBLIC_APP_URL=https://videoplanet.vercel.app
+```
+
+#### **검증 완료**:
+- ✅ 개발 환경에서 API_BASE_URL 정상 로드 확인
+- ✅ 환경변수 검증 로직 정상 작동
+- ✅ 통합 config 시스템으로 모든 API 통일
+- ✅ 프로덕션 배포 가이드 문서화 완료
+
+#### **배포 현황**:
+- **GitHub**: 9cd2415 커밋 완료
+- **개발 환경**: 모든 기능 정상 작동 확인
+- **프로덕션**: Vercel 환경변수 설정 후 배포 대기
+
+**현재 상태**: API_BASE_URL undefined 문제 근본 해결 완료, 프로덕션 배포 준비 완료
+
+---
+
 **마지막 업데이트**: 2025-08-17
-**버전**: 4.5.0
+**버전**: 4.6.0

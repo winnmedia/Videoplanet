@@ -55,7 +55,8 @@
       "Bash(pkill:*)",
       "Bash(true)",
       "Bash(git rm:*)",
-      "WebFetch(domain:videoplanet-backend.railway.app)"
+      "WebFetch(domain:videoplanet-backend.railway.app)",
+      "Bash(PORT=3002 npm run start)"
     ],
     "deny": [],
     "ask": [],

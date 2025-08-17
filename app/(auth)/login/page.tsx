@@ -45,13 +45,25 @@ function LoginPageContent() {
 
   // 세션 체크 및 리다이렉트
   useEffect(() => {
-    const session = checkSession()
-    if (session) {
-      if (inviteParams) {
-        router.push(`/email-check?uid=${inviteParams.uid}&token=${inviteParams.token}`)
+    try {
+      console.log('[Login] Checking session...')
+      const session = checkSession()
+      console.log('[Login] Session status:', !!session)
+      
+      if (session) {
+        console.log('[Login] Session found, redirecting...')
+        if (inviteParams) {
+          console.log('[Login] Redirecting to email-check with params:', inviteParams)
+          router.push(`/email-check?uid=${inviteParams.uid}&token=${inviteParams.token}`)
+        } else {
+          console.log('[Login] Redirecting to dashboard')
+          router.push('/dashboard')
+        }
       } else {
-        router.push('/dashboard')
+        console.log('[Login] No session found, staying on login page')
       }
+    } catch (error) {
+      console.error('[Login] Error during session check:', error)
     }
   }, [inviteParams, router])
 
@@ -193,13 +205,18 @@ function LoginPageContent() {
 }
 
 export default function LoginPage() {
+  console.log('[Login] LoginPage component rendered')
+  
   return (
     <Suspense fallback={
       <div className="Auth_Form">
         <div className="form_wrap">
           <div className="title">로그인</div>
           <div style={{textAlign: 'center', padding: '50px 0'}}>
-            로딩 중...
+            <div>로딩 중...</div>
+            <div style={{fontSize: '12px', color: '#666', marginTop: '10px'}}>
+              {new Date().toLocaleTimeString()}
+            </div>
           </div>
         </div>
       </div>
