@@ -4,20 +4,32 @@
  */
 
 /**
- * URL 정규화 함수
+ * URL 정규화 함수 (강화된 버전)
  * - 프로토콜이 없는 URL에 자동으로 https:// 추가
  * - 중복 슬래시 제거
  * - 트레일링 슬래시 제거
+ * - 위험한 패턴 검증 및 차단
  */
 export const normalizeUrl = (url: string): string => {
-  if (!url || url === 'undefined') {
-    throw new Error('URL cannot be empty or undefined');
+  if (!url || url === 'undefined' || url === 'null') {
+    throw new Error('URL cannot be empty, undefined, or null');
   }
 
   let normalizedUrl = url.trim();
 
+  // 빈 문자열 체크
+  if (!normalizedUrl) {
+    throw new Error('URL cannot be empty after trimming');
+  }
+
+  // 위험한 패턴 사전 검증
+  if (normalizedUrl.includes('www.vlanet.net') || normalizedUrl.includes('///')) {
+    throw new Error(`Dangerous URL pattern detected: ${normalizedUrl}. This may cause relative path issues.`);
+  }
+
   // 프로토콜이 없으면 https:// 추가
   if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
+    console.log(`[normalizeUrl] Adding protocol to: ${normalizedUrl}`);
     normalizedUrl = `https://${normalizedUrl}`;
   }
 
@@ -27,6 +39,14 @@ export const normalizeUrl = (url: string): string => {
   // 트레일링 슬래시 제거
   normalizedUrl = normalizedUrl.replace(/\/$/, '');
 
+  // 최종 URL 유효성 검증
+  try {
+    new URL(normalizedUrl);
+  } catch (error) {
+    throw new Error(`Invalid URL after normalization: ${normalizedUrl}. Original: ${url}`);
+  }
+
+  console.log(`[normalizeUrl] Normalized: ${url} → ${normalizedUrl}`);
   return normalizedUrl;
 };
 
@@ -34,12 +54,25 @@ export const normalizeUrl = (url: string): string => {
  * 환경변수에서 API URL 추출 및 정규화
  */
 const getRawApiUrl = (): string => {
-  return (
+  const rawUrl = (
     process.env.NEXT_PUBLIC_API_URL ||  // Vercel에 설정된 환경변수
     process.env.NEXT_PUBLIC_BACKEND_API_URL || 
     process.env.REACT_APP_BACKEND_API_URL || 
     'https://videoplanet.up.railway.app'
   );
+
+  // 추가 검증: 위험한 패턴 사전 차단
+  if (rawUrl && !rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+    console.warn(`[Config] API URL missing protocol, auto-fixing: ${rawUrl} → https://${rawUrl}`);
+  }
+  
+  // 상대 경로로 해석될 수 있는 패턴 검증
+  if (rawUrl && (rawUrl.includes('www.vlanet.net') || rawUrl.includes('///'))) {
+    console.error(`[Config] Invalid API URL pattern detected: ${rawUrl}`);
+    throw new Error(`Invalid API URL pattern: ${rawUrl}. Please check your environment variables.`);
+  }
+
+  return rawUrl;
 };
 
 // API 기본 URL 설정 (정규화 적용)

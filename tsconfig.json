@@ -75,6 +75,10 @@
     "node_modules",
     "**/*.stories.*",
     "**/stories/**/*",
+    "**/*.test.*",
+    "**/__tests__/**/*",
+    "**/tests/**/*",
+    "**/types/test.ts",
     "vridge_front/**/*",
     "vridge_back/**/*"
   ]

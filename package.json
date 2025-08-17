@@ -19,7 +19,10 @@
     "e2e:open": "start-server-and-test dev http://localhost:3000 cypress",
     "test:all": "npm run test:ci && npm run e2e",
     "validate-env": "node scripts/validate-env.js",
-    "vercel-check": "npm run validate-env"
+    "vercel-check": "npm run validate-env",
+    "build:optimize": "node scripts/optimize-build.js",
+    "build:analyze": "cross-env ANALYZE=true npm run build",
+    "vercel:deploy-check": "npm run validate-env && npm run build:optimize"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
@@ -42,6 +45,7 @@
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "sass": "^1.62.1",
+    "sharp": "^0.34.3",
     "styled-components": "^6.1.0",
     "swiper": "^10.1.0",
     "web-vitals": "^2.1.4"

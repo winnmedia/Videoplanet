@@ -1,65 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="15" failures="1" errors="0" time="2.14">
-  <testsuite name="Planet 핵심 기능 통합 테스트" errors="0" failures="1" skipped="0" timestamp="2025-08-17T14:08:54" time="1.529" tests="15">
-    <testcase classname="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 VGID 쿠키가 있을 때 API 요청이 성공해야 함" name="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 VGID 쿠키가 있을 때 API 요청이 성공해야 함" time="0.01">
+<testsuites name="jest tests" tests="18" failures="0" errors="0" time="1.562">
+  <testsuite name="프로토콜 누락 문제 해결 검증" errors="0" failures="0" skipped="0" timestamp="2025-08-17T16:06:35" time="1.159" tests="18">
+    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 프로토콜 없는 URL에 자동으로 https:// 추가" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 프로토콜 없는 URL에 자동으로 https:// 추가" time="0.005">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 인증 없이 보호된 페이지 접근 시 로그인으로 리다이렉트" name="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 인증 없이 보호된 페이지 접근 시 로그인으로 리다이렉트" time="0.004">
+    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 이미 프로토콜이 있는 경우 그대로 유지" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 이미 프로토콜이 있는 경우 그대로 유지" time="0.002">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 401 오류 시 무한 재시도를 방지해야 함" name="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 401 오류 시 무한 재시도를 방지해야 함" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 위험한 패턴 감지 및 차단" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 위험한 패턴 감지 및 차단" time="0.013">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 대시보드 로딩 시간이 3초 이내여야 함" name="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 대시보드 로딩 시간이 3초 이내여야 함" time="0.038">
+    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 빈 값이나 잘못된 값 처리" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 빈 값이나 잘못된 값 처리" time="0.003">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 프로젝트 진행률이 시각적으로 표시되어야 함" name="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 프로젝트 진행률이 시각적으로 표시되어야 함" time="0.055">
+    <testcase classname="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 트레일링 슬래시 제거" name="프로토콜 누락 문제 해결 검증 1. normalizeUrl 함수 개선 검증 트레일링 슬래시 제거" time="0.002">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 주요 CTA 버튼이 명확하게 표시되어야 함" name="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 주요 CTA 버튼이 명확하게 표시되어야 함" time="0.024">
-      <failure>TestingLibraryElementError: Unable to find an accessible element with the role &quot;button&quot; and name `/프로젝트 보기/i`
-
-There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole
-
-Ignored nodes: comments, script, style
-&lt;body&gt;
-  &lt;div&gt;
-    &lt;div&gt;
-      Dashboard
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/body&gt;
-    at Object.getElementError (/home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/config.js:37:19)
-    at /home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
-    at /home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
-    at /home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
-    at Object.getByRole (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/core-features.test.tsx:134:32)
-    at Promise.then.completed (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:316:40)
-    at _runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
-    at run (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    <testcase classname="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 상대 경로 문제 시뮬레이션" name="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 상대 경로 문제 시뮬레이션" time="0.003">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 타임코드 기반 피드백 추가가 가능해야 함" name="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 타임코드 기반 피드백 추가가 가능해야 함" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 Fetch API URL 구성 테스트" name="프로토콜 누락 문제 해결 검증 2. URL 구성 문제 재현 및 해결 Fetch API URL 구성 테스트" time="0.003">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 피드백 상태 변경이 즉시 반영되어야 함" name="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 피드백 상태 변경이 즉시 반영되어야 함" time="0">
+    <testcase classname="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL이 올바른 프로토콜을 포함해야 함" name="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL이 올바른 프로토콜을 포함해야 함" time="0.001">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 비디오 플레이어 컨트롤이 키보드로 가능해야 함" name="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 비디오 플레이어 컨트롤이 키보드로 가능해야 함" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL로 정상적인 URL 구성 가능" name="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 API_BASE_URL로 정상적인 URL 구성 가능" time="0.002">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 생성 시 필수 필드 검증" name="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 생성 시 필수 필드 검증" time="0">
+    <testcase classname="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 실제 API 요청 URL 형식 검증" name="프로토콜 누락 문제 해결 검증 3. 현재 API_BASE_URL 설정 검증 실제 API 요청 URL 형식 검증" time="0.001">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 권한에 따른 UI 제어" name="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 권한에 따른 UI 제어" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 4. 환경변수 우선순위 테스트 환경변수 우선순위가 올바르게 작동해야 함" name="프로토콜 누락 문제 해결 검증 4. 환경변수 우선순위 테스트 환경변수 우선순위가 올바르게 작동해야 함" time="0.001">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 네트워크 오류 시 재시도 옵션 제공" name="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 네트워크 오류 시 재시도 옵션 제공" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 위험한 환경변수 패턴 감지 시 에러 발생" name="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 위험한 환경변수 패턴 감지 시 에러 발생" time="0.001">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 세션 만료 시 자동 로그아웃 처리" name="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 세션 만료 시 자동 로그아웃 처리" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 URL 검증 실패 시 명확한 에러 메시지" name="프로토콜 누락 문제 해결 검증 5. 에러 상황 처리 검증 URL 검증 실패 시 명확한 에러 메시지" time="0">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 Planning 페이지 lazy loading 동작 확인" name="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 Planning 페이지 lazy loading 동작 확인" time="0">
+    <testcase classname="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 로그인 API 호출 URL 구성" name="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 로그인 API 호출 URL 구성" time="0">
     </testcase>
-    <testcase classname="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 이미지 최적화 확인" name="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 이미지 최적화 확인" time="0.001">
+    <testcase classname="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 프로젝트 API 호출 URL 구성" name="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 프로젝트 API 호출 URL 구성" time="0.001">
+    </testcase>
+    <testcase classname="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 피드백 API 호출 URL 구성" name="프로토콜 누락 문제 해결 검증 6. 실제 사용 사례 검증 피드백 API 호출 URL 구성" time="0">
+    </testcase>
+    <testcase classname="프로토콜 누락 문제 해결 통합 테스트 전체 워크플로우 검증: 환경변수 → 정규화 → API 호출" name="프로토콜 누락 문제 해결 통합 테스트 전체 워크플로우 검증: 환경변수 → 정규화 → API 호출" time="0.002">
+    </testcase>
+    <testcase classname="프로토콜 누락 문제 해결 통합 테스트 다양한 입력 시나리오에서 일관된 결과" name="프로토콜 누락 문제 해결 통합 테스트 다양한 입력 시나리오에서 일관된 결과" time="0.006">
     </testcase>
   </testsuite>
 </testsuites>

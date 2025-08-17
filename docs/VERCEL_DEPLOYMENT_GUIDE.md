@@ -142,30 +142,46 @@ F12 → Network 탭에서 확인:
 
 ## 🛠️ 로컬 검증 도구
 
-### 1. 환경변수 검증 스크립트 실행
+### 1. 종합 배포 검증 스크립트 실행
 
 ```bash
-# 프로젝트 루트에서 실행
-npm run validate-env
+# 환경변수 + 빌드 설정 + 성능 최적화 통합 검증
+npm run vercel:deploy-check
 
-# 또는 직접 실행
-node scripts/validate-env.js
+# 또는 개별 실행
+npm run validate-env        # 환경변수 검증
+npm run build:optimize     # 빌드 최적화
 ```
 
 **기대 출력**:
 ```
-🎉 모든 환경변수 검증 통과!
-Vercel 배포가 준비되었습니다.
+🎉 Vercel 배포 준비 완료!
+모든 검증을 통과했습니다. 안전하게 배포할 수 있습니다.
+
+🚀 빠른 배포 명령어:
+git add . && git commit -m "feat: Vercel 배포 설정 최적화" && git push
 ```
 
-### 2. 빌드 테스트
+### 2. 빌드 테스트 및 분석
 
 ```bash
 # 프로덕션 빌드 테스트
 npm run build
 
+# 번들 분석 (옵션)
+npm run build:analyze
+
 # 빌드 성공 시 출력
 ✓ Compiled successfully
+```
+
+### 3. 성능 최적화 검증
+
+```bash
+# 빌드 캐시 및 성능 분석
+npm run build:optimize
+
+# 기대 출력: 최적화 항목 및 개선 제안
 ```
 
 ## ❌ 문제 해결 가이드
@@ -235,36 +251,110 @@ ALLOWED_HOSTS = ['videoplanet.vercel.app', '*.vercel.app']
 해결: Vercel Pro 플랜 또는 빌드 최적화
 ```
 
+## 🚀 고급 최적화 기능
+
+### 1. 자동화된 배포 검증
+
+```bash
+# 모든 배포 요구사항을 한 번에 검증
+npm run vercel:deploy-check
+```
+
+이 명령어는 다음을 검증합니다:
+- ✅ 환경변수 설정 및 유효성
+- ✅ Vercel 빌드 설정 최적화
+- ✅ 보안 헤더 설정
+- ✅ 캐시 최적화 설정
+- ✅ 번들 크기 분석 및 제안
+- ✅ 성능 최적화 제안
+
+### 2. 빌드 성능 최적화
+
+```bash
+# 빌드 캐시 정리 및 성능 분석
+npm run build:optimize
+```
+
+**최적화 기능**:
+- 🗄️ 오래된 빌드 캐시 자동 정리
+- 📊 번들 크기 분석 및 경고
+- 💡 성능 개선 제안 (라이브러리 최적화 등)
+- 🎯 배포 준비도 점수 (100점 만점)
+
+### 3. 보안 및 성능 헤더
+
+**자동 적용되는 보안 헤더**:
+- `X-Content-Type-Options`: MIME 스니핑 방지
+- `X-Frame-Options`: 클릭재킹 방지
+- `X-XSS-Protection`: XSS 공격 방지
+- `Strict-Transport-Security`: HTTPS 강제
+- `Permissions-Policy`: 불필요한 브라우저 기능 차단
+
+**캐시 최적화**:
+- 정적 파일: 1년 캐시 (`immutable`)
+- 이미지: 24시간 캐시
+- API: 동적 캐시 (`s-maxage=86400`)
+
 ## 📋 배포 체크리스트
 
 배포 전 다음 사항들을 모두 확인하세요:
 
 ### Pre-deployment ✅
+- [ ] 종합 배포 검증 통과 (`npm run vercel:deploy-check`)
+- [ ] 배포 준비도 점수 80점 이상
 - [ ] 모든 환경변수가 Vercel 대시보드에 설정됨
-- [ ] 환경변수 검증 스크립트 통과 (`npm run validate-env`)
-- [ ] 로컬 빌드 테스트 통과 (`npm run build`)
+- [ ] 빌드 최적화 완료 (`npm run build:optimize`)
 - [ ] Railway 백엔드 서버 정상 작동 확인
 
 ### Post-deployment ✅  
 - [ ] 배포 성공 및 사이트 접속 가능
 - [ ] 브라우저에서 환경변수 값 확인
+- [ ] 보안 헤더 적용 확인 (개발자 도구)
 - [ ] 주요 기능 테스트 통과 (로그인, API, WebSocket)
 - [ ] 네트워크 요청 정상 작동 확인
+- [ ] Core Web Vitals 점수 확인
 
-### Monitoring ✅
+### Performance Monitoring ✅
 - [ ] Vercel 배포 로그 에러 없음
 - [ ] Railway 서버 상태 정상
+- [ ] 페이지 로딩 속도 3초 이내
+- [ ] 번들 크기 증가 모니터링
 - [ ] 사용자 피드백 모니터링
 
-## 🔗 관련 문서
+## 🔗 관련 문서 및 스크립트
 
-- **환경변수 체크리스트**: `/docs/VERCEL_ENV_CHECKLIST.md`
-- **환경변수 설정 파일**: `/lib/config.ts`
-- **검증 스크립트**: `/scripts/validate-env.js`
+### 핵심 설정 파일
+- **Vercel 설정**: `/vercel.json` - 배포 및 헤더 설정
+- **Next.js 설정**: `/next.config.js` - 보안, 성능, CORS 설정
+- **환경변수 설정**: `/lib/config.ts`
 - **프로덕션 환경변수**: `/.env.production.local`
+
+### 검증 및 최적화 스크립트
+- **환경변수 검증**: `/scripts/validate-env.js`
+- **빌드 최적화**: `/scripts/optimize-build.js`
+
+### 문서
+- **환경변수 체크리스트**: `/docs/VERCEL_ENV_CHECKLIST.md`
+- **이 가이드**: `/docs/VERCEL_DEPLOYMENT_GUIDE.md`
+
+### 유용한 명령어 모음
+
+```bash
+# 빠른 배포 검증 (권장)
+npm run vercel:deploy-check
+
+# 개별 검증
+npm run validate-env      # 환경변수만
+npm run build:optimize   # 빌드 최적화만
+npm run build:analyze    # 번들 분석
+
+# 빌드 및 배포
+npm run build           # 프로덕션 빌드
+git push               # Vercel 자동 배포
+```
 
 ---
 
 **최종 업데이트**: 2025-08-17  
 **작성자**: VideoPlanet 개발팀  
-**버전**: 1.0.0
+**버전**: 2.0.0 (최적화 기능 추가)

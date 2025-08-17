@@ -60,6 +60,21 @@ const initializeApiClient = () => {
     throw error;
   }
 
+  // Railway 도메인 검증 (추가 보안)
+  if (!API_BASE_URL.includes('railway.app') && !API_BASE_URL.includes('localhost')) {
+    console.warn('[API Client] Warning: API_BASE_URL does not contain expected railway.app domain:', API_BASE_URL);
+  }
+
+  // 최종 URL 테스트
+  try {
+    const testUrl = new URL('/test', API_BASE_URL);
+    console.log('[API Client] URL construction test passed:', testUrl.href);
+  } catch (error) {
+    const urlError = new Error(`Failed to construct URL with baseURL: ${API_BASE_URL}`);
+    console.error('[API Client] URL construction test failed:', urlError);
+    throw urlError;
+  }
+
   console.log(`[API Client] Initialized with baseURL: ${API_BASE_URL}`);
   
   return axios.create({
