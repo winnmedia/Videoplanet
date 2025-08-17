@@ -70,7 +70,8 @@
       "Bash(do)",
       "Bash(npx eslint:*)",
       "Bash(NODE_ENV=production npm run build)",
-      "Bash(export NODE_ENV=production)"
+      "Bash(export NODE_ENV=production)",
+      "Bash(npx vercel:*)"
     ],
     "deny": [],
     "ask": [],
