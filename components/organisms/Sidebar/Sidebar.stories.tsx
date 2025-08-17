@@ -13,7 +13,7 @@ const mockUser: User = {
 const mockProjects: Project[] = [
   {
     id: '1',
-    name: 'VideoPlanet 웹사이트 리뉴얼',
+    name: 'Planet 웹사이트 리뉴얼',
     created: '2024-01-01',
     status: 'active',
   },

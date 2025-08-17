@@ -100,8 +100,8 @@ const InviteInput: React.FC<InviteInputProps> = memo(({
       // await cancelProjectInvitation(project_id, invitationId);
       
       // 임시로 직접 API 호출
-      const { cancelProjectInvitation } = await import('../api/projectsApi');
-      await cancelProjectInvitation(project_id, invitationId);
+      const projectsApi = await import('../api/projectsApi');
+      await projectsApi.default.cancelProjectInvitation(project_id, invitationId);
       
       // 프로젝트 정보 새로고침
       await fetchProject(project_id);

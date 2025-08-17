@@ -6,7 +6,7 @@ import '@/css/Common.scss'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'VideoPlanet',
+  title: 'Planet',
   description: '영상 제작 협업 플랫폼',
 }
 

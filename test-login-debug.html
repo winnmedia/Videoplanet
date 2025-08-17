@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 디버그 테스트</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #1631F8;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #666;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        button {
+            background: #1631F8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0031ff;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .log-output {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Planet 로그인 디버그 테스터</h1>
+    
+    <div class="container">
+        <div class="panel">
+            <h2>🧪 테스트 컨트롤</h2>
+            
+            <h3>1. 환경 체크</h3>
+            <button onclick="checkEnvironment()">환경 검사</button>
+            <button onclick="checkLocalStorage()">localStorage 확인</button>
+            <button onclick="clearLocalStorage()">localStorage 초기화</button>
+            
+            <h3>2. API 테스트</h3>
+            <input type="email" id="email" placeholder="이메일" value="test@videoplanet.com">
+            <input type="password" id="password" placeholder="비밀번호" value="Test1234!">
+            <button onclick="testLogin()">로그인 API 테스트</button>
+            <button onclick="testHealthCheck()">헬스체크</button>
+            
+            <h3>3. 페이지 테스트</h3>
+            <button onclick="loadLoginPage()">로그인 페이지 로드</button>
+            <button onclick="simulateClick()">버튼 클릭 시뮬레이션</button>
+            
+            <div id="status" class="status info">준비됨</div>
+        </div>
+        
+        <div class="panel">
+            <h2>📋 콘솔 로그</h2>
+            <div id="console" class="log-output">콘솔 출력이 여기에 표시됩니다...</div>
+            <button onclick="clearConsole()">로그 지우기</button>
+        </div>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <h2>🌐 로그인 페이지 미리보기</h2>
+        <iframe id="preview" src="about:blank"></iframe>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://videoplanet.up.railway.app';
+        const LOCAL_URL = 'http://localhost:3001';
+        
+        function log(message, type = 'info') {
+            const console = document.getElementById('console');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
+            console.innerHTML += `[${timestamp}] ${prefix} ${message}\n`;
+            console.scrollTop = console.scrollHeight;
+        }
+        
+        function setStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+        
+        function clearConsole() {
+            document.getElementById('console').innerHTML = '';
+            log('콘솔 초기화됨');
+        }
+        
+        async function checkEnvironment() {
+            log('환경 체크 시작...');
+            
+            // localStorage 체크
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                log('localStorage: ✅ 사용 가능', 'success');
+            } catch (e) {
+                log('localStorage: ❌ 사용 불가', 'error');
+            }
+            
+            // API 연결 체크
+            try {
+                const response = await fetch(`${API_BASE_URL}/health/`);
+                const data = await response.json();
+                log(`API 서버: ✅ 정상 (${data.status})`, 'success');
+            } catch (e) {
+                log(`API 서버: ❌ 연결 실패 - ${e.message}`, 'error');
+            }
+            
+            // 로컬 서버 체크
+            try {
+                const response = await fetch(`${LOCAL_URL}/login`, { mode: 'no-cors' });
+                log('로컬 서버: ✅ 실행 중', 'success');
+            } catch (e) {
+                log('로컬 서버: ❌ 연결 실패', 'error');
+            }
+            
+            setStatus('환경 체크 완료', 'success');
+        }
+        
+        function checkLocalStorage() {
+            log('localStorage 내용 확인...');
+            const vgid = localStorage.getItem('VGID');
+            
+            if (vgid) {
+                log(`VGID 토큰 발견: ${vgid.substring(0, 50)}...`, 'info');
+                try {
+                    const parsed = JSON.parse(vgid);
+                    log(`토큰 타입: ${typeof parsed}`, 'info');
+                } catch (e) {
+                    log('토큰 파싱 실패', 'error');
+                }
+            } else {
+                log('VGID 토큰 없음', 'info');
+            }
+            
+            log(`전체 항목 수: ${localStorage.length}개`, 'info');
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key !== 'VGID') {
+                    log(`  - ${key}: ${localStorage.getItem(key).substring(0, 30)}...`, 'info');
+                }
+            }
+        }
+        
+        function clearLocalStorage() {
+            localStorage.removeItem('VGID');
+            log('VGID 토큰 제거됨', 'success');
+            setStatus('localStorage 초기화 완료', 'success');
+        }
+        
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            log(`로그인 테스트 시작: ${email}`);
+            setStatus('로그인 중...', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log(`로그인 성공: ${JSON.stringify(data)}`, 'success');
+                    setStatus('로그인 성공!', 'success');
+                } else {
+                    log(`로그인 실패 (${response.status}): ${data.message || JSON.stringify(data)}`, 'error');
+                    setStatus(`로그인 실패: ${data.message}`, 'error');
+                }
+            } catch (e) {
+                log(`API 오류: ${e.message}`, 'error');
+                setStatus('API 연결 실패', 'error');
+            }
+        }
+        
+        async function testHealthCheck() {
+            log('헬스체크 시작...');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/health/`);
+                const data = await response.json();
+                log(`헬스체크 성공: ${JSON.stringify(data, null, 2)}`, 'success');
+                setStatus('백엔드 정상 작동', 'success');
+            } catch (e) {
+                log(`헬스체크 실패: ${e.message}`, 'error');
+                setStatus('백엔드 연결 실패', 'error');
+            }
+        }
+        
+        function loadLoginPage() {
+            const iframe = document.getElementById('preview');
+            iframe.src = `${LOCAL_URL}/login`;
+            log('로그인 페이지 로드 중...');
+            
+            iframe.onload = () => {
+                log('로그인 페이지 로드 완료', 'success');
+                
+                // iframe 내부 콘솔 로그 캡처 시도
+                try {
+                    const iframeWindow = iframe.contentWindow;
+                    if (iframeWindow) {
+                        log('iframe 접근 가능', 'success');
+                    }
+                } catch (e) {
+                    log('iframe 접근 불가 (CORS)', 'error');
+                }
+            };
+        }
+        
+        function simulateClick() {
+            log('버튼 클릭 시뮬레이션...');
+            
+            // 새 창에서 로그인 페이지 열기
+            const win = window.open(`${LOCAL_URL}/login`, '_blank');
+            
+            if (win) {
+                log('새 창에서 로그인 페이지 열림', 'success');
+                log('개발자 도구(F12)를 열어 콘솔 로그를 확인하세요', 'info');
+            } else {
+                log('팝업 차단됨', 'error');
+            }
+        }
+        
+        // 페이지 로드 시 자동 실행
+        window.onload = () => {
+            log('디버그 도구 준비 완료', 'success');
+            checkEnvironment();
+        };
+    </script>
+</body>
+</html>

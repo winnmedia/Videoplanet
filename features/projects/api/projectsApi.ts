@@ -17,6 +17,7 @@ import type {
   MemberRating,
   ProjectFile,
   ProjectMemo,
+  ProjectInvitation,
 } from '../types';
 
 // ===== API 기본 설정 =====
@@ -49,8 +50,23 @@ apiClient.interceptors.request.use(
   (config) => {
     // 브라우저 환경에서만 실행
     if (typeof window !== 'undefined') {
+      // VGID 세션에서 토큰 추출
+      const vgidSession = localStorage.getItem('VGID');
+      if (vgidSession) {
+        try {
+          const sessionData = JSON.parse(vgidSession);
+          const token = sessionData.token || sessionData.access_token;
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+        } catch (e) {
+          console.error('Failed to parse VGID session:', e);
+        }
+      }
+      
+      // 기존 토큰 체크 (fallback)
       const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-      if (token) {
+      if (token && !config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
@@ -99,7 +115,7 @@ apiClient.interceptors.response.use(
 /**
  * API 에러를 표준 형식으로 변환
  */
-export const handleApiError = (error: any): ApiError => {
+const handleApiError = (error: any): ApiError => {
   if (error.response) {
     return {
       message: error.response.data?.message || 'API 요청 중 오류가 발생했습니다.',
@@ -121,13 +137,62 @@ export const handleApiError = (error: any): ApiError => {
 };
 
 /**
- * API 응답 래퍼 함수
+ * 재시도 옵션
+ */
+interface RetryOptions {
+  maxRetries?: number;
+  retryDelay?: number;
+  retryCondition?: (error: any) => boolean;
+}
+
+/**
+ * 지수 백오프 재시도 로직
+ */
+const retryWithBackoff = async <T>(
+  operation: () => Promise<T>,
+  options: RetryOptions = {}
+): Promise<T> => {
+  const {
+    maxRetries = 3,
+    retryDelay = 1000,
+    retryCondition = (error) => {
+      // 네트워크 오류나 서버 오류(5xx)인 경우만 재시도
+      return error.response?.status >= 500 || !error.response;
+    }
+  } = options;
+
+  let lastError: any;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+
+      // 마지막 시도이거나 재시도 조건을 만족하지 않는 경우
+      if (attempt === maxRetries || !retryCondition(error)) {
+        throw error;
+      }
+
+      // 지수 백오프 대기
+      const delay = retryDelay * Math.pow(2, attempt);
+      console.warn(`API 재시도 ${attempt + 1}/${maxRetries} - ${delay}ms 후 재시도...`, error instanceof Error ? error.message : String(error));
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+
+  throw lastError;
+};
+
+/**
+ * API 응답 래퍼 함수 (재시도 로직 포함)
  */
 const apiWrapper = async <T>(
-  apiCall: () => Promise<AxiosResponse<ApiResponse<T>>>
+  apiCall: () => Promise<AxiosResponse<ApiResponse<T>>>,
+  retryOptions?: RetryOptions
 ): Promise<T> => {
   try {
-    const response = await apiCall();
+    const response = await retryWithBackoff(apiCall, retryOptions);
     
     if (!response.data.success) {
       throw new Error(response.data.message || 'API 요청이 실패했습니다.');
@@ -144,7 +209,7 @@ const apiWrapper = async <T>(
 /**
  * 프로젝트 목록 조회
  */
-export const fetchProjectList = async (options?: ProjectSearchOptions): Promise<Project[]> => {
+const fetchProjectList = async (options?: ProjectSearchOptions): Promise<Project[]> => {
   return apiWrapper(async () => {
     const params = new URLSearchParams();
     
@@ -161,13 +226,16 @@ export const fetchProjectList = async (options?: ProjectSearchOptions): Promise<
     const url = queryString ? `/projects/project_list?${queryString}` : '/projects/project_list';
     
     return apiClient.get<ProjectListResponse>(url);
+  }, {
+    maxRetries: 2,
+    retryDelay: 1000
   });
 };
 
 /**
  * 프로젝트 상세 조회
  */
-export const fetchProject = async (projectId: string | number): Promise<Project> => {
+const fetchProject = async (projectId: string | number): Promise<Project> => {
   return apiWrapper(() => 
     apiClient.get<ProjectDetailResponse>(`/projects/detail/${projectId}`)
   );
@@ -176,7 +244,7 @@ export const fetchProject = async (projectId: string | number): Promise<Project>
 /**
  * 프로젝트 생성
  */
-export const createProject = async (formData: FormData): Promise<{ id: number }> => {
+const createProject = async (formData: FormData): Promise<{ id: number }> => {
   return apiWrapper(() =>
     apiClient.post<ProjectCreateResponse>('/projects/create', formData, {
       headers: {
@@ -189,7 +257,7 @@ export const createProject = async (formData: FormData): Promise<{ id: number }>
 /**
  * 프로젝트 업데이트
  */
-export const updateProject = async (
+const updateProject = async (
   projectId: string | number,
   formData: FormData
 ): Promise<Project> => {
@@ -205,7 +273,7 @@ export const updateProject = async (
 /**
  * 프로젝트 삭제
  */
-export const deleteProject = async (projectId: string | number): Promise<void> => {
+const deleteProject = async (projectId: string | number): Promise<void> => {
   return apiWrapper(() =>
     apiClient.delete<ApiResponse<void>>(`/projects/detail/${projectId}`)
   );
@@ -214,21 +282,54 @@ export const deleteProject = async (projectId: string | number): Promise<void> =
 // ===== 프로젝트 멤버 관리 API =====
 
 /**
- * 프로젝트 멤버 초대
+ * 프로젝트 멤버 초대 (단일)
  */
-export const inviteProjectMember = async (
+const inviteProjectMember = async (
   projectId: string | number,
   email: string
 ): Promise<void> => {
   return apiWrapper(() =>
     apiClient.post<ApiResponse<void>>(`/projects/invite_project/${projectId}`, { email })
-  );
+  , {
+    maxRetries: 1, // 초대는 중복 방지를 위해 재시도 최소화
+    retryDelay: 2000
+  });
+};
+
+/**
+ * 프로젝트 멤버 대량 초대
+ */
+const inviteMultipleMembers = async (
+  projectId: string | number,
+  emails: string[]
+): Promise<{ 
+  successful: string[]; 
+  failed: Array<{ email: string; error: string }> 
+}> => {
+  const results = {
+    successful: [] as string[],
+    failed: [] as Array<{ email: string; error: string }>
+  };
+
+  // 병렬 처리로 모든 초대 전송
+  const promises = emails.map(async (email) => {
+    try {
+      await inviteProjectMember(projectId, email);
+      results.successful.push(email);
+    } catch (error) {
+      const errorMessage = isApiError(error) ? error.message : '초대 실패';
+      results.failed.push({ email, error: errorMessage });
+    }
+  });
+
+  await Promise.allSettled(promises);
+  return results;
 };
 
 /**
  * 프로젝트 초대 취소
  */
-export const cancelProjectInvitation = async (
+const cancelProjectInvitation = async (
   projectId: string | number,
   invitationId: number
 ): Promise<void> => {
@@ -242,19 +343,53 @@ export const cancelProjectInvitation = async (
 /**
  * 프로젝트 초대 수락
  */
-export const acceptProjectInvitation = async (
+const acceptProjectInvitation = async (
   uid: string,
   token: string
 ): Promise<void> => {
   return apiWrapper(() =>
     apiClient.get<ApiResponse<void>>(`/projects/invite/${uid}/${token}`)
-  );
+  , {
+    maxRetries: 2,
+    retryDelay: 1500
+  });
+};
+
+/**
+ * 초대 재발송
+ */
+const resendProjectInvitation = async (
+  projectId: string | number,
+  invitationId: number
+): Promise<void> => {
+  return apiWrapper(() =>
+    apiClient.post<ApiResponse<void>>(`/projects/invite_project/${projectId}/resend`, { 
+      invitation_id: invitationId 
+    })
+  , {
+    maxRetries: 1,
+    retryDelay: 2000
+  });
+};
+
+/**
+ * 초대 상태 조회
+ */
+const getInvitationStatus = async (
+  projectId: string | number
+): Promise<ProjectInvitation[]> => {
+  return apiWrapper(() =>
+    apiClient.get<ApiResponse<ProjectInvitation[]>>(`/projects/invite_project/${projectId}/status`)
+  , {
+    maxRetries: 2,
+    retryDelay: 1000
+  });
 };
 
 /**
  * 멤버 권한 변경
  */
-export const updateMemberRating = async (
+const updateMemberRating = async (
   projectId: string | number,
   memberId: number,
   rating: MemberRating
@@ -269,7 +404,7 @@ export const updateMemberRating = async (
 /**
  * 프로젝트 파일 삭제
  */
-export const deleteProjectFile = async (fileId: number): Promise<void> => {
+const deleteProjectFile = async (fileId: number): Promise<void> => {
   return apiWrapper(() =>
     apiClient.delete<ApiResponse<void>>(`/projects/file/delete/${fileId}`)
   );
@@ -278,7 +413,7 @@ export const deleteProjectFile = async (fileId: number): Promise<void> => {
 /**
  * 파일 업로드
  */
-export const uploadProjectFiles = async (
+const uploadProjectFiles = async (
   projectId: string | number,
   files: File[]
 ): Promise<ProjectFile[]> => {
@@ -302,7 +437,7 @@ export const uploadProjectFiles = async (
 /**
  * 프로젝트 메모 작성
  */
-export const createProjectMemo = async (
+const createProjectMemo = async (
   projectId: string | number,
   content: string,
   date?: string
@@ -318,7 +453,7 @@ export const createProjectMemo = async (
 /**
  * 프로젝트 메모 삭제
  */
-export const deleteProjectMemo = async (
+const deleteProjectMemo = async (
   memoId: number
 ): Promise<void> => {
   return apiWrapper(() =>
@@ -331,7 +466,7 @@ export const deleteProjectMemo = async (
 /**
  * 프로젝트 날짜 업데이트
  */
-export const updateProjectDates = async (
+const updateProjectDates = async (
   projectId: string | number,
   dateData: Record<string, { start_date: string | null; end_date: string | null }>
 ): Promise<void> => {
@@ -345,7 +480,7 @@ export const updateProjectDates = async (
 /**
  * 프로젝트 통계 조회
  */
-export const fetchProjectStatistics = async (): Promise<ProjectStatistics> => {
+const fetchProjectStatistics = async (): Promise<ProjectStatistics> => {
   return apiWrapper(() =>
     apiClient.get<ApiResponse<ProjectStatistics>>('/projects/statistics')
   );
@@ -356,7 +491,7 @@ export const fetchProjectStatistics = async (): Promise<ProjectStatistics> => {
 /**
  * 샘플 파일 목록 조회
  */
-export const fetchSampleFiles = async (): Promise<ProjectFile[]> => {
+const fetchSampleFiles = async (): Promise<ProjectFile[]> => {
   return apiWrapper(() =>
     apiClient.get<ApiResponse<ProjectFile[]>>('/projects/sample_files')
   );
@@ -367,14 +502,14 @@ export const fetchSampleFiles = async (): Promise<ProjectFile[]> => {
 /**
  * 파일 이름 추출
  */
-export const extractFileName = (filePath: string): string => {
+const extractFileName = (filePath: string): string => {
   return filePath.split('/').pop()?.split('\\').pop() || 'Unknown File';
 };
 
 /**
  * 파일 다운로드
  */
-export const downloadFile = (fileUrl: string, fileName?: string): void => {
+const downloadFile = (fileUrl: string, fileName?: string): void => {
   if (!fileUrl) return;
   
   const link = document.createElement('a');
@@ -389,7 +524,7 @@ export const downloadFile = (fileUrl: string, fileName?: string): void => {
 /**
  * FormData 생성 헬퍼
  */
-export const createProjectFormData = (
+const createProjectFormData = (
   inputs: Record<string, any>,
   process: any[],
   files: File[],
@@ -416,7 +551,7 @@ export const createProjectFormData = (
 /**
  * Project 타입 가드
  */
-export const isProject = (data: any): data is Project => {
+const isProject = (data: any): data is Project => {
   return (
     data &&
     typeof data === 'object' &&
@@ -431,7 +566,7 @@ export const isProject = (data: any): data is Project => {
 /**
  * ApiError 타입 가드
  */
-export const isApiError = (error: any): error is ApiError => {
+const isApiError = (error: any): error is ApiError => {
   return (
     error &&
     typeof error === 'object' &&
@@ -455,8 +590,11 @@ const projectsApi = {
   
   // 멤버 관리
   inviteProjectMember,
+  inviteMultipleMembers,
   cancelProjectInvitation,
   acceptProjectInvitation,
+  resendProjectInvitation,
+  getInvitationStatus,
   updateMemberRating,
   
   // 파일 관리
@@ -479,6 +617,7 @@ const projectsApi = {
   downloadFile,
   createProjectFormData,
   handleApiError,
+  retryWithBackoff,
   
   // 타입 가드
   isProject,
