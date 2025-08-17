@@ -15,22 +15,35 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 ## 프로덕션 환경 (Vercel)
 
-Vercel 대시보드에서 다음 환경변수를 설정하세요:
+### 현재 Vercel에 설정된 환경변수들:
+- `NEXT_PUBLIC_API_URL` - API 서버 URL (설정 필요: `https://videoplanet.up.railway.app`)
+- `NEXT_PUBLIC_WS_URL` - WebSocket URL (설정 필요: `wss://videoplanet.up.railway.app`)
+- `NEXT_PUBLIC_SOCKET_URI` - Socket.IO URL
+- `NEXT_PUBLIC_PRODUCTION_DOMAIN` - 프로덕션 도메인
+- `NEXT_PUBLIC_APP` - 앱 URL
+- `NEXT_PUBLIC_GA_ID` - Google Analytics ID
+- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` - reCAPTCHA 사이트 키
+- `ALLOWED_HOSTS` - 허용된 호스트
 
-1. **Vercel 대시보드 접속**
-   - https://vercel.com/dashboard
-   - VideoPlanet 프로젝트 선택
+### 필수 업데이트가 필요한 환경변수:
 
-2. **환경변수 설정**
-   - Settings → Environment Variables
-   - Add New Variable 클릭
-
-3. **필수 환경변수**
+1. **API URL 설정**
    ```
-   Name: NEXT_PUBLIC_BACKEND_API_URL
+   Name: NEXT_PUBLIC_API_URL
    Value: https://videoplanet.up.railway.app
-   Environment: ✅ Production ✅ Preview ✅ Development
    ```
+
+2. **WebSocket URL 설정**
+   ```
+   Name: NEXT_PUBLIC_WS_URL
+   Value: wss://videoplanet.up.railway.app
+   ```
+
+### 코드 호환성
+코드는 다음 우선순위로 환경변수를 체크합니다:
+1. `NEXT_PUBLIC_API_URL` (Vercel 환경변수)
+2. `NEXT_PUBLIC_BACKEND_API_URL` (로컬 환경변수)
+3. 기본값: `https://videoplanet.up.railway.app`
 
 4. **재배포**
    - 환경변수 설정 후 재배포 필요

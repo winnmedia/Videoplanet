@@ -3,21 +3,25 @@
  * VideoPlanet 프로젝트 - 통합 API 설정
  */
 
-// API 기본 URL 설정 (우선순위: NEXT_PUBLIC > REACT_APP > 기본값)
+// API 기본 URL 설정 (우선순위: NEXT_PUBLIC_API_URL > NEXT_PUBLIC_BACKEND_API_URL > REACT_APP > 기본값)
 export const API_BASE_URL = 
+  process.env.NEXT_PUBLIC_API_URL ||  // Vercel에 설정된 환경변수
   process.env.NEXT_PUBLIC_BACKEND_API_URL || 
   process.env.REACT_APP_BACKEND_API_URL || 
-  'https://videoplanet-backend.railway.app'
+  'https://videoplanet.up.railway.app'
 
 // WebSocket URL 설정
 export const SOCKET_URL = 
+  process.env.NEXT_PUBLIC_WS_URL ||  // Vercel에 설정된 환경변수
   process.env.NEXT_PUBLIC_SOCKET_URI || 
   process.env.REACT_APP_SOCKET_URI || 
-  'wss://videoplanet-backend.railway.app'
+  'wss://videoplanet.up.railway.app'
 
 // 프론트엔드 앱 URL
 export const APP_URL = 
+  process.env.NEXT_PUBLIC_APP ||  // Vercel에 설정된 환경변수
   process.env.NEXT_PUBLIC_APP_URL || 
+  process.env.NEXT_PUBLIC_PRODUCTION_DOMAIN ||  // Vercel에 설정된 환경변수
   'https://videoplanet.vercel.app'
 
 // 환경 변수 검증 및 로깅
