@@ -323,12 +323,12 @@ const EmailInvitation: React.FC<InviteInputProps> = memo(({
   // 이메일 상태별 아이콘
   const getStatusIcon = (status: EmailValidationStatus): string => {
     switch (status) {
-      case 'valid': return '✓';
+      case 'valid': return 'Valid';
       case 'invalid': 
       case 'duplicate': 
-      case 'error': return '✗';
-      case 'sending': return '⟳';
-      case 'sent': return '✉';
+      case 'error': return 'Error';
+      case 'sending': return 'Sending';
+      case 'sent': return 'Sent';
       default: return '';
     }
   };
@@ -456,7 +456,7 @@ const EmailInvitation: React.FC<InviteInputProps> = memo(({
                     disabled={disabled || entry.status === 'sending'}
                     aria-label="입력 필드 제거"
                   >
-                    ✕
+                    Remove
                   </button>
                 )}
               </div>

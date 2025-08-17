@@ -1,0 +1,352 @@
+@import '../../../styles/design-tokens-v2.scss';
+
+// ============================================================================
+// 미니멀 피드백 인터페이스
+// 핵심: 타임코드 정확성, 빠른 피드백 입력, 상태 관리
+// ============================================================================
+
+.minimal-feedback-interface {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-6;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $spacing-6;
+  
+  @include respond-to('lg') {
+    grid-template-columns: 2fr 1fr;
+    gap: $spacing-8;
+    padding: $spacing-8;
+  }
+}
+
+// ============================================================================
+// 비디오 섹션
+// ============================================================================
+
+.video-section {
+  background-color: $color-bg-primary;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+}
+
+.video-player {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  background-color: #000;
+  
+  &:focus {
+    @include focus-ring;
+  }
+}
+
+.video-controls {
+  padding: $spacing-4;
+  background-color: $color-bg-secondary;
+  border-top: 1px solid $color-border-light;
+}
+
+.time-display {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-secondary;
+  font-variant-numeric: tabular-nums; // 숫자 정렬
+}
+
+// ============================================================================
+// 피드백 섹션
+// ============================================================================
+
+.feedback-section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+.section-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: 0;
+  padding-bottom: $spacing-3;
+  border-bottom: 2px solid $color-border-light;
+}
+
+// ============================================================================
+// 피드백 리스트
+// ============================================================================
+
+.feedback-list-container {
+  flex: 1;
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid $color-border-light;
+  border-radius: $radius-md;
+  background-color: $color-bg-secondary;
+  
+  // 스크롤바 스타일링
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $color-bg-tertiary;
+    border-radius: $radius-sm;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $color-border-dark;
+    border-radius: $radius-sm;
+    
+    &:hover {
+      background: $color-text-secondary;
+    }
+  }
+}
+
+.feedback-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feedback-item {
+  border-bottom: 1px solid $color-border-light;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.feedback-button {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  width: 100%;
+  padding: $spacing-4;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  min-height: $touch-target-comfortable;
+  transition: background-color $transition-base;
+  
+  &:hover {
+    background-color: $color-bg-hover;
+  }
+  
+  &:focus {
+    @include focus-ring;
+    z-index: 1;
+  }
+  
+  &--selected {
+    background-color: $color-primary-light;
+    
+    .feedback-timecode {
+      color: $color-primary;
+      font-weight: $font-weight-semibold;
+    }
+  }
+  
+  &--resolved {
+    opacity: 0.6;
+    
+    .feedback-content {
+      text-decoration: line-through;
+    }
+  }
+  
+  &--in-progress {
+    border-left: 3px solid $color-warning;
+    padding-left: calc($spacing-4 - 3px);
+  }
+}
+
+.feedback-timecode {
+  flex-shrink: 0;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-primary;
+  font-variant-numeric: tabular-nums;
+  min-width: 50px;
+}
+
+.feedback-content {
+  flex: 1;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  
+  @include text-truncate;
+}
+
+.feedback-status {
+  flex-shrink: 0;
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-xs;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-sm;
+  background-color: $color-bg-primary;
+  color: $color-text-secondary;
+  cursor: pointer;
+  
+  &:focus {
+    @include focus-ring;
+  }
+}
+
+.empty-state {
+  padding: $spacing-8;
+  text-align: center;
+  color: $color-text-disabled;
+  font-size: $font-size-base;
+}
+
+// ============================================================================
+// 피드백 추가 폼
+// ============================================================================
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  background-color: $color-bg-secondary;
+  border: 2px solid $color-primary;
+  border-radius: $radius-md;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-timecode {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  font-variant-numeric: tabular-nums;
+}
+
+.feedback-input {
+  width: 100%;
+  padding: $spacing-3;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-relaxed;
+  color: $color-text-primary;
+  background-color: $color-bg-primary;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-sm;
+  resize: vertical;
+  
+  &:focus {
+    @include focus-ring;
+    border-color: $color-primary;
+  }
+  
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+}
+
+// ============================================================================
+// 버튼 스타일
+// ============================================================================
+
+.btn-add-feedback {
+  height: $button-height-lg;
+  width: 100%;
+  padding: 0 $spacing-6;
+  background-color: $color-primary;
+  color: $color-text-inverse;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    background-color: $color-primary-hover;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    @include focus-ring;
+  }
+  
+  &:active {
+    background-color: $color-primary-active;
+    transform: translateY(0);
+  }
+}
+
+.btn-submit {
+  @extend .btn-add-feedback;
+  
+  &:disabled {
+    background-color: $color-text-disabled;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    
+    &:hover {
+      background-color: $color-text-disabled;
+    }
+  }
+}
+
+.btn-cancel {
+  padding: $spacing-2 $spacing-3;
+  background-color: transparent;
+  color: $color-text-secondary;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    background-color: $color-bg-tertiary;
+    color: $color-text-primary;
+  }
+  
+  &:focus {
+    @include focus-ring;
+  }
+}
+
+// ============================================================================
+// 반응형 조정
+// ============================================================================
+
+@include respond-to('sm') {
+  .minimal-feedback-interface {
+    padding: $spacing-4;
+    gap: $spacing-4;
+  }
+  
+  .feedback-button {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-2;
+  }
+  
+  .feedback-content {
+    white-space: normal;
+  }
+}
+
+// ============================================================================
+// 애니메이션 비활성화
+// ============================================================================
+
+@include reduce-motion;

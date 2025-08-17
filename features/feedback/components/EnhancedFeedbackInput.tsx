@@ -307,7 +307,7 @@ const EnhancedFeedbackInput: React.FC<EnhancedFeedbackInputProps> = memo(({
               aria-label="현재 재생 시간 캡처"
               title="현재 재생 중인 시간을 캡처합니다 (Ctrl+T)"
             >
-              {isAutoCapturing ? '📍' : '⏰'}
+              {isAutoCapturing ? '[CAPTURE]' : '[TIME]'}
             </button>
 
             {/* 타임스탬프로 이동 버튼 */}
@@ -319,7 +319,7 @@ const EnhancedFeedbackInput: React.FC<EnhancedFeedbackInputProps> = memo(({
                 aria-label="입력한 시점으로 이동"
                 title="입력한 시점으로 비디오를 이동합니다"
               >
-                ⏯️
+                [PLAY]
               </button>
             )}
           </div>

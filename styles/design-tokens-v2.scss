@@ -1,0 +1,251 @@
+// ============================================================================
+// Planet Design Tokens v2.0 - Minimal Design System
+// ============================================================================
+// 원칙: 최소한의 요소로 최대한의 명확성
+// 접근성 우선 (WCAG AA), 일관성, 위계
+
+// ============================================================================
+// 1. 색상 시스템 (최소화 + 대비 강화)
+// ============================================================================
+
+// Primary - Planet Blue (브랜드 정체성)
+$color-primary: #1631F8;
+$color-primary-hover: #0F25D6;  // 호버 시 더 진한 색상
+$color-primary-active: #0A1A99; // 활성 상태
+$color-primary-light: #E8EBFF;  // 배경용 연한 색상
+
+// Neutral - 회색 스케일 (텍스트와 배경)
+$color-text-primary: #0F0F0F;   // 본문 (4.5:1 이상)
+$color-text-secondary: #4A4A4A; // 보조 텍스트 (4.5:1 이상)
+$color-text-disabled: #8E8E8E;  // 비활성 (3:1 이상)
+$color-text-inverse: #FFFFFF;   // 반전 텍스트
+
+$color-bg-primary: #FFFFFF;     // 기본 배경
+$color-bg-secondary: #F8F9FA;   // 섹션 구분
+$color-bg-tertiary: #F0F2F5;    // 카드 배경
+$color-bg-hover: #E8EBEF;       // 호버 배경
+
+// Semantic - 상태 표시 (명확한 의미 전달)
+$color-success: #00A67E;        // 성공 (4.5:1)
+$color-warning: #F59E0B;        // 경고 (3:1)
+$color-error: #DC2626;          // 오류 (4.5:1)
+$color-info: #0EA5E9;           // 정보 (3:1)
+
+// Border - 구분선
+$color-border-light: #E5E7EB;   // 연한 구분선
+$color-border-default: #D1D5DB; // 기본 구분선
+$color-border-dark: #9CA3AF;    // 진한 구분선
+$color-border-focus: $color-primary; // 포커스 표시
+
+// ============================================================================
+// 2. 타이포그래피 (읽기 최적화)
+// ============================================================================
+
+// Font Family
+$font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+$font-family-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+
+// Font Size (최소 14px, 모바일 16px)
+$font-size-xs: 0.75rem;   // 12px - 보조 레이블
+$font-size-sm: 0.875rem;  // 14px - 캡션
+$font-size-base: 1rem;    // 16px - 본문
+$font-size-lg: 1.125rem;  // 18px - 부제목
+$font-size-xl: 1.5rem;    // 24px - 제목
+$font-size-2xl: 2rem;     // 32px - 페이지 제목
+
+// Font Weight (명확한 위계)
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Line Height (읽기 편안함)
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// Letter Spacing
+$letter-spacing-tight: -0.025em;
+$letter-spacing-normal: 0;
+$letter-spacing-wide: 0.025em;
+
+// ============================================================================
+// 3. 간격 시스템 (4의 배수 기준)
+// ============================================================================
+
+$spacing-0: 0;
+$spacing-1: 0.25rem;  // 4px
+$spacing-2: 0.5rem;   // 8px
+$spacing-3: 0.75rem;  // 12px
+$spacing-4: 1rem;     // 16px
+$spacing-5: 1.25rem;  // 20px
+$spacing-6: 1.5rem;   // 24px
+$spacing-8: 2rem;     // 32px
+$spacing-10: 2.5rem;  // 40px
+$spacing-12: 3rem;    // 48px
+$spacing-16: 4rem;    // 64px
+
+// ============================================================================
+// 4. 모서리 반경 (부드러운 인터페이스)
+// ============================================================================
+
+$radius-none: 0;
+$radius-sm: 0.25rem;   // 4px - 버튼, 입력 필드
+$radius-md: 0.375rem;  // 6px - 카드
+$radius-lg: 0.5rem;    // 8px - 모달
+$radius-xl: 0.75rem;   // 12px - 대형 카드
+$radius-full: 9999px;  // 원형
+
+// ============================================================================
+// 5. 그림자 (깊이 표현)
+// ============================================================================
+
+$shadow-none: none;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+// Focus shadow (접근성)
+$shadow-focus: 0 0 0 3px rgba(22, 49, 248, 0.2);
+
+// ============================================================================
+// 6. 애니메이션 (자연스러운 전환)
+// ============================================================================
+
+$transition-fast: 150ms ease-in-out;
+$transition-base: 200ms ease-in-out;
+$transition-slow: 300ms ease-in-out;
+
+// Easing functions
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ease-out: cubic-bezier(0, 0, 0.2, 1);
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+// ============================================================================
+// 7. 터치 영역 (모바일 최적화)
+// ============================================================================
+
+$touch-target-min: 44px;  // iOS 가이드라인
+$touch-target-comfortable: 48px;  // 편안한 터치
+
+// ============================================================================
+// 8. Z-index (레이어 관리)
+// ============================================================================
+
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+$z-index-toast: 1080;
+
+// ============================================================================
+// 9. 브레이크포인트 (반응형)
+// ============================================================================
+
+$breakpoint-sm: 640px;   // 모바일
+$breakpoint-md: 768px;   // 태블릿
+$breakpoint-lg: 1024px;  // 데스크톱
+$breakpoint-xl: 1280px;  // 대형 화면
+$breakpoint-2xl: 1536px; // 초대형 화면
+
+// ============================================================================
+// 10. 컴포넌트 토큰
+// ============================================================================
+
+// Button
+$button-height-sm: 32px;
+$button-height-md: 40px;
+$button-height-lg: 48px;
+$button-padding-x: $spacing-4;
+$button-font-weight: $font-weight-medium;
+
+// Input
+$input-height: 40px;
+$input-padding-x: $spacing-3;
+$input-border-width: 1px;
+$input-focus-border-width: 2px;
+
+// Card
+$card-padding: $spacing-6;
+$card-border-radius: $radius-md;
+$card-shadow: $shadow-base;
+
+// Modal
+$modal-backdrop-opacity: 0.5;
+$modal-padding: $spacing-8;
+$modal-max-width: 560px;
+
+// ============================================================================
+// 11. 접근성 토큰
+// ============================================================================
+
+// Focus indicators
+$focus-outline-width: 2px;
+$focus-outline-offset: 2px;
+$focus-outline-color: $color-primary;
+
+// Contrast ratios (WCAG AA)
+$contrast-ratio-normal: 4.5;  // 일반 텍스트
+$contrast-ratio-large: 3;     // 대형 텍스트 (18px+)
+
+// Motion preferences
+$prefers-reduced-motion: '(prefers-reduced-motion: reduce)';
+
+// ============================================================================
+// 12. 유틸리티 믹스인
+// ============================================================================
+
+// 포커스 스타일
+@mixin focus-ring {
+  outline: $focus-outline-width solid $focus-outline-color;
+  outline-offset: $focus-outline-offset;
+  box-shadow: $shadow-focus;
+}
+
+// 텍스트 잘림 처리
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 스크린 리더 전용
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// 반응형 미디어 쿼리
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// 애니메이션 비활성화
+@mixin reduce-motion {
+  @media #{$prefers-reduced-motion} {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

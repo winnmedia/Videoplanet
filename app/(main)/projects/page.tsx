@@ -10,13 +10,12 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import PageTemplate from '@/components/PageTemplate';
-import SideBar from '@/components/SideBar';
-import CalendarHeader from '@/tasks/Calendar/CalendarHeader';
-import CalendarBody from '@/tasks/Calendar/CalendarBody';
+import CalendarHeader from '../../../src/tasks/Calendar/CalendarHeader';
+import CalendarBody from '../../../src/tasks/Calendar/CalendarBody';
 import { ProjectList } from '@/features/projects/components';
 import { useProjects, useProjectPermissions } from '@/features/projects/hooks/useProjects';
 import type { Project, CalendarViewType } from '@/features/projects/types';
+import './Projects.scss';
 
 // Redux 타입 (임시)
 interface RootState {
@@ -138,25 +137,18 @@ function ProjectsPageContent() {
 
   if (loading) {
     return (
-      <PageTemplate leftItems={[]} auth={false} props={{}} noLogin={false}>
-        <div className="cms_wrap">
-          <SideBar tab="projects" on_menu={false} />
-          <main className="project">
-            <div className="loading-spinner">
-              <div className="spinner" />
-              <p>프로젝트를 불러오는 중...</p>
-            </div>
-          </main>
+      <main className="project">
+        <div className="loading-spinner">
+          <div className="spinner" />
+          <p>프로젝트를 불러오는 중...</p>
         </div>
-      </PageTemplate>
+      </main>
     );
   }
 
   return (
-    <PageTemplate leftItems={[]} auth={false} props={{}} noLogin={false}>
-      <div className="cms_wrap">
-        <SideBar tab="projects" on_menu={false} />
-        <main className="project">
+    <main className="project">
+      <div className="projects-page">
           {/* 헤더 */}
           <div className="project-header">
             <h1 className="title">프로젝트 관리</h1>
@@ -264,9 +256,8 @@ function ProjectsPageContent() {
               showAllPhases={true}
             />
           </div>
-        </main>
       </div>
-    </PageTemplate>
+    </main>
   );
 }
 

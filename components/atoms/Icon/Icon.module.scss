@@ -1,4 +1,4 @@
-@import '@/styles/variables.scss';
+@import '@/styles/design-tokens.scss';
 
 .icon {
   display: inline-flex;
@@ -33,27 +33,27 @@
   
   // Colors
   &--primary {
-    color: #1631F8;
+    color: $color-primary;
   }
   
   &--secondary {
-    color: #6c757d;
+    color: $color-text-secondary;
   }
   
   &--success {
-    color: #28a745;
+    color: $color-success;
   }
   
   &--danger {
-    color: #dc3545;
+    color: $color-error;
   }
   
   &--warning {
-    color: #ffc107;
+    color: $color-warning;
   }
   
   &--info {
-    color: #17a2b8;
+    color: $color-info;
   }
   
   // Spin animation
@@ -75,7 +75,7 @@
     }
     
     &:focus {
-      outline: 2px solid #1631F8;
+      outline: 2px solid $color-primary;
       outline-offset: 2px;
       border-radius: 4px;
     }

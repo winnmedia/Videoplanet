@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 Hydration 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .iframe-container {
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        .instructions {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d7ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .test-button {
+            background-color: #1631F8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background-color: #0f23d1;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 로그인 버튼 Hydration 테스트</h1>
+        
+        <div class="instructions">
+            <h3>📋 테스트 방법:</h3>
+            <ol>
+                <li><strong>페이지 로딩</strong>: 아래 iframe에서 로그인 페이지가 로드됩니다</li>
+                <li><strong>초기 상태</strong>: 버튼이 "준비 중..." 으로 표시되어야 합니다</li>
+                <li><strong>Hydration 완료</strong>: 1-2초 후 "로그인" 버튼으로 변경되어야 합니다</li>
+                <li><strong>클릭 테스트</strong>: 버튼 클릭 시 콘솔에 로그가 출력되어야 합니다</li>
+            </ol>
+        </div>
+
+        <div class="status" id="status">
+            🔄 테스트 준비 중...
+        </div>
+
+        <button class="test-button" onclick="reloadTest()">🔄 테스트 새로고침</button>
+        <button class="test-button" onclick="openConsole()">🔍 콘솔 열기</button>
+        <button class="test-button" onclick="checkHydration()">✅ Hydration 상태 확인</button>
+
+        <div class="iframe-container">
+            <iframe id="testFrame" src="http://localhost:3000/login"></iframe>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <h3>🎯 예상 결과:</h3>
+            <ul>
+                <li>✅ SSR: "준비 중..." 버튼 (disabled, opacity: 0.7)</li>
+                <li>✅ Hydration 완료: "로그인" 버튼 (enabled, opacity: 1)</li>
+                <li>✅ 클릭 시: 콘솔에 '[Login] Button clicked - isHydrated: true' 출력</li>
+                <li>✅ API 호출: authApi.signIn 함수 실행</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(message, type = 'warning') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        function reloadTest() {
+            updateStatus('🔄 테스트 새로고침 중...', 'warning');
+            const iframe = document.getElementById('testFrame');
+            iframe.src = iframe.src; // 새로고침
+            
+            setTimeout(() => {
+                updateStatus('✅ 테스트 새로고침 완료', 'success');
+            }, 1000);
+        }
+
+        function openConsole() {
+            alert('F12를 눌러 개발자 도구를 열고 Console 탭을 확인하세요!');
+        }
+
+        function checkHydration() {
+            try {
+                const iframe = document.getElementById('testFrame');
+                const button = iframe.contentDocument.querySelector('.submit-button');
+                
+                if (button) {
+                    const isHydrated = !button.disabled && button.textContent === '로그인';
+                    const message = isHydrated 
+                        ? '✅ Hydration 완료! 버튼이 활성화되었습니다.' 
+                        : '⏳ Hydration 진행 중... 잠시 후 다시 확인해주세요.';
+                    const type = isHydrated ? 'success' : 'warning';
+                    
+                    updateStatus(message, type);
+                    
+                    console.log('Hydration 상태:', {
+                        disabled: button.disabled,
+                        text: button.textContent,
+                        opacity: getComputedStyle(button).opacity,
+                        isHydrated: isHydrated
+                    });
+                } else {
+                    updateStatus('❌ 로그인 버튼을 찾을 수 없습니다.', 'error');
+                }
+            } catch (error) {
+                updateStatus('❌ Cross-origin 정책으로 인해 iframe 내용에 접근할 수 없습니다.', 'error');
+                console.error('Cross-origin error:', error);
+            }
+        }
+
+        // 초기 상태 설정
+        window.onload = () => {
+            updateStatus('🚀 테스트 시작! iframe이 로딩 중입니다...', 'warning');
+            
+            // 3초 후 자동으로 Hydration 상태 확인
+            setTimeout(() => {
+                checkHydration();
+            }, 3000);
+        };
+    </script>
+</body>
+</html>

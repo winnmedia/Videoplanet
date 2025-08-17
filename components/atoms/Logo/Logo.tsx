@@ -28,7 +28,7 @@ const Logo: React.FC<LogoProps> = ({
   onClick,
   href,
   src,
-  alt = 'VideoPlanet 로고',
+  alt = 'Planet 로고',
   priority = false,
   className = '',
   'data-testid': testId,
@@ -45,7 +45,7 @@ const Logo: React.FC<LogoProps> = ({
         return '/images/Common/b_logo.svg';
       case 'primary':
       default:
-        return '/images/Common/logo.svg';
+        return '/images/Common/vlanet-logo.svg';
     }
   };
 
@@ -53,12 +53,12 @@ const Logo: React.FC<LogoProps> = ({
   const getLogoDimensions = () => {
     switch (size) {
       case 'sm':
-        return { width: 100, height: 32 };
+        return { width: 80, height: 40 };
       case 'lg':
-        return { width: 200, height: 64 };
+        return { width: 160, height: 80 };
       case 'md':
       default:
-        return { width: 150, height: 48 };
+        return { width: 120, height: 60 };
     }
   };
 

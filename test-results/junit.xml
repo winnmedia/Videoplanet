@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="25" failures="0" errors="0" time="2.983">
-  <testsuite name="Navigation System" errors="0" failures="0" skipped="0" timestamp="2025-08-16T00:58:28" time="1.351" tests="16">
-    <testcase classname="Navigation System Page Navigation should navigate to login page" name="Navigation System Page Navigation should navigate to login page" time="0.055">
+<testsuites name="jest tests" tests="15" failures="1" errors="0" time="2.14">
+  <testsuite name="Planet 핵심 기능 통합 테스트" errors="0" failures="1" skipped="0" timestamp="2025-08-17T14:08:54" time="1.529" tests="15">
+    <testcase classname="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 VGID 쿠키가 있을 때 API 요청이 성공해야 함" name="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 VGID 쿠키가 있을 때 API 요청이 성공해야 함" time="0.01">
     </testcase>
-    <testcase classname="Navigation System Page Navigation should navigate to dashboard after login" name="Navigation System Page Navigation should navigate to dashboard after login" time="0.004">
+    <testcase classname="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 인증 없이 보호된 페이지 접근 시 로그인으로 리다이렉트" name="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 인증 없이 보호된 페이지 접근 시 로그인으로 리다이렉트" time="0.004">
     </testcase>
-    <testcase classname="Navigation System Page Navigation should handle protected routes" name="Navigation System Page Navigation should handle protected routes" time="0.006">
+    <testcase classname="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 401 오류 시 무한 재시도를 방지해야 함" name="Planet 핵심 기능 통합 테스트 1. 인증 시스템 일관성 401 오류 시 무한 재시도를 방지해야 함" time="0.001">
     </testcase>
-    <testcase classname="Navigation System Page Navigation should preserve query parameters" name="Navigation System Page Navigation should preserve query parameters" time="0.003">
+    <testcase classname="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 대시보드 로딩 시간이 3초 이내여야 함" name="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 대시보드 로딩 시간이 3초 이내여야 함" time="0.038">
     </testcase>
-    <testcase classname="Navigation System Page Navigation should handle back navigation" name="Navigation System Page Navigation should handle back navigation" time="0.005">
+    <testcase classname="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 프로젝트 진행률이 시각적으로 표시되어야 함" name="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 프로젝트 진행률이 시각적으로 표시되어야 함" time="0.055">
     </testcase>
-    <testcase classname="Navigation System Dynamic Routes should handle project ID in URL" name="Navigation System Dynamic Routes should handle project ID in URL" time="0.003">
+    <testcase classname="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 주요 CTA 버튼이 명확하게 표시되어야 함" name="Planet 핵심 기능 통합 테스트 2. 대시보드 성능 및 접근성 주요 CTA 버튼이 명확하게 표시되어야 함" time="0.024">
+      <failure>TestingLibraryElementError: Unable to find an accessible element with the role &quot;button&quot; and name `/프로젝트 보기/i`
+
+There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      Dashboard
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+    at Object.getElementError (/home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/config.js:37:19)
+    at /home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+    at /home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+    at /home/winnmedia/videoplanet/Videoplanet/node_modules/@testing-library/react/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+    at Object.getByRole (/home/winnmedia/videoplanet/Videoplanet/__tests__/integration/core-features.test.tsx:134:32)
+    at Promise.then.completed (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:121:9)
+    at run (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/home/winnmedia/videoplanet/Videoplanet/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Navigation System Dynamic Routes should handle feedback project ID" name="Navigation System Dynamic Routes should handle feedback project ID" time="0.002">
+    <testcase classname="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 타임코드 기반 피드백 추가가 가능해야 함" name="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 타임코드 기반 피드백 추가가 가능해야 함" time="0.001">
     </testcase>
-    <testcase classname="Navigation System Dynamic Routes should handle 404 for invalid routes" name="Navigation System Dynamic Routes should handle 404 for invalid routes" time="0.002">
+    <testcase classname="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 피드백 상태 변경이 즉시 반영되어야 함" name="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 피드백 상태 변경이 즉시 반영되어야 함" time="0">
     </testcase>
-    <testcase classname="Navigation System Dynamic Routes should handle nested dynamic routes" name="Navigation System Dynamic Routes should handle nested dynamic routes" time="0.004">
+    <testcase classname="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 비디오 플레이어 컨트롤이 키보드로 가능해야 함" name="Planet 핵심 기능 통합 테스트 3. 영상 피드백 기능 비디오 플레이어 컨트롤이 키보드로 가능해야 함" time="0.001">
     </testcase>
-    <testcase classname="Navigation System URL Parameters should extract project ID from URL" name="Navigation System URL Parameters should extract project ID from URL" time="0.002">
+    <testcase classname="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 생성 시 필수 필드 검증" name="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 생성 시 필수 필드 검증" time="0">
     </testcase>
-    <testcase classname="Navigation System URL Parameters should handle search parameters" name="Navigation System URL Parameters should handle search parameters" time="0.002">
+    <testcase classname="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 권한에 따른 UI 제어" name="Planet 핵심 기능 통합 테스트 4. 프로젝트 관리 CRUD 프로젝트 권한에 따른 UI 제어" time="0.001">
     </testcase>
-    <testcase classname="Navigation System URL Parameters should maintain state during navigation" name="Navigation System URL Parameters should maintain state during navigation" time="0.003">
+    <testcase classname="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 네트워크 오류 시 재시도 옵션 제공" name="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 네트워크 오류 시 재시도 옵션 제공" time="0.001">
     </testcase>
-    <testcase classname="Navigation System URL Parameters should update search parameters" name="Navigation System URL Parameters should update search parameters" time="0.003">
+    <testcase classname="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 세션 만료 시 자동 로그아웃 처리" name="Planet 핵심 기능 통합 테스트 5. 에러 처리 및 복구 세션 만료 시 자동 로그아웃 처리" time="0.001">
     </testcase>
-    <testcase classname="Navigation System Navigation Guards should redirect unauthenticated users" name="Navigation System Navigation Guards should redirect unauthenticated users" time="0.004">
+    <testcase classname="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 Planning 페이지 lazy loading 동작 확인" name="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 Planning 페이지 lazy loading 동작 확인" time="0">
     </testcase>
-    <testcase classname="Navigation System Navigation Guards should allow authenticated users to access protected routes" name="Navigation System Navigation Guards should allow authenticated users to access protected routes" time="0.002">
-    </testcase>
-    <testcase classname="Navigation System Prefetching should prefetch routes on hover" name="Navigation System Prefetching should prefetch routes on hover" time="0.006">
-    </testcase>
-  </testsuite>
-  <testsuite name="Route Protection" errors="0" failures="0" skipped="0" timestamp="2025-08-16T00:58:28" time="1.959" tests="9">
-    <testcase classname="Route Protection Authentication Guard should redirect to login when not authenticated" name="Route Protection Authentication Guard should redirect to login when not authenticated" time="0.03">
-    </testcase>
-    <testcase classname="Route Protection Authentication Guard should allow access when authenticated" name="Route Protection Authentication Guard should allow access when authenticated" time="0.012">
-    </testcase>
-    <testcase classname="Route Protection Authentication Guard should preserve intended route after login" name="Route Protection Authentication Guard should preserve intended route after login" time="0.009">
-    </testcase>
-    <testcase classname="Route Protection Role-based Access Control should deny access for insufficient permissions" name="Route Protection Role-based Access Control should deny access for insufficient permissions" time="0.002">
-    </testcase>
-    <testcase classname="Route Protection Role-based Access Control should allow access for admin role" name="Route Protection Role-based Access Control should allow access for admin role" time="0.003">
-    </testcase>
-    <testcase classname="Route Protection Session Management should redirect to login on session expire" name="Route Protection Session Management should redirect to login on session expire" time="0.002">
-    </testcase>
-    <testcase classname="Route Protection Session Management should maintain session for valid token" name="Route Protection Session Management should maintain session for valid token" time="0.002">
-    </testcase>
-    <testcase classname="Route Protection Public Routes should allow access to public routes without authentication" name="Route Protection Public Routes should allow access to public routes without authentication" time="0.002">
-    </testcase>
-    <testcase classname="Route Protection Public Routes should redirect authenticated users from login to dashboard" name="Route Protection Public Routes should redirect authenticated users from login to dashboard" time="0.002">
+    <testcase classname="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 이미지 최적화 확인" name="Planet 핵심 기능 통합 테스트 6. 성능 최적화 검증 이미지 최적화 확인" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

@@ -68,50 +68,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="dashboard-layout">
-      {/* 간단한 헤더 */}
-      <header className="dashboard-header">
-        <div className="header-container">
-          <div className="header-left">
-            <div className="logo" onClick={() => router.push('/dashboard')}>
-              <h1>VideoPlanet</h1>
-            </div>
-          </div>
-          
-          <div className="header-right">
-            <div className="user-profile">
-              <button
-                onClick={() => router.push('/settings')}
-                className="settings-btn"
-                aria-label="설정"
-              >
-                ⚙️ 설정
-              </button>
-              <button
-                onClick={handleLogout}
-                className="logout-btn"
-                aria-label="로그아웃"
-              >
-                🚪 로그아웃
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* 메인 콘텐츠 영역 */}
-      <div className="dashboard-content">
-        {children}
-      </div>
-
-      {/* 접근성을 위한 스킵 네비게이션 */}
-      <a 
-        href="#main-content" 
-        className="skip-to-content"
-        onFocus={(e) => e.target.focus()}
-      >
-        메인 콘텐츠로 건너뛰기
-      </a>
-    </div>
+    <>
+      {children}
+    </>
   )
 }

@@ -13,6 +13,17 @@ import styled from 'styled-components'
 
 import CalendarModal from './CalendarModal'
 
+// Styled component defined outside of render function
+const BarSpan = styled.span`
+  &:hover::before {
+    content: '${(props) => (props.content ? props.content : '')}';
+    color: black;
+    opacity: 0.3;
+    font-size: 12px;
+    position: absolute;
+  }
+`
+
 export function CalendarDate({
   index,
   week,
@@ -383,21 +394,12 @@ export function Dates({
     day.getFullYear() == new Date().getFullYear() &&
     day.getDate() == new Date().getDate()
 
-  const BarSpan = styled.span`
-    &:hover::before {
-      content: '${(props) => (props.content ? props.content : '')}';
-      color: black;
-      opacity: 0.3;
-      font-size: 12px;
-      position: absolute;
-    }
-  `
   return (
-    <div {...date_info_style()} key={day}>
+    <div {...date_info_style()}>
       {input_modal}
       {detail_modal}
       {update_modal}
-      <p
+      <div
         style={{
           cursor:
             is_admin || window.location.pathname.includes('/Calendar')
@@ -413,9 +415,9 @@ export function Dates({
         {is_today ? (
           <div className="today">{day.getDate()}</div>
         ) : (
-          day.getDate()
+          <span>{day.getDate()}</span>
         )}
-      </p>
+      </div>
       {current_project && (
         <>
           {set_date(current_project.basic_plan.start_date) <= day &&

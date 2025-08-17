@@ -36,7 +36,7 @@ export default function WorkingButtonPage() {
       <h1>작동하는 버튼 테스트</h1>
       
       <div style={{ marginBottom: '20px' }}>
-        <p>Hydration 상태: {mounted ? '✅ 완료' : '⏳ 대기중'}</p>
+        <p>Hydration 상태: {mounted ? '[OK] 완료' : '[LOADING] 대기중'}</p>
         <p>클릭 횟수: {clickCount}</p>
       </div>
       

@@ -1,0 +1,689 @@
+// =============================================================================
+// VideoScreenshot Styles - 비디오 스크린샷 추출 및 편집 컴포넌트 스타일
+// =============================================================================
+
+.video-screenshot {
+  display: inline-block;
+
+  // 캡처 버튼
+  .capture-btn {
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #1631F8 0%, #4dabf7 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 120px;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.6;
+      transform: none;
+      box-shadow: none;
+    }
+
+    &.capturing {
+      background: #6c757d;
+      cursor: wait;
+
+      .loading-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top: 2px solid #ffffff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    }
+
+    &:focus {
+      outline: 2px solid #1631F8;
+      outline-offset: 2px;
+    }
+  }
+
+  // 스크린샷 편집기
+  .screenshot-editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    // 편집 도구바
+    .editor-toolbar {
+      background: #333;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #555;
+
+      .section-label {
+        font-size: 0.85rem;
+        color: #ccc;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      // 도구 섹션
+      .tool-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .tool-btn {
+          width: 40px;
+          height: 40px;
+          background: #555;
+          color: white;
+          border: 2px solid transparent;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 1.2rem;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: #666;
+            transform: scale(1.05);
+          }
+
+          &.active {
+            background: #1631F8;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 2px rgba(22, 49, 248, 0.3);
+          }
+
+          &:focus {
+            outline: 2px solid #1631F8;
+            outline-offset: 2px;
+          }
+        }
+      }
+
+      // 색상 섹션
+      .color-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .color-palette {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+
+          .color-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+
+            &:hover {
+              transform: scale(1.1);
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+
+            &.active {
+              border-color: #fff;
+              box-shadow: 0 0 0 2px #1631F8;
+            }
+
+            &:focus {
+              outline: 2px solid #1631F8;
+              outline-offset: 2px;
+            }
+
+            // 흰색/밝은 색상에 대한 특별한 처리
+            &[style*="ffffff"],
+            &[style*="ffff00"],
+            &[style*="00ffff"],
+            &[style*="00ff00"] {
+              box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+
+              &.active {
+                box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2), 0 0 0 2px #1631F8;
+              }
+            }
+          }
+        }
+      }
+
+      // 굵기 섹션
+      .stroke-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .stroke-slider {
+          width: 100px;
+          height: 6px;
+          background: #555;
+          border-radius: 3px;
+          outline: none;
+          cursor: pointer;
+          
+          &::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #1631F8;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease;
+
+            &:hover {
+              background: #4dabf7;
+            }
+          }
+
+          &::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #1631F8;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+
+            &:hover {
+              background: #4dabf7;
+            }
+          }
+
+          &:focus {
+            &::-webkit-slider-thumb {
+              box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.3);
+            }
+
+            &::-moz-range-thumb {
+              box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.3);
+            }
+          }
+        }
+
+        .stroke-value {
+          font-size: 0.85rem;
+          color: #ccc;
+          font-weight: 600;
+          min-width: 30px;
+        }
+      }
+
+      // 액션 섹션
+      .action-section {
+        display: flex;
+        gap: 0.5rem;
+        margin-left: auto;
+
+        .action-btn {
+          padding: 0.5rem 0.75rem;
+          background: #555;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+
+          &:hover:not(:disabled) {
+            background: #666;
+            transform: translateY(-1px);
+          }
+
+          &:disabled {
+            background: #444;
+            color: #999;
+            cursor: not-allowed;
+          }
+
+          &:focus {
+            outline: 2px solid #1631F8;
+            outline-offset: 2px;
+          }
+        }
+      }
+    }
+
+    // 캔버스 컨테이너
+    .canvas-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: auto;
+
+      .screenshot-image {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .overlay-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: crosshair;
+        pointer-events: auto;
+
+        &.drawing {
+          cursor: crosshair;
+        }
+      }
+
+      // 텍스트 입력
+      .text-input {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #1631F8;
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        outline: none;
+        min-width: 100px;
+        z-index: 10;
+
+        &:focus {
+          background: rgba(255, 255, 255, 1);
+          box-shadow: 0 0 0 2px rgba(22, 49, 248, 0.3);
+        }
+
+        &::placeholder {
+          color: #999;
+          font-weight: normal;
+        }
+      }
+    }
+
+    // 편집 액션 버튼들
+    .editor-actions {
+      background: #333;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      border-top: 1px solid #555;
+
+      .action-btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &.primary {
+          background: linear-gradient(135deg, #1631F8 0%, #4dabf7 100%);
+          color: white;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+          }
+        }
+
+        &.secondary {
+          background: #6c757d;
+          color: white;
+
+          &:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+          }
+        }
+
+        &:not(.primary):not(.secondary) {
+          background: #555;
+          color: white;
+
+          &:hover {
+            background: #666;
+            transform: translateY(-1px);
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:focus {
+          outline: 2px solid #1631F8;
+          outline-offset: 2px;
+        }
+      }
+    }
+
+    // 편집 도움말
+    .editor-help {
+      background: #222;
+      padding: 0.75rem 1rem;
+      color: #ccc;
+      font-size: 0.8rem;
+      text-align: center;
+      border-top: 1px solid #444;
+
+      p {
+        margin: 0;
+        line-height: 1.5;
+
+        strong {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  // 접근성을 위한 숨김 텍스트
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+// 애니메이션
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 1024px) {
+  .video-screenshot {
+    .screenshot-editor {
+      .editor-toolbar {
+        padding: 0.75rem;
+        gap: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+
+        .tool-section,
+        .color-section,
+        .stroke-section,
+        .action-section {
+          justify-content: center;
+        }
+
+        .action-section {
+          margin-left: 0;
+        }
+      }
+
+      .canvas-container {
+        padding: 1rem;
+      }
+
+      .editor-actions {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+
+        .action-btn {
+          flex: 1;
+          min-width: 120px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .video-screenshot {
+    width: 100%;
+
+    .capture-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .screenshot-editor {
+      .editor-toolbar {
+        padding: 0.5rem;
+        gap: 0.75rem;
+
+        .tool-section {
+          .tool-btn {
+            width: 36px;
+            height: 36px;
+            font-size: 1rem;
+          }
+        }
+
+        .color-section {
+          .color-palette {
+            .color-btn {
+              width: 28px;
+              height: 28px;
+            }
+          }
+        }
+
+        .stroke-section {
+          .stroke-slider {
+            width: 80px;
+          }
+        }
+
+        .action-section {
+          .action-btn {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+          }
+        }
+      }
+
+      .canvas-container {
+        padding: 0.5rem;
+
+        .text-input {
+          min-width: 80px;
+          font-size: 12px;
+        }
+      }
+
+      .editor-actions {
+        padding: 0.75rem;
+        flex-direction: column;
+
+        .action-btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      .editor-help {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+
+        p {
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .video-screenshot {
+    .screenshot-editor {
+      .editor-toolbar {
+        .tool-section,
+        .color-section {
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+
+          .section-label {
+            font-size: 0.8rem;
+          }
+        }
+
+        .color-section {
+          .color-palette {
+            max-width: 200px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 다크모드 지원 (편집기는 이미 다크 테마)
+@media (prefers-color-scheme: dark) {
+  .video-screenshot {
+    .capture-btn {
+      // 버튼은 이미 적절한 색상이므로 변경 없음
+    }
+  }
+}
+
+// 고대비 모드 지원
+@media (prefers-contrast: high) {
+  .video-screenshot {
+    .capture-btn {
+      border: 2px solid #000;
+
+      &:focus {
+        outline: 3px solid #0000ff;
+      }
+    }
+
+    .screenshot-editor {
+      .editor-toolbar {
+        border-bottom: 2px solid #000;
+
+        .tool-btn {
+          border: 2px solid #000;
+
+          &:focus {
+            outline: 3px solid #0000ff;
+          }
+
+          &.active {
+            border-color: #fff;
+          }
+        }
+
+        .color-palette {
+          .color-btn {
+            border: 2px solid #000;
+
+            &:focus {
+              outline: 3px solid #0000ff;
+            }
+          }
+        }
+
+        .stroke-slider {
+          &:focus {
+            outline: 3px solid #0000ff;
+          }
+        }
+
+        .action-btn {
+          border: 2px solid #000;
+
+          &:focus {
+            outline: 3px solid #0000ff;
+          }
+        }
+      }
+
+      .canvas-container {
+        .screenshot-image {
+          border: 2px solid #fff;
+        }
+
+        .text-input {
+          border: 2px solid #000;
+
+          &:focus {
+            outline: 3px solid #0000ff;
+          }
+        }
+      }
+
+      .editor-actions {
+        border-top: 2px solid #000;
+
+        .action-btn {
+          border: 2px solid #000;
+
+          &:focus {
+            outline: 3px solid #0000ff;
+          }
+        }
+      }
+
+      .editor-help {
+        border-top: 2px solid #000;
+      }
+    }
+  }
+}
+
+// 모션 감소 지원
+@media (prefers-reduced-motion: reduce) {
+  .video-screenshot {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+// 프린트 미디어 (편집기는 프린트에서 숨김)
+@media print {
+  .video-screenshot {
+    .screenshot-editor {
+      display: none;
+    }
+  }
+}

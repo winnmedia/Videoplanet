@@ -317,7 +317,7 @@ const FeedbackFilter: React.FC<FeedbackFilterProps> = memo(({
             className="search-input"
             aria-label="피드백 검색"
           />
-          <span className="search-icon">[검색]</span>
+          <span className="search-icon">[Search]</span>
         </div>
 
         {/* 정렬 옵션 */}
@@ -341,7 +341,7 @@ const FeedbackFilter: React.FC<FeedbackFilterProps> = memo(({
             aria-label={`정렬 순서: ${filterState.sortOrder === 'asc' ? '오름차순' : '내림차순'}`}
             title={filterState.sortOrder === 'asc' ? '오름차순' : '내림차순'}
           >
-            {filterState.sortOrder === 'asc' ? '↑' : '↓'}
+            {filterState.sortOrder === 'asc' ? 'ASC' : 'DESC'}
           </button>
         </div>
 
@@ -352,7 +352,7 @@ const FeedbackFilter: React.FC<FeedbackFilterProps> = memo(({
             className={`advanced-toggle ${activeFilterCount > 0 ? 'has-filters' : ''}`}
             aria-label="고급 필터 토글"
           >
-            🔧 필터
+            [필터]
             {activeFilterCount > 0 && (
               <span className="filter-count">{activeFilterCount}</span>
             )}
@@ -367,7 +367,7 @@ const FeedbackFilter: React.FC<FeedbackFilterProps> = memo(({
             aria-label="필터 초기화"
             title="모든 필터 초기화"
           >
-            ✕ 초기화
+            [초기화]
           </button>
         )}
       </div>

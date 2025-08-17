@@ -16,7 +16,7 @@ import SideBar from '@/components/SideBar';
 import { 
   ProjectInput, 
   ProcessDate, 
-  InviteInput 
+  EmailInvitation 
 } from '@/features/projects/components';
 import { 
   useProjects, 
@@ -218,7 +218,7 @@ export default function ProjectEditPage() {
               {/* 멤버 초대 */}
               <div className="part">
                 <div className="s_title">멤버 초대</div>
-                <InviteInput
+                <EmailInvitation
                   project_id={projectId}
                   set_current_project={(project) => {
                     // currentProject 업데이트는 fetchProject를 통해 수행

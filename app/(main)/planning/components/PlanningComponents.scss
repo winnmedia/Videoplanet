@@ -1,0 +1,1641 @@
+@import '../../../../styles/design-tokens.scss';
+
+// ==========================================================================
+// Planning Components Styles - VideoPlanet AI 영상 기획 모듈
+// ==========================================================================
+
+// ====== Planning Wizard ======
+.planning-wizard {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .wizard-progress {
+    margin-bottom: $spacing-3xl;
+    background: $color-white;
+    border-radius: $radius-xl;
+    padding: $spacing-xl;
+    box-shadow: $shadow-sm;
+
+    .progress-header {
+      @include flex-between;
+      margin-bottom: $spacing-lg;
+
+      .wizard-title {
+        font-size: $font-size-xl;
+        font-weight: $font-weight-semibold;
+        color: $color-text-primary;
+        margin: 0;
+      }
+
+      .progress-stats {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+        padding: $spacing-xs $spacing-md;
+        background: $color-gray-100;
+        border-radius: $radius-lg;
+      }
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+
+      @include mobile-only {
+        flex-direction: column;
+        gap: $spacing-md;
+      }
+
+      .progress-step {
+        @include flex-center;
+        flex-direction: column;
+        flex: 1;
+        cursor: pointer;
+        padding: $spacing-md;
+        border-radius: $radius-lg;
+        transition: $transition-hover;
+        position: relative;
+
+        &.navigable:hover {
+          background: $color-gray-50;
+        }
+
+        &.active {
+          background: lighten($color-primary, 45%);
+          color: $color-primary;
+        }
+
+        &.completed {
+          background: lighten($color-success, 45%);
+          color: $color-success;
+        }
+
+        .step-indicator {
+          @include flex-center;
+          width: 60px;
+          height: 60px;
+          border-radius: $radius-full;
+          background: $color-gray-200;
+          margin-bottom: $spacing-sm;
+          position: relative;
+
+          .step-icon {
+            font-size: $font-size-xl;
+          }
+
+          .step-number {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: $color-primary;
+            color: $color-white;
+            border-radius: $radius-full;
+            font-size: $font-size-xs;
+            @include flex-center;
+          }
+        }
+
+        &.active .step-indicator {
+          background: $color-primary;
+          color: $color-white;
+        }
+
+        &.completed .step-indicator {
+          background: $color-success;
+          color: $color-white;
+        }
+
+        .step-info {
+          text-align: center;
+
+          .step-name {
+            font-weight: $font-weight-medium;
+            margin-bottom: $spacing-xs;
+          }
+
+          .step-status {
+            font-size: $font-size-sm;
+            opacity: 0.7;
+          }
+        }
+
+        .step-connector {
+          position: absolute;
+          top: 30px;
+          right: -50%;
+          width: 100%;
+          height: 2px;
+          background: $color-gray-300;
+          z-index: -1;
+
+          &.completed {
+            background: $color-success;
+          }
+
+          @include mobile-only {
+            display: none;
+          }
+        }
+
+        &:last-child .step-connector {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .wizard-content {
+    background: $color-white;
+    border-radius: $radius-xl;
+    padding: $spacing-2xl;
+    box-shadow: $shadow-sm;
+    margin-bottom: $spacing-xl;
+    min-height: 600px;
+
+    @include mobile-only {
+      padding: $spacing-lg;
+    }
+  }
+
+  .wizard-navigation {
+    @include flex-between;
+    padding: $spacing-lg;
+    background: $color-white;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+
+    .nav-btn {
+      @include flex-center;
+      gap: $spacing-sm;
+      padding: $spacing-md $spacing-xl;
+      border: 1px solid $color-border-light;
+      border-radius: $radius-lg;
+      background: $color-white;
+      cursor: pointer;
+      transition: $transition-hover;
+      font-size: $font-size-md;
+
+      &:hover:not(:disabled) {
+        background: $color-gray-50;
+        border-color: $color-primary;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &.prev-btn {
+        color: $color-text-secondary;
+      }
+
+      &.next-btn {
+        background: $color-primary-gradient;
+        color: $color-white;
+        border-color: transparent;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: $shadow-md;
+        }
+      }
+    }
+
+    .nav-center {
+      text-align: center;
+
+      .current-step-info {
+        font-size: $font-size-md;
+        color: $color-text-secondary;
+      }
+    }
+  }
+}
+
+// ====== Story Settings ======
+.story-settings {
+  .settings-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    .section-title {
+      @include flex-center;
+      gap: $spacing-md;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-md 0;
+
+      .title-icon {
+        font-size: 2rem;
+      }
+    }
+
+    .section-description {
+      font-size: $font-size-md;
+      color: $color-text-secondary;
+      line-height: $line-height-relaxed;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .settings-form {
+    .form-group {
+      margin-bottom: $spacing-3xl;
+
+      .form-label {
+        display: block;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin-bottom: $spacing-lg;
+
+        .required {
+          color: $color-error;
+          margin-left: $spacing-xs;
+        }
+      }
+
+      .form-input {
+        width: 100%;
+        padding: $spacing-md;
+        border: 1px solid $color-border-light;
+        border-radius: $radius-lg;
+        font-size: $font-size-md;
+        transition: $transition-fast;
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+          box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+        }
+
+        &.error {
+          border-color: $color-error;
+        }
+      }
+
+      .error-message {
+        display: block;
+        color: $color-error;
+        font-size: $font-size-sm;
+        margin-top: $spacing-xs;
+      }
+    }
+
+    // Option Grid (Genre, Audience, Purpose 등)
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: $spacing-md;
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+      }
+
+      .option-card {
+        padding: $spacing-lg;
+        border: 2px solid $color-border-light;
+        border-radius: $radius-lg;
+        cursor: pointer;
+        transition: $transition-hover;
+        background: $color-white;
+
+        &:hover {
+          border-color: $color-primary;
+          box-shadow: $shadow-sm;
+        }
+
+        &.selected {
+          border-color: $color-primary;
+          background: lighten($color-primary, 48%);
+          box-shadow: $shadow-md;
+        }
+
+        .option-title {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin-bottom: $spacing-xs;
+        }
+
+        .option-description {
+          font-size: $font-size-sm;
+          color: $color-text-secondary;
+          line-height: $line-height-relaxed;
+        }
+      }
+    }
+
+    // Tone Grid (특별한 스타일)
+    .tone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: $spacing-md;
+
+      @include mobile-only {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tone-card {
+        @include flex-center;
+        flex-direction: column;
+        gap: $spacing-sm;
+        padding: $spacing-lg;
+        border: 2px solid $color-border-light;
+        border-radius: $radius-lg;
+        cursor: pointer;
+        transition: $transition-hover;
+        background: $color-white;
+
+        &:hover {
+          border-color: $color-primary;
+          transform: translateY(-2px);
+        }
+
+        &.selected {
+          border-color: $color-primary;
+          background: lighten($color-primary, 48%);
+          transform: translateY(-2px);
+          box-shadow: $shadow-md;
+        }
+
+        .tone-emoji {
+          font-size: 2rem;
+        }
+
+        .tone-label {
+          font-size: $font-size-md;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+        }
+      }
+    }
+
+    // Budget Grid (특별한 스타일)
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: $spacing-md;
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+      }
+
+      .budget-card {
+        @include flex-start;
+        gap: $spacing-md;
+        padding: $spacing-lg;
+        border: 2px solid $color-border-light;
+        border-radius: $radius-lg;
+        cursor: pointer;
+        transition: $transition-hover;
+        background: $color-white;
+
+        &:hover {
+          border-color: $color-primary;
+          box-shadow: $shadow-sm;
+        }
+
+        &.selected {
+          border-color: $color-primary;
+          background: lighten($color-primary, 48%);
+          box-shadow: $shadow-md;
+        }
+
+        .budget-icon {
+          font-size: 1.5rem;
+          flex-shrink: 0;
+        }
+
+        .budget-info {
+          .budget-title {
+            font-size: $font-size-lg;
+            font-weight: $font-weight-medium;
+            color: $color-text-primary;
+            margin-bottom: $spacing-xs;
+          }
+
+          .budget-description {
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+          }
+        }
+      }
+    }
+
+    .form-actions {
+      text-align: center;
+      margin-top: $spacing-3xl;
+
+      .complete-btn {
+        @include flex-center;
+        gap: $spacing-sm;
+        padding: $spacing-lg $spacing-2xl;
+        background: $color-primary-gradient;
+        color: $color-white;
+        border: none;
+        border-radius: $radius-lg;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-medium;
+        cursor: pointer;
+        transition: $transition-hover;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: $shadow-lg;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// ====== Story Development ======
+.story-development {
+  .development-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    .section-title {
+      @include flex-center;
+      gap: $spacing-md;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-md 0;
+
+      .title-icon {
+        font-size: 2rem;
+      }
+    }
+
+    .section-description {
+      font-size: $font-size-md;
+      color: $color-text-secondary;
+      line-height: $line-height-relaxed;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .structure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-lg;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
+    .structure-card {
+      padding: $spacing-xl;
+      border: 2px solid $color-border-light;
+      border-radius: $radius-lg;
+      cursor: pointer;
+      transition: $transition-hover;
+      background: $color-white;
+
+      &:hover {
+        border-color: $color-primary;
+        box-shadow: $shadow-sm;
+      }
+
+      &.selected {
+        border-color: $color-primary;
+        background: lighten($color-primary, 48%);
+        box-shadow: $shadow-md;
+      }
+
+      .structure-header {
+        @include flex-start;
+        gap: $spacing-md;
+        margin-bottom: $spacing-md;
+
+        .structure-icon {
+          font-size: 1.5rem;
+        }
+
+        .structure-title {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin: 0;
+        }
+      }
+
+      .structure-description {
+        font-size: $font-size-md;
+        color: $color-text-secondary;
+        margin-bottom: $spacing-md;
+        line-height: $line-height-relaxed;
+      }
+
+      .structure-example {
+        font-size: $font-size-sm;
+        color: $color-text-tertiary;
+        padding: $spacing-sm;
+        background: $color-gray-50;
+        border-radius: $radius-sm;
+      }
+    }
+  }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-lg;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
+    .level-card {
+      @include flex-start;
+      gap: $spacing-md;
+      padding: $spacing-xl;
+      border: 2px solid $color-border-light;
+      border-radius: $radius-lg;
+      cursor: pointer;
+      transition: $transition-hover;
+      background: $color-white;
+
+      &:hover {
+        border-color: $color-primary;
+        box-shadow: $shadow-sm;
+      }
+
+      &.selected {
+        border-color: $color-primary;
+        background: lighten($color-primary, 48%);
+        box-shadow: $shadow-md;
+      }
+
+      .level-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .level-info {
+        .level-title {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        .level-description {
+          font-size: $font-size-md;
+          color: $color-text-secondary;
+          margin-bottom: $spacing-xs;
+        }
+
+        .level-detail {
+          font-size: $font-size-sm;
+          color: $color-text-tertiary;
+        }
+      }
+    }
+  }
+
+  .generation-section {
+    text-align: center;
+    margin-bottom: $spacing-2xl;
+
+    .generate-btn {
+      @include flex-center;
+      gap: $spacing-sm;
+      padding: $spacing-lg $spacing-2xl;
+      background: $color-primary-gradient;
+      color: $color-white;
+      border: none;
+      border-radius: $radius-lg;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+      transition: $transition-hover;
+      margin: 0 auto $spacing-xl auto;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .loading-spinner {
+        animation: spin 1s linear infinite;
+      }
+    }
+
+    .story-content {
+      text-align: left;
+      background: $color-gray-50;
+      border-radius: $radius-lg;
+      padding: $spacing-xl;
+
+      .content-header {
+        @include flex-between;
+        margin-bottom: $spacing-lg;
+
+        h4 {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin: 0;
+        }
+
+        .content-status {
+          @include flex-center;
+          gap: $spacing-xs;
+          font-size: $font-size-sm;
+          color: $color-success;
+          background: lighten($color-success, 45%);
+          padding: $spacing-xs $spacing-md;
+          border-radius: $radius-sm;
+        }
+      }
+
+      .story-textarea {
+        width: 100%;
+        min-height: 400px;
+        padding: $spacing-lg;
+        border: 1px solid $color-border-light;
+        border-radius: $radius-lg;
+        font-size: $font-size-md;
+        line-height: $line-height-relaxed;
+        resize: vertical;
+        font-family: $font-family-primary;
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+          box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+        }
+      }
+
+      .content-actions {
+        margin-top: $spacing-lg;
+        text-align: center;
+
+        .regenerate-btn {
+          @include flex-center;
+          gap: $spacing-sm;
+          padding: $spacing-md $spacing-lg;
+          background: $color-secondary;
+          color: $color-white;
+          border: none;
+          border-radius: $radius-lg;
+          cursor: pointer;
+          transition: $transition-hover;
+
+          &:hover:not(:disabled) {
+            background: darken($color-secondary, 10%);
+          }
+        }
+      }
+    }
+  }
+}
+
+// ====== Shot Breakdown ======
+.shot-breakdown {
+  .breakdown-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    .section-title {
+      @include flex-center;
+      gap: $spacing-md;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-md 0;
+
+      .title-icon {
+        font-size: 2rem;
+      }
+    }
+
+    .section-description {
+      font-size: $font-size-md;
+      color: $color-text-secondary;
+      line-height: $line-height-relaxed;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .shots-summary {
+    background: $color-gray-50;
+    border-radius: $radius-lg;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-xl;
+
+    .summary-header {
+      @include flex-between;
+      margin-bottom: $spacing-lg;
+
+      h4 {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin: 0;
+      }
+
+      .summary-stats {
+        @include flex-center;
+        gap: $spacing-md;
+
+        .shot-count {
+          font-size: $font-size-sm;
+          color: $color-text-secondary;
+          background: $color-white;
+          padding: $spacing-xs $spacing-md;
+          border-radius: $radius-sm;
+        }
+
+        .add-shot-btn {
+          @include flex-center;
+          gap: $spacing-xs;
+          padding: $spacing-sm $spacing-md;
+          background: $color-primary;
+          color: $color-white;
+          border: none;
+          border-radius: $radius-sm;
+          font-size: $font-size-sm;
+          cursor: pointer;
+          transition: $transition-hover;
+
+          &:hover {
+            background: darken($color-primary, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  .shots-list {
+    display: grid;
+    gap: $spacing-lg;
+
+    .shot-card {
+      background: $color-white;
+      border-radius: $radius-lg;
+      padding: $spacing-xl;
+      box-shadow: $shadow-sm;
+      border: 1px solid $color-border-light;
+
+      .shot-header {
+        @include flex-between;
+        margin-bottom: $spacing-md;
+
+        .shot-number {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-bold;
+          color: $color-primary;
+          background: lighten($color-primary, 45%);
+          padding: $spacing-sm $spacing-md;
+          border-radius: $radius-sm;
+        }
+
+        .shot-actions {
+          @include flex-center;
+          gap: $spacing-sm;
+
+          button {
+            @include button-reset;
+            @include flex-center;
+            width: 32px;
+            height: 32px;
+            border-radius: $radius-sm;
+            transition: $transition-fast;
+            font-size: 1.1em;
+
+            &.edit-btn {
+              background: $color-info;
+              color: $color-white;
+
+              &:hover {
+                background: darken($color-info, 10%);
+              }
+            }
+
+            &.delete-btn {
+              background: $color-error;
+              color: $color-white;
+
+              &:hover {
+                background: darken($color-error, 10%);
+              }
+            }
+          }
+        }
+      }
+
+      .shot-info {
+        .shot-basic {
+          @include flex-start;
+          gap: $spacing-md;
+          margin-bottom: $spacing-md;
+          flex-wrap: wrap;
+
+          span {
+            padding: $spacing-xs $spacing-sm;
+            background: $color-gray-100;
+            color: $color-text-secondary;
+            border-radius: $radius-sm;
+            font-size: $font-size-sm;
+            white-space: nowrap;
+
+            &.shot-type {
+              background: lighten($color-primary, 40%);
+              color: $color-primary;
+            }
+
+            &.shot-duration {
+              background: lighten($color-success, 40%);
+              color: $color-success;
+            }
+
+            &.shot-location {
+              background: lighten($color-warning, 40%);
+              color: darken($color-warning, 20%);
+            }
+          }
+        }
+
+        .shot-description {
+          font-size: $font-size-md;
+          color: $color-text-primary;
+          line-height: $line-height-relaxed;
+        }
+      }
+
+      .shot-editor {
+        margin-top: $spacing-lg;
+        padding-top: $spacing-lg;
+        border-top: 1px solid $color-border-light;
+
+        .editor-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: $spacing-lg;
+
+          .editor-field {
+            &.full-width {
+              grid-column: 1 / -1;
+            }
+
+            label {
+              display: block;
+              font-size: $font-size-sm;
+              font-weight: $font-weight-medium;
+              color: $color-text-primary;
+              margin-bottom: $spacing-xs;
+            }
+
+            input, select, textarea {
+              width: 100%;
+              padding: $spacing-sm;
+              border: 1px solid $color-border-light;
+              border-radius: $radius-sm;
+              font-size: $font-size-sm;
+
+              &:focus {
+                outline: none;
+                border-color: $color-primary;
+              }
+            }
+
+            textarea {
+              resize: vertical;
+              font-family: $font-family-primary;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ====== Conti Generator ======
+.conti-generator {
+  .generator-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    .section-title {
+      @include flex-center;
+      gap: $spacing-md;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-md 0;
+
+      .title-icon {
+        font-size: 2rem;
+      }
+    }
+
+    .section-description {
+      font-size: $font-size-md;
+      color: $color-text-secondary;
+      line-height: $line-height-relaxed;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .style-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
+    .style-card {
+      padding: $spacing-xl;
+      border: 2px solid $color-border-light;
+      border-radius: $radius-lg;
+      cursor: pointer;
+      transition: $transition-hover;
+      background: $color-white;
+
+      &:hover {
+        border-color: $color-primary;
+        box-shadow: $shadow-sm;
+      }
+
+      &.selected {
+        border-color: $color-primary;
+        background: lighten($color-primary, 48%);
+        box-shadow: $shadow-md;
+      }
+
+      .style-preview {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: $spacing-lg;
+      }
+
+      .style-info {
+        .style-title {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin: 0 0 $spacing-sm 0;
+        }
+
+        .style-description {
+          font-size: $font-size-md;
+          color: $color-text-secondary;
+          margin-bottom: $spacing-sm;
+        }
+
+        .style-example {
+          font-size: $font-size-sm;
+          color: $color-text-tertiary;
+          padding: $spacing-sm;
+          background: $color-gray-50;
+          border-radius: $radius-sm;
+        }
+      }
+    }
+  }
+
+  .storyboard-actions {
+    @include flex-between;
+    margin-top: $spacing-lg;
+
+    .download-btn {
+      @include flex-center;
+      gap: $spacing-sm;
+      padding: $spacing-md $spacing-lg;
+      background: $color-success;
+      color: $color-white;
+      border: none;
+      border-radius: $radius-lg;
+      cursor: pointer;
+      transition: $transition-hover;
+
+      &:hover {
+        background: darken($color-success, 10%);
+      }
+    }
+
+    .storyboard-info {
+      @include flex-center;
+      gap: $spacing-md;
+
+      span {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+        background: $color-gray-100;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $radius-sm;
+      }
+    }
+  }
+
+  .storyboard-frames {
+    .frames-header {
+      @include flex-between;
+      margin-bottom: $spacing-xl;
+
+      h4 {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin: 0;
+      }
+
+      .frames-controls {
+        @include flex-center;
+        gap: $spacing-sm;
+
+        .view-mode-btn {
+          padding: $spacing-sm $spacing-md;
+          border: 1px solid $color-border-light;
+          background: $color-white;
+          border-radius: $radius-sm;
+          cursor: pointer;
+          transition: $transition-fast;
+
+          &.active {
+            background: $color-primary;
+            color: $color-white;
+            border-color: $color-primary;
+          }
+        }
+      }
+    }
+
+    .frames-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: $spacing-lg;
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+      }
+
+      .frame-card {
+        background: $color-white;
+        border-radius: $radius-lg;
+        padding: $spacing-lg;
+        box-shadow: $shadow-sm;
+        border: 1px solid $color-border-light;
+
+        .frame-header {
+          @include flex-between;
+          margin-bottom: $spacing-md;
+
+          .frame-number {
+            font-size: $font-size-md;
+            font-weight: $font-weight-bold;
+            color: $color-primary;
+            background: lighten($color-primary, 45%);
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $radius-sm;
+          }
+
+          .frame-timing {
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+          }
+
+          .frame-actions {
+            @include flex-center;
+            gap: $spacing-xs;
+
+            button {
+              @include button-reset;
+              @include flex-center;
+              width: 28px;
+              height: 28px;
+              border-radius: $radius-xs;
+              transition: $transition-fast;
+              font-size: 0.9em;
+
+              &:hover {
+                background: $color-gray-100;
+              }
+            }
+          }
+        }
+
+        .frame-thumbnail {
+          position: relative;
+          margin-bottom: $spacing-md;
+
+          .thumbnail-placeholder {
+            @include flex-center;
+            height: 150px;
+            background: $color-gray-100;
+            border-radius: $radius-lg;
+            font-size: $font-size-lg;
+            color: $color-text-secondary;
+          }
+
+          .regenerate-thumbnail {
+            position: absolute;
+            top: $spacing-sm;
+            right: $spacing-sm;
+
+            .regenerate-btn {
+              @include flex-center;
+              width: 32px;
+              height: 32px;
+              background: rgba($color-white, 0.9);
+              border: none;
+              border-radius: $radius-sm;
+              cursor: pointer;
+              transition: $transition-fast;
+
+              &:hover {
+                background: $color-white;
+              }
+            }
+          }
+        }
+
+        .frame-content {
+          .frame-description {
+            font-size: $font-size-sm;
+            color: $color-text-primary;
+            margin-bottom: $spacing-sm;
+            line-height: $line-height-relaxed;
+          }
+
+          .frame-technical {
+            font-size: $font-size-xs;
+            color: $color-text-tertiary;
+            font-family: monospace;
+          }
+        }
+
+        .frame-editor {
+          margin-top: $spacing-lg;
+          padding-top: $spacing-lg;
+          border-top: 1px solid $color-border-light;
+
+          .editor-section {
+            margin-bottom: $spacing-md;
+
+            label {
+              display: block;
+              font-size: $font-size-sm;
+              font-weight: $font-weight-medium;
+              color: $color-text-primary;
+              margin-bottom: $spacing-xs;
+            }
+
+            textarea {
+              width: 100%;
+              padding: $spacing-sm;
+              border: 1px solid $color-border-light;
+              border-radius: $radius-sm;
+              font-size: $font-size-sm;
+              resize: vertical;
+              font-family: $font-family-primary;
+
+              &:focus {
+                outline: none;
+                border-color: $color-primary;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .add-frame-section {
+      text-align: center;
+      margin-top: $spacing-xl;
+
+      .add-frame-btn {
+        @include flex-center;
+        gap: $spacing-sm;
+        padding: $spacing-lg $spacing-xl;
+        background: transparent;
+        color: $color-primary;
+        border: 2px dashed $color-primary;
+        border-radius: $radius-lg;
+        cursor: pointer;
+        transition: $transition-hover;
+
+        &:hover {
+          background: lighten($color-primary, 48%);
+        }
+      }
+    }
+  }
+}
+
+// ====== PDF Exporter ======
+.pdf-exporter {
+  .exporter-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    .section-title {
+      @include flex-center;
+      gap: $spacing-md;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-md 0;
+
+      .title-icon {
+        font-size: 2rem;
+      }
+    }
+
+    .section-description {
+      font-size: $font-size-md;
+      color: $color-text-secondary;
+      line-height: $line-height-relaxed;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
+    .template-card {
+      padding: $spacing-xl;
+      border: 2px solid $color-border-light;
+      border-radius: $radius-lg;
+      cursor: pointer;
+      transition: $transition-hover;
+      background: $color-white;
+
+      &:hover {
+        border-color: $color-primary;
+        box-shadow: $shadow-sm;
+      }
+
+      &.selected {
+        border-color: $color-primary;
+        background: lighten($color-primary, 48%);
+        box-shadow: $shadow-md;
+      }
+
+      .template-header {
+        @include flex-start;
+        gap: $spacing-md;
+        margin-bottom: $spacing-md;
+
+        .template-icon {
+          font-size: 1.5rem;
+        }
+
+        .template-title {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin: 0;
+        }
+      }
+
+      .template-description {
+        font-size: $font-size-md;
+        color: $color-text-secondary;
+        margin-bottom: $spacing-md;
+        line-height: $line-height-relaxed;
+      }
+
+      .template-details {
+        .template-pages {
+          font-size: $font-size-sm;
+          color: $color-primary;
+          font-weight: $font-weight-medium;
+          margin-bottom: $spacing-xs;
+        }
+
+        .template-includes {
+          font-size: $font-size-xs;
+          color: $color-text-tertiary;
+        }
+      }
+    }
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-xl;
+
+    .option-section {
+      h5 {
+        font-size: $font-size-md;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin: 0 0 $spacing-md 0;
+      }
+
+      .checkbox-group {
+        display: grid;
+        gap: $spacing-sm;
+
+        .checkbox-item {
+          @include flex-start;
+          gap: $spacing-sm;
+          cursor: pointer;
+
+          input[type="checkbox"] {
+            margin: 0;
+          }
+
+          span {
+            font-size: $font-size-sm;
+            color: $color-text-primary;
+          }
+        }
+      }
+
+      .select-group {
+        display: grid;
+        gap: $spacing-md;
+
+        label {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-xs;
+          font-size: $font-size-sm;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+
+          select {
+            padding: $spacing-sm;
+            border: 1px solid $color-border-light;
+            border-radius: $radius-sm;
+            font-size: $font-size-sm;
+
+            &:focus {
+              outline: none;
+              border-color: $color-primary;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .preview-section {
+    margin: $spacing-3xl 0;
+
+    .preview-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      color: $color-text-primary;
+      margin-bottom: $spacing-lg;
+    }
+
+    .preview-card {
+      background: $color-gray-50;
+      border-radius: $radius-lg;
+      padding: $spacing-xl;
+
+      .preview-header {
+        @include flex-between;
+        margin-bottom: $spacing-lg;
+
+        h5 {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-bold;
+          color: $color-text-primary;
+          margin: 0;
+        }
+
+        .preview-meta {
+          @include flex-center;
+          gap: $spacing-md;
+
+          span {
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+            background: $color-white;
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $radius-sm;
+          }
+        }
+      }
+
+      .preview-stats {
+        @include flex-center;
+        gap: $spacing-xl;
+        margin-bottom: $spacing-lg;
+        justify-content: center;
+
+        .stat-item {
+          text-align: center;
+
+          .stat-value {
+            display: block;
+            font-size: $font-size-xl;
+            font-weight: $font-weight-bold;
+            color: $color-primary;
+          }
+
+          .stat-label {
+            font-size: $font-size-sm;
+            color: $color-text-secondary;
+          }
+        }
+      }
+
+      .preview-sections {
+        h6 {
+          font-size: $font-size-md;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+          margin: 0 0 $spacing-md 0;
+        }
+
+        .section-item {
+          @include flex-between;
+          align-items: flex-start;
+          padding: $spacing-md;
+          background: $color-white;
+          border-radius: $radius-sm;
+          margin-bottom: $spacing-sm;
+
+          .section-title {
+            font-size: $font-size-sm;
+            font-weight: $font-weight-medium;
+            color: $color-text-primary;
+          }
+
+          .section-pages {
+            font-size: $font-size-xs;
+            color: $color-text-secondary;
+            margin-left: $spacing-md;
+          }
+
+          .section-content {
+            font-size: $font-size-xs;
+            color: $color-text-tertiary;
+            margin-top: $spacing-xs;
+          }
+        }
+      }
+    }
+  }
+
+  .export-section {
+    text-align: center;
+
+    .export-progress {
+      max-width: 400px;
+      margin: 0 auto;
+
+      .progress-header {
+        @include flex-between;
+        margin-bottom: $spacing-md;
+
+        span {
+          font-size: $font-size-md;
+          color: $color-text-primary;
+        }
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: $color-gray-200;
+        border-radius: $radius-sm;
+        overflow: hidden;
+        margin-bottom: $spacing-md;
+
+        .progress-fill {
+          height: 100%;
+          background: $color-primary-gradient;
+          transition: width 0.3s ease;
+        }
+      }
+
+      .progress-status {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+      }
+    }
+
+    .export-actions {
+      .export-btn {
+        @include flex-center;
+        gap: $spacing-sm;
+        padding: $spacing-lg $spacing-2xl;
+        background: $color-primary-gradient;
+        color: $color-white;
+        border: none;
+        border-radius: $radius-lg;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-medium;
+        cursor: pointer;
+        transition: $transition-hover;
+        margin: 0 auto $spacing-md auto;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: $shadow-lg;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .export-info {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+      }
+    }
+  }
+}
+
+// ====== 공통 애니메이션 ======
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+// ====== 반응형 조정 ======
+@include mobile-only {
+  .planning-wizard {
+    .wizard-content {
+      min-height: auto;
+    }
+
+    .wizard-navigation {
+      flex-direction: column;
+      gap: $spacing-md;
+
+      .nav-center {
+        order: -1;
+      }
+    }
+  }
+
+  .story-settings,
+  .story-development,
+  .shot-breakdown,
+  .conti-generator,
+  .pdf-exporter {
+    .form-group {
+      margin-bottom: $spacing-xl;
+    }
+  }
+}
+
+// ====== 접근성 개선 ======
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .option-card,
+  .tone-card,
+  .budget-card,
+  .structure-card,
+  .level-card,
+  .style-card,
+  .template-card {
+    border-width: 3px;
+  }
+}

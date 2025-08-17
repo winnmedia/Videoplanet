@@ -11,13 +11,13 @@ import { useRouter, useParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { Select } from 'antd';
 import moment from 'moment';
-// import 'moment/locale/ko'; // Temporarily disabled for build
+// // moment 한국어 로케일 설정은 전역에서 처리됨; // Temporarily disabled for build
 
 import PageTemplate from '@/components/PageTemplate';
 import SideBar from '@/components/SideBar';
 import CalendarHeader from '@/tasks/Calendar/CalendarHeader';
 import CalendarBody from '@/tasks/Calendar/CalendarBody';
-import { ProjectInfo, ProjectList } from '@/features/projects/components';
+import { ProjectInfo, ProjectList, ProjectProgress } from '@/features/projects/components';
 import { 
   useProjects, 
   useProjectPermissions 
@@ -182,6 +182,15 @@ export default function ProjectViewPage() {
             isAdmin={permissions.isAdmin}
             {...(permissions.canEdit && { onEdit: handleEditProject })}
           />
+
+          {/* 프로젝트 진행 상황 */}
+          <div className="content">
+            <ProjectProgress
+              project={currentProject}
+              showTimeline={true}
+              compact={false}
+            />
+          </div>
 
           {/* 캘린더 및 일정 관리 */}
           <div className="content calendar">

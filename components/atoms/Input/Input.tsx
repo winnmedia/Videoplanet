@@ -91,7 +91,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onClick={() => setShowPassword(!showPassword)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? '👁️' : '👁️‍🗨️'}
+              {showPassword ? '[HIDE]' : '[SHOW]'}
             </button>
           )}
         </div>

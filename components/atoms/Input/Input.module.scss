@@ -1,4 +1,4 @@
-@import '@/styles/variables.scss';
+@import '@/styles/design-tokens.scss';
 
 .input {
   display: inline-block;
@@ -10,7 +10,7 @@
   
   &--error {
     .input__field {
-      border-color: #dc3545;
+      border-color: $color-error;
       
       &:focus {
         box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
@@ -27,7 +27,7 @@
   }
   
   &__required {
-    color: #dc3545;
+    color: $color-error;
     margin-left: 4px;
   }
   
@@ -54,7 +54,7 @@
     }
     
     &:focus {
-      border-color: #1631F8;
+      border-color: $color-primary;
       box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
     }
     
@@ -94,7 +94,7 @@
     
     // Error state
     &--error {
-      border-color: #dc3545;
+      border-color: $color-error;
     }
     
     &--disabled {
@@ -138,11 +138,11 @@
     transition: color 0.2s ease;
     
     &:hover {
-      color: #1631F8;
+      color: $color-primary;
     }
     
     &:focus {
-      outline: 2px solid #1631F8;
+      outline: 2px solid $color-primary;
       outline-offset: 2px;
       border-radius: 4px;
     }
@@ -159,6 +159,6 @@
     display: block;
     margin-top: 4px;
     font-size: 13px;
-    color: #dc3545;
+    color: $color-error;
   }
 }

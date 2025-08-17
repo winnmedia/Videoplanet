@@ -1,152 +1,137 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
-import queryString from 'query-string'
 import Image from 'next/image'
-import type { LoginCredentials, EmailVerificationParams } from '@/features/auth/types'
-// useAuth import removed to prevent circular dependency
+import type { LoginCredentials } from '@/features/auth/types'
 import { authApi } from '@/features/auth/api/authApi'
 import { API_BASE_URL } from '@/lib/config'
-import { checkSession, refetchProject } from '@/utils/util'
 import logo from '@/assets/images/Common/b_sb_logo.svg'
-import wLogo from '@/assets/images/Common/w_logo.svg'
-import './AuthForm.scss'
 import './LoginPage.scss'
 
-function LoginPageContent() {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  // Direct API call instead of useAuth hook to prevent circular dependency
+export default function LoginPage() {
+  console.log('[LoginPage] Component function called')
   
-  const initialInput: LoginCredentials = {
+  const router = useRouter()
+  const [inputs, setInputs] = useState<LoginCredentials>({
     email: '',
     password: '',
-  }
-  
-  const [inputs, setInputs] = useState<LoginCredentials>(initialInput)
+  })
   const [loginMessage, setLoginMessage] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [inviteParams, setInviteParams] = useState<EmailVerificationParams | null>(null)
+  const [rememberEmail, setRememberEmail] = useState<boolean>(false)
   
   const { email, password } = inputs
-  
-  // URL 파라미터 처리
+
+  // Component mount test - 저장된 이메일 불러오기
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search)
-      const uid = params.get('uid')
-      const token = params.get('token')
-      if (uid && token) {
-        setInviteParams({ uid, token })
-      }
+    console.log('[LoginPage] useEffect executed!')
+    console.log('[LoginPage] API_BASE_URL:', API_BASE_URL)
+    
+    // 저장된 이메일 불러오기
+    const savedEmail = localStorage.getItem('rememberedEmail')
+    if (savedEmail) {
+      setInputs(prev => ({ ...prev, email: savedEmail }))
+      setRememberEmail(true)
+      console.log('[LoginPage] Loaded saved email:', savedEmail)
     }
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
+    console.log(`[LoginPage] Input change: ${name} = ${value}`)
     setInputs({
       ...inputs,
       [name]: value,
     })
   }
 
-  // 세션 체크 및 리다이렉트
-  useEffect(() => {
-    try {
-      console.log('[Login] Checking session...')
-      const session = checkSession()
-      console.log('[Login] Session status:', !!session)
-      
-      if (session) {
-        console.log('[Login] Session found, redirecting...')
-        if (inviteParams) {
-          console.log('[Login] Redirecting to email-check with params:', inviteParams)
-          router.push(`/email-check?uid=${inviteParams.uid}&token=${inviteParams.token}`)
-        } else {
-          console.log('[Login] Redirecting to dashboard')
-          router.push('/dashboard')
-        }
-      } else {
-        console.log('[Login] No session found, staying on login page')
-      }
-    } catch (error) {
-      console.error('[Login] Error during session check:', error)
-    }
-  }, [inviteParams, router])
-
-  // 로그인 성공 처리
-  const handleLoginSuccess = (jwt: string) => {
-    console.log('[Login] 로그인 성공, JWT 저장')
-    window.localStorage.setItem('VGID', JSON.stringify(jwt))
-    
-    console.log('[Login] 프로젝트 목록 가져오기 시작')
-    refetchProject(dispatch, router)
-    
-    if (inviteParams) {
-      // 초대 링크 처리 페이지로 이동
-      console.log('[Login] 초대 링크 파라미터 있음, email-check로 이동')
-      router.push(`/email-check?uid=${inviteParams.uid}&token=${inviteParams.token}`)
-    } else {
-      console.log('[Login] 대시보드로 이동')
-      router.push('/dashboard')
-    }
-  }
-
-  // 로그인 에러 처리
-  const handleLoginError = (error: any) => {
-    console.error('Login error:', error)
-    if (error?.response?.data?.message) {
-      setLoginMessage(error.response.data.message)
-    } else {
-      setLoginMessage('이메일 또는 비밀번호가 일치하지 않습니다.')
-    }
-  }
-
-  // 로그인 처리
   const handleLogin = async () => {
-    console.log('[Login] 로그인 버튼 클릭됨', { email, hasPassword: !!password })
+    console.log('[LoginPage] Login button clicked!')
+    console.log('[LoginPage] Current inputs:', { email, password: password.length + ' chars' })
     
-    // 입력 검증
-    if (!email.trim()) {
+    // Validation
+    if (!email || !email.trim()) {
       setLoginMessage('이메일을 입력해주세요.')
-      console.log('[Login] 이메일 입력 필요')
       return
     }
     
-    if (!password.trim()) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setLoginMessage('올바른 이메일 형식이 아닙니다.')
+      return
+    }
+    
+    if (!password || !password.trim()) {
       setLoginMessage('비밀번호를 입력해주세요.')
-      console.log('[Login] 비밀번호 입력 필요')
       return
     }
 
     setIsLoading(true)
     setLoginMessage('')
-    console.log('[Login] API 호출 시작:', API_BASE_URL)
     
     try {
+      console.log('[LoginPage] Making API call to:', `${API_BASE_URL}/users/login`)
       const response = await authApi.signIn(inputs)
-      console.log('[Login] API 응답 성공:', response.status)
-      handleLoginSuccess(response.data.vridge_session)
-    } catch (error) {
-      console.error('[Login] API 호출 오류:', error)
-      handleLoginError(error)
+      console.log('[LoginPage] API response received:', response.status)
+      console.log('[LoginPage] API response data:', response.data)
+      
+      if (response.data && response.data.vridge_session) {
+        console.log('[LoginPage] Login successful, saving session')
+        
+        // localStorage에 저장
+        window.localStorage.setItem('VGID', JSON.stringify(response.data.vridge_session))
+        
+        // 쿠키에도 저장 (미들웨어에서 확인할 수 있도록)
+        document.cookie = `VGID=${encodeURIComponent(JSON.stringify(response.data.vridge_session))}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`
+        console.log('[LoginPage] Session saved to localStorage and cookie')
+        
+        // 아이디 기억하기 체크박스 처리
+        if (rememberEmail) {
+          localStorage.setItem('rememberedEmail', email)
+          console.log('[LoginPage] Email saved for remember')
+        } else {
+          localStorage.removeItem('rememberedEmail')
+        }
+        
+        console.log('[LoginPage] Navigating to /dashboard...')
+        // window.location.href로 강제 페이지 새로고침과 함께 이동
+        window.location.href = '/dashboard'
+      } else {
+        throw new Error('응답에 세션 정보가 없습니다.')
+      }
+    } catch (error: any) {
+      console.error('[LoginPage] Login error:', error)
+      if (error?.response?.data?.message) {
+        setLoginMessage(error.response.data.message)
+      } else if (error?.response?.status === 401) {
+        setLoginMessage('이메일 또는 비밀번호가 일치하지 않습니다.')
+      } else if (error?.response?.status === 400) {
+        setLoginMessage('입력한 정보를 다시 확인해주세요.')
+      } else {
+        setLoginMessage('로그인 중 오류가 발생했습니다. 다시 시도해주세요.')
+      }
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Enter 키 처리
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleLogin()
     }
   }
 
+  console.log('[LoginPage] Rendering with state:', { 
+    emailLength: email.length, 
+    hasPassword: password.length > 0,
+    isLoading,
+    hasMessage: !!loginMessage 
+  })
+
   return (
     <div className="login-page-container">
-      {/* 왼쪽: 인트로 섹션 */}
+      {/* Left: Intro section */}
       <div className="login-intro">
         <div className="intro-wrap">
           <div className="slogan">
@@ -178,7 +163,7 @@ function LoginPageContent() {
         </div>
       </div>
 
-      {/* 오른쪽: 로그인 폼 */}
+      {/* Right: Login form */}
       <div className="login-form-section">
         <div className="form-wrap">
           <div className="form-logo">
@@ -211,29 +196,61 @@ function LoginPageContent() {
           />
           
           {loginMessage && (
-            <div className="error-message" role="alert" aria-live="polite">
+            <div className="error-message" role="alert">
               {loginMessage}
             </div>
           )}
           
-          <button 
-            className="forgot-link" 
-            onClick={(e) => {
-              e.preventDefault()
-              console.log('[Login] 비밀번호 찾기 클릭')
-              console.log('[Debug] localStorage VGID:', localStorage.getItem('VGID'))
-              
-              // localStorage 토큰 제거 후 이동
-              localStorage.removeItem('VGID')
-              console.log('[Debug] VGID 제거 후 이동 시도')
-              
-              // window.location.href로 직접 이동
-              window.location.href = '/reset-password'
-            }}
-            type="button"
-          >
-            비밀번호 찾기
-          </button>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            marginBottom: '15px'
+          }}>
+            <label style={{
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+              fontSize: '14px',
+              color: '#666',
+              whiteSpace: 'nowrap'
+            }}>
+              아이디저장
+              <input
+                type="checkbox"
+                checked={rememberEmail}
+                onChange={(e) => {
+                  setRememberEmail(e.target.checked)
+                  console.log('[LoginPage] Remember email:', e.target.checked)
+                }}
+                style={{
+                  marginLeft: '6px',
+                  cursor: 'pointer'
+                }}
+              />
+            </label>
+            
+            <button 
+              className="forgot-link" 
+              onClick={() => {
+                console.log('[LoginPage] Reset password clicked')
+                window.location.href = '/reset-password'
+              }}
+              type="button"
+              style={{
+                padding: 0,
+                background: 'none',
+                border: 'none',
+                color: '#666',
+                fontSize: '14px',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              비밀번호 찾기
+            </button>
+          </div>
           
           <button 
             className={`submit-button ${isLoading ? 'loading' : ''}`}
@@ -248,17 +265,8 @@ function LoginPageContent() {
             브이래닛이 처음이신가요?{' '}
             <button 
               className="signup-btn"
-              onClick={(e) => {
-                e.preventDefault()
-                console.log('[Login] 회원가입 버튼 클릭됨')
-                console.log('[Debug] localStorage VGID:', localStorage.getItem('VGID'))
-                console.log('[Debug] 현재 URL:', window.location.href)
-                
-                // localStorage 토큰 제거 후 이동
-                localStorage.removeItem('VGID')
-                console.log('[Debug] VGID 제거 후 이동 시도')
-                
-                // window.location.href로 직접 이동
+              onClick={() => {
+                console.log('[LoginPage] Signup clicked')
                 window.location.href = '/signup'
               }}
               type="button"
@@ -270,10 +278,4 @@ function LoginPageContent() {
       </div>
     </div>
   )
-}
-
-export default function LoginPage() {
-  console.log('[Login] LoginPage component rendered')
-  
-  return <LoginPageContent />
 }

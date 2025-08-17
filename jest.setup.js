@@ -35,6 +35,26 @@ jest.mock('next/router', () => ({
   },
 }))
 
+// Next.js navigation 모킹 (App Router)
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      pop: jest.fn(),
+      refresh: jest.fn(),
+      back: jest.fn(),
+      forward: jest.fn(),
+      prefetch: jest.fn(),
+    }
+  },
+  usePathname() {
+    return '/'
+  },
+  useSearchParams() {
+    return new URLSearchParams()
+  },
+}))
+
 // Next.js 이미지 컴포넌트 모킹
 jest.mock('next/image', () => ({
   __esModule: true,
@@ -100,6 +120,13 @@ const sessionStorageMock = {
   clear: jest.fn(),
 }
 global.sessionStorage = sessionStorageMock
+
+// Redux 모킹
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: () => jest.fn(),
+  Provider: ({ children }) => children,
+}))
 
 // console 에러/경고 모킹 (테스트 출력 정리)
 const originalError = console.error

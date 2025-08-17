@@ -370,7 +370,7 @@ const AnonymousFeedback: React.FC<AnonymousFeedbackProps> = memo(({
                 aria-label="현재 재생 시간 캡처"
                 title="현재 재생 중인 시간을 캡처합니다"
               >
-                {isAutoCapturing ? '📍' : '⏰'}
+                {isAutoCapturing ? '[CAPTURE]' : '[TIME]'}
               </button>
             </div>
             <div id="timestamp-help" className="help-text">
@@ -418,7 +418,7 @@ const AnonymousFeedback: React.FC<AnonymousFeedbackProps> = memo(({
         {/* 성공 메시지 */}
         {successMessage && (
           <div className="success-message" role="alert">
-            <span className="success-icon">✅</span>
+            <span className="success-icon">[SUCCESS]</span>
             {successMessage}
           </div>
         )}
@@ -463,7 +463,7 @@ const AnonymousFeedback: React.FC<AnonymousFeedbackProps> = memo(({
           <div className="feedback-list">
             {submittedFeedbacks.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-icon">💬</div>
+                <div className="empty-icon">[CHAT]</div>
                 <p>아직 등록된 피드백이 없습니다.</p>
                 <p>첫 번째 피드백을 남겨보세요!</p>
               </div>

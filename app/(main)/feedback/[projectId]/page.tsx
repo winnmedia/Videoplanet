@@ -8,12 +8,11 @@ import React, { useState, useMemo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-// import 'moment/locale/ko'; // Temporarily disabled for build
+// // moment 한국어 로케일 설정은 전역에서 처리됨; // Temporarily disabled for build
 
 // 기존 컴포넌트
-import PageTemplate from '@/components/PageTemplate';
-import SideBar from '@/components/SideBar';
-import useTab from '@/hooks/useTab';
+// 기존 PageTemplate과 SideBar는 MainLayout에서 처리
+import useTab from '../../../../src/hooks/useTab';
 
 // 피드백 시스템 컴포넌트 및 훅
 import {
@@ -291,68 +290,50 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
   // 로딩 상태
   if (loading && !currentProject) {
     return (
-      <PageTemplate leftItems={[]} auth={false} props={{}} noLogin={false}>
-        <div className="cms_wrap">
-          <SideBar tab="feedback" on_menu={false} />
-          <main>
-            <div className="loading-container">
-              <div className="loading-spinner" />
-              <p>프로젝트를 불러오는 중...</p>
-            </div>
-          </main>
+      <main>
+        <div className="loading-container">
+          <div className="loading-spinner" />
+          <p>프로젝트를 불러오는 중...</p>
         </div>
-      </PageTemplate>
+      </main>
     );
   }
 
   // 에러 상태
   if (error) {
     return (
-      <PageTemplate leftItems={[]} auth={false} props={{}} noLogin={false}>
-        <div className="cms_wrap">
-          <SideBar tab="feedback" on_menu={false} />
-          <main>
-            <div className="error-container">
-              <div className="error-icon">⚠️</div>
-              <h2>오류가 발생했습니다</h2>
-              <p>{error}</p>
-              <button onClick={() => refetch()} className="retry-button">
-                다시 시도
-              </button>
-            </div>
-          </main>
+      <main>
+        <div className="error-container">
+          <div className="error-icon">[오류]</div>
+          <h2>오류가 발생했습니다</h2>
+          <p>{error}</p>
+          <button onClick={() => refetch()} className="retry-button">
+            다시 시도
+          </button>
         </div>
-      </PageTemplate>
+      </main>
     );
   }
 
   // 프로젝트를 찾을 수 없는 경우
   if (!currentProject) {
     return (
-      <PageTemplate leftItems={[]} auth={false} props={{}} noLogin={false}>
-        <div className="cms_wrap">
-          <SideBar tab="feedback" on_menu={false} />
-          <main>
-            <div className="not-found-container">
-              <div className="not-found-icon">📂</div>
-              <h2>프로젝트를 찾을 수 없습니다</h2>
-              <p>요청하신 프로젝트가 존재하지 않거나 접근 권한이 없습니다.</p>
-              <button onClick={() => router.push('/projects')} className="back-button">
-                프로젝트 목록으로 돌아가기
-              </button>
-            </div>
-          </main>
+      <main>
+        <div className="not-found-container">
+          <div className="not-found-icon">[폴더]</div>
+          <h2>프로젝트를 찾을 수 없습니다</h2>
+          <p>요청하신 프로젝트가 존재하지 않거나 접근 권한이 없습니다.</p>
+          <button onClick={() => router.push('/projects')} className="back-button">
+            프로젝트 목록으로 돌아가기
+          </button>
         </div>
-      </PageTemplate>
+      </main>
     );
   }
 
   return (
-    <PageTemplate leftItems={[]} auth={false} props={{}} noLogin={false}>
-      <div className="cms_wrap">
-        <SideBar tab="feedback" on_menu={false} />
-        <main>
-          <div className="content feedback flex space_between">
+    <main>
+      <div className="content feedback flex space_between">
             {/* 비디오 영역 */}
             <div className="videobox">
               <div
@@ -493,8 +474,6 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
               <div className="tab_content">{currentItem.content}</div>
             </div>
           </div>
-        </main>
-      </div>
-    </PageTemplate>
+    </main>
   );
 }

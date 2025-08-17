@@ -28,6 +28,8 @@ module.exports = {
     '<rootDir>/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    '<rootDir>/features/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/features/**/*.{test,spec}.{js,jsx,ts,tsx}',
   ],
   
   // 커버리지 수집할 파일들

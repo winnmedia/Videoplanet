@@ -83,11 +83,13 @@ export function useFeedback(projectId: string): UseFeedbackReturn {
     const message = error instanceof Error ? translateErrorMessage(error as FeedbackError) : '알 수 없는 오류가 발생했습니다.';
     setError(message);
     
-    // 권한 관련 에러인 경우 로그인 페이지로 리다이렉트
-    if (error?.status === 401) {
-      router.push('/login');
+    // 401 NEED_ACCESS_TOKEN 에러 처리
+    if (error?.status === 401 || error?.code === 'NEED_ACCESS_TOKEN') {
+      console.warn('Authentication failed in useFeedback, redirecting to login');
+      // feedbackApi에서 이미 리다이렉트 처리를 하므로 여기서는 로깅만
+      return;
     }
-  }, [router]);
+  }, []);
 
   // 성공 메시지 처리
   const handleSuccess = useCallback((message: string) => {

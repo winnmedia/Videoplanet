@@ -1,19 +1,21 @@
+@import '@/styles/design-tokens.scss';
+
 /**
  * 프로젝트 관리 스타일
  * VideoPlanet 프로젝트 - Next.js 14 App Router 통합
  * 기존 UI/UX 100% 유지
  */
 
-// ===== 변수 정의 =====
-$primary-color: #1631F8;
-$success-color: #28a745;
-$warning-color: #ffc107;
-$danger-color: #dc3545;
-$info-color: #17a2b8;
+// ===== 로컬 변수 정의 (디자인 토큰 사용) =====
+$primary-color: $color-primary;
+$success-color: $color-success;
+$warning-color: $color-warning;
+$danger-color: $color-error;
+$info-color: $color-info;
 
-$border-radius: 8px;
-$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-$transition: all 0.3s ease;
+$border-radius: $radius-md;
+$box-shadow: $shadow-sm;
+$transition: $transition-base;
 
 // ===== 프로젝트 메인 레이아웃 =====
 .project {

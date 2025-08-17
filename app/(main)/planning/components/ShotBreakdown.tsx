@@ -77,7 +77,7 @@ const LIGHTING_TYPES = [
   { value: 'flat', label: '플랫 라이팅' }
 ]
 
-export default function ShotBreakdown({
+function ShotBreakdown({
   project,
   onComplete,
   onValidationChange,
@@ -535,3 +535,5 @@ export default function ShotBreakdown({
     </div>
   )
 }
+
+export default ShotBreakdown

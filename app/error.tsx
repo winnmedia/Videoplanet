@@ -21,7 +21,7 @@ export default function Error({ error, reset }: ErrorProps) {
   return (
     <div className="error-container">
       <div className="error-content">
-        <div className="error-icon">⚠️</div>
+        <div className="error-icon">[경고]</div>
         <h2 className="error-title">오류가 발생했습니다</h2>
         <p className="error-message">
           죄송합니다. 예상치 못한 오류가 발생했습니다.

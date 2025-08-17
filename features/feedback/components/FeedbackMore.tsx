@@ -142,7 +142,7 @@ const FeedbackMore: React.FC<FeedbackMoreProps> = memo(({
                 {/* 익명 표시 */}
                 {(feedback.secret || feedback.security) && (
                   <span className="anonymous-indicator" aria-label="익명">
-                    🔒
+                    [PRIVATE]
                   </span>
                 )}
 
@@ -205,7 +205,7 @@ const FeedbackMore: React.FC<FeedbackMoreProps> = memo(({
                       aria-label="피드백 상세보기 닫기"
                       autoFocus
                     >
-                      ✕
+                      [CLOSE]
                     </button>
                   </div>
                 )}

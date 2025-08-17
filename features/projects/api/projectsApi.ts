@@ -3,7 +3,7 @@
  * VideoPlanet 프로젝트 - Next.js 14 App Router 통합
  */
 
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import type {
   Project,
   ProjectListResponse,
@@ -20,179 +20,82 @@ import type {
   ProjectInvitation,
 } from '../types';
 
-// ===== API 기본 설정 =====
-
-import { API_BASE_URL, validateEnvironment } from '@/lib/config'
-
-// 환경변수 검증
-try {
-  validateEnvironment()
-} catch (error) {
-  console.error('Projects API configuration error:', error)
-}
-
-/**
- * Axios 인스턴스 생성 (인증 포함)
- */
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
-  timeout: 30000, // 30초
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-/**
- * 요청 인터셉터 - 인증 토큰 자동 추가
- */
-apiClient.interceptors.request.use(
-  (config) => {
-    // 브라우저 환경에서만 실행
-    if (typeof window !== 'undefined') {
-      // VGID 세션에서 토큰 추출
-      const vgidSession = localStorage.getItem('VGID');
-      if (vgidSession) {
-        try {
-          const sessionData = JSON.parse(vgidSession);
-          const token = sessionData.token || sessionData.access_token;
-          if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-          }
-        } catch (e) {
-          console.error('Failed to parse VGID session:', e);
-        }
-      }
-      
-      // 기존 토큰 체크 (fallback)
-      const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-      if (token && !config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-/**
- * 응답 인터셉터 - 에러 처리 및 토큰 갱신
- */
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    // 401 에러시 토큰 갱신 시도
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        // 토큰 갱신 로직 (구현 필요)
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (refreshToken) {
-          // 토큰 갱신 API 호출 후 재시도
-          // await refreshAccessToken();
-          // return apiClient(originalRequest);
-        }
-      } catch (refreshError) {
-        // 토큰 갱신 실패시 로그인 페이지로 리다이렉트
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-          sessionStorage.clear();
-          window.location.href = '/login';
-        }
-      }
-    }
-
-    return Promise.reject(error);
-  }
-);
+// ===== API 클라이언트 Import =====
+import { apiClient, apiClientWithRetry, fileApiClient } from '@/lib/api/client';
+import { errorHandler, ErrorType } from '@/lib/error-handling/errorHandler';
 
 // ===== API 에러 처리 유틸리티 =====
 
 /**
- * API 에러를 표준 형식으로 변환
+ * API 에러를 표준 형식으로 변환 (통합 에러 핸들러 사용)
  */
 const handleApiError = (error: any): ApiError => {
+  let errorType: ErrorType;
+  
+  // HTTP 상태 코드에 따른 에러 타입 결정
   if (error.response) {
-    return {
-      message: error.response.data?.message || 'API 요청 중 오류가 발생했습니다.',
-      code: error.response.data?.code,
-      status: error.response.status,
-      details: error.response.data,
-    };
+    switch (error.response.status) {
+      case 401:
+        errorType = ErrorType.AUTH_EXPIRED;
+        break;
+      case 403:
+        errorType = ErrorType.PERMISSION_DENIED;
+        break;
+      case 404:
+        errorType = ErrorType.PROJECT_NOT_FOUND;
+        break;
+      case 500:
+      case 502:
+      case 503:
+      case 504:
+        errorType = ErrorType.NETWORK_SERVER_ERROR;
+        break;
+      default:
+        errorType = ErrorType.UNKNOWN_ERROR;
+    }
   } else if (error.request) {
-    return {
-      message: '서버에 연결할 수 없습니다. 네트워크를 확인해주세요.',
-      status: 0,
-    };
+    errorType = ErrorType.NETWORK_OFFLINE;
   } else {
-    return {
-      message: error.message || '알 수 없는 오류가 발생했습니다.',
-      status: -1,
-    };
+    errorType = ErrorType.UNKNOWN_ERROR;
   }
+  
+  // 통합 에러 핸들러로 에러 생성
+  const appError = errorHandler.createError(errorType, {
+    context: {
+      originalError: error,
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data
+    },
+    customMessage: error.response?.data?.message
+  });
+  
+  // 에러 처리
+  errorHandler.handleError(appError);
+  
+  // 기존 ApiError 형식으로 반환 (하위 호환성)
+  return {
+    message: appError.userMessage,
+    code: error.response?.data?.code,
+    status: error.response?.status || 0,
+    details: error.response?.data,
+  };
 };
 
-/**
- * 재시도 옵션
- */
-interface RetryOptions {
-  maxRetries?: number;
-  retryDelay?: number;
-  retryCondition?: (error: any) => boolean;
-}
+// retryWithBackoff 대신 apiClientWithRetry 사용
+// (이미 /lib/api/client.ts에서 구현됨)
 
 /**
- * 지수 백오프 재시도 로직
- */
-const retryWithBackoff = async <T>(
-  operation: () => Promise<T>,
-  options: RetryOptions = {}
-): Promise<T> => {
-  const {
-    maxRetries = 3,
-    retryDelay = 1000,
-    retryCondition = (error) => {
-      // 네트워크 오류나 서버 오류(5xx)인 경우만 재시도
-      return error.response?.status >= 500 || !error.response;
-    }
-  } = options;
-
-  let lastError: any;
-
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      lastError = error;
-
-      // 마지막 시도이거나 재시도 조건을 만족하지 않는 경우
-      if (attempt === maxRetries || !retryCondition(error)) {
-        throw error;
-      }
-
-      // 지수 백오프 대기
-      const delay = retryDelay * Math.pow(2, attempt);
-      console.warn(`API 재시도 ${attempt + 1}/${maxRetries} - ${delay}ms 후 재시도...`, error instanceof Error ? error.message : String(error));
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
-  }
-
-  throw lastError;
-};
-
-/**
- * API 응답 래퍼 함수 (재시도 로직 포함)
+ * API 응답 래퍼 함수 (통합 에러 핸들링 포함)
  */
 const apiWrapper = async <T>(
   apiCall: () => Promise<AxiosResponse<ApiResponse<T>>>,
-  retryOptions?: RetryOptions
+  useRetry: boolean = false
 ): Promise<T> => {
   try {
-    const response = await retryWithBackoff(apiCall, retryOptions);
+    const client = useRetry ? apiClientWithRetry : apiClient;
+    const response = await apiCall();
     
     if (!response.data.success) {
       throw new Error(response.data.message || 'API 요청이 실패했습니다.');
@@ -204,13 +107,22 @@ const apiWrapper = async <T>(
   }
 };
 
+/**
+ * 재시도를 위한 API 래퍼 함수
+ */
+const apiWrapperWithRetry = async <T>(
+  apiCall: () => Promise<AxiosResponse<ApiResponse<T>>>
+): Promise<T> => {
+  return apiWrapper(apiCall, true);
+};
+
 // ===== 프로젝트 CRUD API =====
 
 /**
  * 프로젝트 목록 조회
  */
 const fetchProjectList = async (options?: ProjectSearchOptions): Promise<Project[]> => {
-  return apiWrapper(async () => {
+  return apiWrapperWithRetry(async () => {
     const params = new URLSearchParams();
     
     if (options?.query) params.append('search', options.query);
@@ -223,12 +135,9 @@ const fetchProjectList = async (options?: ProjectSearchOptions): Promise<Project
     if (options?.offset) params.append('offset', options.offset.toString());
     
     const queryString = params.toString();
-    const url = queryString ? `/projects/project_list?${queryString}` : '/projects/project_list';
+    const url = queryString ? `/projects?${queryString}` : '/projects';
     
-    return apiClient.get<ProjectListResponse>(url);
-  }, {
-    maxRetries: 2,
-    retryDelay: 1000
+    return apiClientWithRetry.get<ProjectListResponse>(url);
   });
 };
 
@@ -246,7 +155,7 @@ const fetchProject = async (projectId: string | number): Promise<Project> => {
  */
 const createProject = async (formData: FormData): Promise<{ id: number }> => {
   return apiWrapper(() =>
-    apiClient.post<ProjectCreateResponse>('/projects/create', formData, {
+    fileApiClient.post<ProjectCreateResponse>('/projects/create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -262,7 +171,7 @@ const updateProject = async (
   formData: FormData
 ): Promise<Project> => {
   return apiWrapper(() =>
-    apiClient.post<ProjectDetailResponse>(`/projects/detail/${projectId}`, formData, {
+    fileApiClient.post<ProjectDetailResponse>(`/projects/detail/${projectId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -290,10 +199,7 @@ const inviteProjectMember = async (
 ): Promise<void> => {
   return apiWrapper(() =>
     apiClient.post<ApiResponse<void>>(`/projects/invite_project/${projectId}`, { email })
-  , {
-    maxRetries: 1, // 초대는 중복 방지를 위해 재시도 최소화
-    retryDelay: 2000
-  });
+  );
 };
 
 /**
@@ -347,12 +253,9 @@ const acceptProjectInvitation = async (
   uid: string,
   token: string
 ): Promise<void> => {
-  return apiWrapper(() =>
-    apiClient.get<ApiResponse<void>>(`/projects/invite/${uid}/${token}`)
-  , {
-    maxRetries: 2,
-    retryDelay: 1500
-  });
+  return apiWrapperWithRetry(() =>
+    apiClientWithRetry.get<ApiResponse<void>>(`/projects/invite/${uid}/${token}`)
+  );
 };
 
 /**
@@ -366,10 +269,7 @@ const resendProjectInvitation = async (
     apiClient.post<ApiResponse<void>>(`/projects/invite_project/${projectId}/resend`, { 
       invitation_id: invitationId 
     })
-  , {
-    maxRetries: 1,
-    retryDelay: 2000
-  });
+  );
 };
 
 /**
@@ -378,12 +278,9 @@ const resendProjectInvitation = async (
 const getInvitationStatus = async (
   projectId: string | number
 ): Promise<ProjectInvitation[]> => {
-  return apiWrapper(() =>
-    apiClient.get<ApiResponse<ProjectInvitation[]>>(`/projects/invite_project/${projectId}/status`)
-  , {
-    maxRetries: 2,
-    retryDelay: 1000
-  });
+  return apiWrapperWithRetry(() =>
+    apiClientWithRetry.get<ApiResponse<ProjectInvitation[]>>(`/projects/invite_project/${projectId}/status`)
+  );
 };
 
 /**
@@ -424,7 +321,7 @@ const uploadProjectFiles = async (
   formData.append('project_id', projectId.toString());
 
   return apiWrapper(() =>
-    apiClient.post<ApiResponse<ProjectFile[]>>(`/projects/upload/${projectId}`, formData, {
+    fileApiClient.post<ApiResponse<ProjectFile[]>>(`/projects/upload/${projectId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -617,7 +514,50 @@ const projectsApi = {
   downloadFile,
   createProjectFormData,
   handleApiError,
-  retryWithBackoff,
+  
+  // 타입 가드
+  isProject,
+  isApiError,
+};
+
+// ===== Named Exports =====
+export {
+  // CRUD
+  fetchProjectList,
+  fetchProject,
+  createProject,
+  updateProject,
+  deleteProject,
+  
+  // 멤버 관리
+  inviteProjectMember,
+  inviteMultipleMembers,
+  cancelProjectInvitation,
+  acceptProjectInvitation,
+  resendProjectInvitation,
+  getInvitationStatus,
+  updateMemberRating,
+  
+  // 파일 관리
+  deleteProjectFile,
+  uploadProjectFiles,
+  
+  // 메모 관리
+  createProjectMemo,
+  deleteProjectMemo,
+  
+  // 일정 관리
+  updateProjectDates,
+  
+  // 통계
+  fetchProjectStatistics,
+  fetchSampleFiles,
+  
+  // 유틸리티
+  extractFileName,
+  downloadFile,
+  createProjectFormData,
+  handleApiError,
   
   // 타입 가드
   isProject,

@@ -2,7 +2,7 @@
 // Feedback API - VideoPlanet 피드백 시스템 API 로직
 // =============================================================================
 
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
+import { AxiosResponse, AxiosRequestConfig } from 'axios';
 import {
   FeedbackProject,
   Feedback,
@@ -15,82 +15,89 @@ import {
   FileUploadResponse,
   FeedbackError,
 } from '../types';
-import { API_BASE_URL, validateEnvironment, SOCKET_URL } from '@/lib/config'
+import { SOCKET_URL } from '@/lib/config';
+import { apiClient, fileApiClient } from '@/lib/api/client';
+import { errorHandler, ErrorType } from '@/lib/error-handling/errorHandler';
 
-// 환경변수 검증
-try {
-  validateEnvironment()
-} catch (error) {
-  console.error('Feedback API configuration error:', error)
+// apiClient 사용 (통합 API 클라이언트)
+// 독립적인 axios 인스턴스 대신 lib/api/client.ts의 apiClient 사용
+
+// 인증 로직은 apiClient에서 통합 관리됨
+// 별도 인증 처리 불필요
+
+// 하위 호환성을 위한 레거시 함수들
+export function getCookieValue(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift() || null;
+  }
+  return null;
 }
 
-// Axios 인스턴스 생성
-export const feedbackApi = axios.create({
-  ...(API_BASE_URL && { baseURL: API_BASE_URL }),
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// 토큰 인터셉터 설정
-feedbackApi.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// 응답 인터셉터 설정 (토큰 갱신)
-feedbackApi.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+export function clearAuthAndRedirect() {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('VGID');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('token');
     
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      
-      try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (refreshToken) {
-          const response = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
-            refresh: refreshToken,
-          });
-          
-          const { access } = response.data;
-          localStorage.setItem('accessToken', access);
-          
-          originalRequest.headers.Authorization = `Bearer ${access}`;
-          return feedbackApi(originalRequest);
-        }
-      } catch (refreshError) {
-        // 리프레시 실패 시 로그아웃 처리
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      }
-    }
-    
-    return Promise.reject(createFeedbackError(error));
+    document.cookie = 'VGID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.href = '/login';
   }
-);
+}
 
-// 에러 생성 유틸리티
-function createFeedbackError(error: any): FeedbackError {
-  const feedbackError = new Error(
-    error.response?.data?.message || error.message || 'Unknown error'
-  ) as FeedbackError;
+// 에러 생성 유틸리티 - 통합 에러 핸들러 사용
+export function createFeedbackError(error: any): FeedbackError {
+  // 상태 코드에 따른 에러 타입 결정
+  let errorType = ErrorType.UNKNOWN_ERROR;
   
-  feedbackError.code = error.response?.data?.code || 'UNKNOWN_ERROR';
+  if (error.response?.status === 401) {
+    errorType = ErrorType.AUTH_EXPIRED;
+  } else if (error.response?.status === 403) {
+    errorType = ErrorType.PERMISSION_DENIED;
+  } else if (error.response?.status === 404) {
+    errorType = ErrorType.PROJECT_NOT_FOUND;
+  } else if (error.response?.status >= 500) {
+    errorType = ErrorType.NETWORK_SERVER_ERROR;
+  } else if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
+    errorType = ErrorType.NETWORK_TIMEOUT;
+  }
+  
+  // 통합 에러 핸들러로 에러 생성
+  const appError = errorHandler.createError(errorType, {
+    customMessage: error.response?.data?.message || error.message,
+    context: {
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+      method: error.config?.method
+    }
+  });
+  
+  // FeedbackError 형식으로 변환 (기존 호환성 유지)
+  const feedbackError = new Error(appError.message) as FeedbackError;
+  feedbackError.code = errorType;
   feedbackError.status = error.response?.status;
   feedbackError.details = error.response?.data;
   
   return feedbackError;
+}
+
+// 인증 상태 확인 헬퍼 함수 - apiClient의 getAuthToken 로직과 동일
+export function isAuthenticated(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  const vgidData = localStorage.getItem('VGID');
+  if (!vgidData) return false;
+  
+  try {
+    const parsed = JSON.parse(vgidData);
+    return !!(parsed.access || parsed.token || parsed.access_token);
+  } catch {
+    return !!vgidData;
+  }
 }
 
 // API 함수들
@@ -99,8 +106,9 @@ function createFeedbackError(error: any): FeedbackError {
  * 피드백 프로젝트 상세 정보 조회
  */
 export async function getFeedbackProject(projectId: string): Promise<FeedbackProject> {
+  // 인증 체크는 apiClient에서 자동 처리
   try {
-    const response: AxiosResponse<FeedbackListResponse> = await feedbackApi.get(
+    const response: AxiosResponse<FeedbackListResponse> = await apiClient.get(
       `/feedbacks/${projectId}`
     );
     
@@ -124,7 +132,7 @@ export async function createFeedback(
   projectId: string
 ): Promise<Feedback> {
   try {
-    const response: AxiosResponse<FeedbackCreateResponse> = await feedbackApi.put(
+    const response: AxiosResponse<FeedbackCreateResponse> = await apiClient.put(
       `/feedbacks/${projectId}`,
       data
     );
@@ -144,7 +152,7 @@ export async function createFeedback(
  */
 export async function deleteFeedback(feedbackId: number): Promise<void> {
   try {
-    await feedbackApi.delete(`/feedbacks/${feedbackId}`);
+    await apiClient.delete(`/feedbacks/${feedbackId}`);
   } catch (error) {
     throw createFeedbackError(error);
   }
@@ -169,7 +177,8 @@ export async function uploadFeedbackVideo(
       ...(onUploadProgress && { onUploadProgress }),
     };
     
-    const response: AxiosResponse<FileUploadResponse> = await feedbackApi.post(
+    // 파일 업로드는 fileApiClient 사용 (대용량 파일 대응)
+    const response: AxiosResponse<FileUploadResponse> = await fileApiClient.post(
       `/feedbacks/${projectId}`,
       formData,
       config
@@ -186,7 +195,7 @@ export async function uploadFeedbackVideo(
  */
 export async function deleteFeedbackVideo(projectId: string): Promise<void> {
   try {
-    await feedbackApi.delete(`/feedbacks/file/${projectId}`);
+    await apiClient.delete(`/feedbacks/file/${projectId}`);
   } catch (error) {
     throw createFeedbackError(error);
   }
@@ -221,15 +230,204 @@ export async function getUserFeedbacks(
 
 // WebSocket 관련 유틸리티
 
+interface WebSocketCallbacks {
+  onMessage?: (data: any) => void;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onError?: (error: Event) => void;
+  onReconnect?: (attempt: number) => void;
+}
+
 /**
- * WebSocket URL 생성
+ * WebSocket Manager 클래스 - 중복 연결 방지 및 재연결 로직
+ */
+export class WebSocketManager {
+  private static instances: Map<string, WebSocketManager> = new Map();
+  private ws: WebSocket | null = null;
+  private reconnectAttempts = 0;
+  private maxReconnectAttempts = 5;
+  private reconnectDelay = 1000; // 1초
+  private reconnectTimer: NodeJS.Timeout | null = null;
+  private isManualClose = false;
+  
+  constructor(
+    private projectId: string,
+    private callbacks: WebSocketCallbacks = {}
+  ) {}
+  
+  /**
+   * 싱글턴 인스턴스 생성/반환 - 중복 연결 방지
+   */
+  public static getInstance(
+    projectId: string,
+    callbacks?: WebSocketCallbacks
+  ): WebSocketManager {
+    if (!WebSocketManager.instances.has(projectId)) {
+      WebSocketManager.instances.set(projectId, new WebSocketManager(projectId, callbacks));
+    }
+    
+    const instance = WebSocketManager.instances.get(projectId)!;
+    
+    // 콜백 업데이트
+    if (callbacks) {
+      instance.updateCallbacks(callbacks);
+    }
+    
+    return instance;
+  }
+  
+  /**
+   * 콜백 업데이트
+   */
+  public updateCallbacks(callbacks: WebSocketCallbacks): void {
+    this.callbacks = { ...this.callbacks, ...callbacks };
+  }
+  
+  /**
+   * WebSocket 연결
+   */
+  public connect(): void {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      console.log(`WebSocket already connected for project ${this.projectId}`);
+      return;
+    }
+    
+    this.isManualClose = false;
+    const url = `${SOCKET_URL}/ws/chat/${this.projectId}/`;
+    
+    try {
+      this.ws = new WebSocket(url);
+      
+      this.ws.onopen = () => {
+        console.log(`WebSocket connected to project ${this.projectId}`);
+        this.reconnectAttempts = 0;
+        this.callbacks.onOpen?.();
+      };
+      
+      this.ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          this.callbacks.onMessage?.(data);
+        } catch (error) {
+          console.error('Failed to parse WebSocket message:', error);
+        }
+      };
+      
+      this.ws.onclose = (event) => {
+        console.log(`WebSocket disconnected for project ${this.projectId}:`, event.code, event.reason);
+        this.callbacks.onClose?.();
+        
+        // 수동 종료가 아니면 재연결 시도
+        if (!this.isManualClose && this.shouldReconnect(event.code)) {
+          this.scheduleReconnect();
+        }
+      };
+      
+      this.ws.onerror = (event) => {
+        console.error(`WebSocket error for project ${this.projectId}:`, event);
+        this.callbacks.onError?.(event);
+      };
+      
+    } catch (error) {
+      console.error('Failed to create WebSocket connection:', error);
+      this.scheduleReconnect();
+    }
+  }
+  
+  /**
+   * WebSocket 연결 종료
+   */
+  public disconnect(): void {
+    this.isManualClose = true;
+    
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+    
+    if (this.ws) {
+      this.ws.close(1000, 'Manual disconnect');
+      this.ws = null;
+    }
+    
+    // 인스턴스 정리
+    WebSocketManager.instances.delete(this.projectId);
+  }
+  
+  /**
+   * 메시지 전송
+   */
+  public send(data: any): boolean {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      try {
+        this.ws.send(JSON.stringify(data));
+        return true;
+      } catch (error) {
+        console.error('Failed to send WebSocket message:', error);
+        return false;
+      }
+    }
+    
+    console.warn('WebSocket is not connected');
+    return false;
+  }
+  
+  /**
+   * 연결 상태 확인
+   */
+  public isConnected(): boolean {
+    return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
+  }
+  
+  /**
+   * 재연결 스케줄링
+   */
+  private scheduleReconnect(): void {
+    if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+      console.error(`Max reconnect attempts (${this.maxReconnectAttempts}) reached for project ${this.projectId}`);
+      return;
+    }
+    
+    this.reconnectAttempts++;
+    const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // 지수 백오프
+    
+    console.log(`Scheduling reconnect attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay}ms`);
+    
+    this.reconnectTimer = setTimeout(() => {
+      this.callbacks.onReconnect?.(this.reconnectAttempts);
+      this.connect();
+    }, delay);
+  }
+  
+  /**
+   * 재연결 여부 결정
+   */
+  private shouldReconnect(code: number): boolean {
+    // 1000: Normal closure, 1001: Going away - 재연결 불필요
+    // 1006: Abnormal closure - 재연결 필요
+    return code !== 1000 && code !== 1001;
+  }
+  
+  /**
+   * 모든 인스턴스 정리 (전역 정리용)
+   */
+  public static disconnectAll(): void {
+    WebSocketManager.instances.forEach(instance => {
+      instance.disconnect();
+    });
+    WebSocketManager.instances.clear();
+  }
+}
+
+/**
+ * WebSocket URL 생성 (하위 호환성)
  */
 export function createWebSocketUrl(projectId: string): string {
   return `${SOCKET_URL}/ws/chat/${projectId}/`;
 }
 
 /**
- * WebSocket 연결 생성
+ * WebSocket 연결 생성 (하위 호환성 - 레거시 지원)
  */
 export function createWebSocketConnection(
   projectId: string,
@@ -238,34 +436,38 @@ export function createWebSocketConnection(
   onClose?: () => void,
   onError?: (error: Event) => void
 ): WebSocket {
-  const url = createWebSocketUrl(projectId);
-  const ws = new WebSocket(url);
+  const callbacks: WebSocketCallbacks = {};
+  if (onMessage) callbacks.onMessage = onMessage;
+  if (onOpen) callbacks.onOpen = onOpen;
+  if (onClose) callbacks.onClose = onClose;
+  if (onError) callbacks.onError = onError;
   
-  ws.onopen = (event) => {
-    console.log('WebSocket connected to:', url);
-    onOpen?.();
-  };
+  const manager = WebSocketManager.getInstance(projectId, callbacks);
+  manager.connect();
   
-  ws.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      onMessage?.(data);
-    } catch (error) {
-      console.error('Failed to parse WebSocket message:', error);
-    }
-  };
-  
-  ws.onclose = (event) => {
-    console.log('WebSocket disconnected:', event.code, event.reason);
-    onClose?.();
-  };
-  
-  ws.onerror = (event) => {
-    console.error('WebSocket error:', event);
-    onError?.(event);
-  };
-  
-  return ws;
+  // 레거시 지원을 위해 가짜 WebSocket 객체 반환
+  return {
+    close: () => manager.disconnect(),
+    send: (data: string) => manager.send(JSON.parse(data)),
+    readyState: manager.isConnected() ? WebSocket.OPEN : WebSocket.CLOSED,
+    // 추가 WebSocket 속성들 (필수)
+    binaryType: 'blob' as BinaryType,
+    bufferedAmount: 0,
+    extensions: '',
+    onclose: null,
+    onerror: null,
+    onmessage: null,
+    onopen: null,
+    protocol: '',
+    url: createWebSocketUrl(projectId),
+    CLOSED: WebSocket.CLOSED,
+    CLOSING: WebSocket.CLOSING,
+    CONNECTING: WebSocket.CONNECTING,
+    OPEN: WebSocket.OPEN,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false
+  } as WebSocket;
 }
 
 // 타입 가드 함수들
@@ -415,6 +617,7 @@ export function translateErrorMessage(error: FeedbackError): string {
   const errorMessages: Record<string, string> = {
     'Network Error': '네트워크 연결을 확인해주세요.',
     'Invalid token': '로그인이 만료되었습니다. 다시 로그인해주세요.',
+    'NEED_ACCESS_TOKEN': '로그인이 만료되었습니다. 다시 로그인해주세요.',
     'Permission denied': '권한이 없습니다.',
     'File too large': '파일 크기가 너무 큽니다.',
     'Invalid file type': '지원하지 않는 파일 형식입니다.',
@@ -438,8 +641,12 @@ export function formatFileSize(bytes: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
+// feedbackApi 레거시 지원 (apiClient로 대체됨)
+export const feedbackApi = apiClient;
+
 // Export all functions as default object
 export default {
+  isAuthenticated,
   getFeedbackProject,
   createFeedback,
   deleteFeedback,
@@ -449,6 +656,7 @@ export default {
   getUserFeedbacks,
   createWebSocketUrl,
   createWebSocketConnection,
+  WebSocketManager,
   isFeedback,
   isFeedbackProject,
   isApiResponse,

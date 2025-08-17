@@ -16,6 +16,24 @@ export function axiosOpts(method: string, url: string, data?: any, config?: any)
 }
 
 export function axiosCredentials(method: string, url: string, data?: any, config?: any) {
+  // 토큰 자동 첨부 로직 추가
+  const headers = { ...config?.headers };
+  
+  if (typeof window !== 'undefined') {
+    const vgidData = localStorage.getItem('VGID');
+    if (vgidData) {
+      try {
+        const parsed = JSON.parse(vgidData);
+        // 다양한 필드명 체크 (우선순위: access > token > access_token)
+        const token = parsed.access || parsed.token || parsed.access_token || vgidData;
+        headers.Authorization = `Bearer ${token}`;
+      } catch {
+        // JSON 파싱 실패시 문자열 그대로 사용
+        headers.Authorization = `Bearer ${vgidData}`;
+      }
+    }
+  }
+
   return axios({
     method: method,
     url: url,
@@ -23,6 +41,7 @@ export function axiosCredentials(method: string, url: string, data?: any, config
     withCredentials: true,
     timeout: 30000,
     crossDomain: true,
+    headers,
     ...config,
   })
 }

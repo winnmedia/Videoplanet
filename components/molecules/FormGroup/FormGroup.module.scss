@@ -1,4 +1,4 @@
-@import '@/styles/variables.scss';
+@import '@/styles/design-tokens.scss';
 
 .form-group {
   display: block;
@@ -82,17 +82,17 @@
   // Error state
   &--error {
     .form-group__label {
-      color: #dc3545;
+      color: $color-error;
     }
     
     .form-group__content {
       input,
       select,
       textarea {
-        border-color: #dc3545;
+        border-color: $color-error;
         
         &:focus {
-          box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+          box-shadow: 0 0 0 3px rgba($color-error, 0.15);
         }
       }
     }
@@ -100,12 +100,12 @@
   
   &__label {
     font-weight: 500;
-    color: #23262d;
+    color: $color-text-primary;
     transition: color 0.2s ease;
   }
   
   &__required {
-    color: #dc3545;
+    color: $color-error;
     margin-left: 4px;
     font-weight: 700;
   }
@@ -116,14 +116,14 @@
   
   &__error {
     margin-top: 4px;
-    color: #dc3545;
+    color: $color-error;
     font-size: 12px;
     line-height: 1.4;
   }
   
   &__hint {
     margin-top: 4px;
-    color: #6c757d;
+    color: $color-text-secondary;
     font-size: 12px;
     line-height: 1.4;
   }

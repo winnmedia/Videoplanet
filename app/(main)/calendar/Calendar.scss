@@ -1,1033 +1,441 @@
-/**
- * Calendar Styles
- * VideoPlanet 캘린더 모듈 전용 스타일
- * 기존 UI/UX 100% 유지하면서 Next.js 14 App Router에 최적화
- */
-
-/* ========================
-   임포트 및 기본 설정
-======================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* ========================
-   CSS 변수 정의 (디자인 토큰)
-======================== */
-
-:root {
-  // 기본 색상
-  --color-primary: #1631f8;
-  --color-primary-gradient: linear-gradient(135deg, #1631f8 0%, #0131ff 100%);
-  --color-secondary: #25282f;
-  --color-danger: #dc3545;
-  --color-success: #28a745;
-  --color-warning: #ffc107;
-  --color-info: #17a2b8;
+/* Calendar Page Styles */
+@import '../../../styles/design-tokens.scss';
+.calendar-page {
+  padding: 20px;
   
-  // 그레이 스케일
-  --color-white: #ffffff;
-  --color-gray-100: #f8f8f8;
-  --color-gray-200: #efefef;
-  --color-gray-300: #dddddd;
-  --color-gray-400: #bac4d1;
-  --color-gray-500: #889cb1;
-  --color-gray-600: #707175;
-  --color-gray-700: #25282f;
-  --color-gray-800: #23262d;
-  --color-gray-900: #000000;
-  
-  // 프로젝트 단계 색상
-  --color-phase-1: #55a1f5; // 기초기획안
-  --color-phase-2: #0d45ac; // 스토리보드
-  --color-phase-3: #8a88e9; // 촬영
-  --color-phase-4: #774bf0; // 편집
-  --color-phase-5: #57e4ed; // 후반작업
-  --color-phase-6: #5d888b; // 시사
-  --color-phase-7: #000000; // 컨펌
-  --color-phase-8: #d93a3a; // 납품
-  
-  // 간격
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
-  
-  // 폰트 크기
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 22px;
-  --font-size-2xl: 34px;
-  
-  // 그림자
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 16px 10px 16px rgba(0, 0, 0, 0.06);
-  --shadow-xl: 6px 6px 16px rgba(0, 0, 0, 0.3);
-  
-  // 반응형 브레이크포인트
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-}
-
-/* ========================
-   다크모드 지원
-======================== */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-white: #1a1a1a;
-    --color-gray-100: #2d2d2d;
-    --color-gray-200: #3d3d3d;
-    --color-gray-300: #4d4d4d;
-    --color-gray-700: #e0e0e0;
-    --color-gray-800: #f0f0f0;
-    --color-gray-900: #ffffff;
-  }
-}
-
-/* ========================
-   캘린더 레이아웃
-======================== */
-
-.content.calendar {
-  margin: 50px 0;
-  
-  /* 필터 영역 */
-  .filter {
+  .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid $color-border-medium;
     
-    .date {
-      font-size: var(--font-size-2xl);
-      font-family: 'Inter', 'pm', sans-serif;
-      font-weight: 600;
-      color: var(--color-gray-900);
+    .header-left {
       display: flex;
       align-items: center;
+      gap: 40px;
       
-      .move {
-        margin-left: var(--spacing-xl);
-        margin-top: 3px;
-        display: flex;
-        gap: var(--spacing-md);
-        
-        span {
-          display: inline-block;
-          width: 34px;
-          height: 34px;
-          border-radius: 50%;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          background: var(--color-gray-200);
-          
-          &:hover {
-            background: var(--color-gray-300);
-            transform: translateY(-1px);
-          }
-          
-          &:focus {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 2px;
-          }
-          
-          &.prev {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuMjUgMS4yNUwzLjc1IDMuNzVMNi4yNSA2LjI1IiBzdHJva2U9IiM3MDcxNzUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHN2Zz4K');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 10px;
-          }
-          
-          &.next {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMuNzUgMS4yNUw2LjI1IDMuNzVMMy43NSA2LjI1IiBzdHJva2U9IiM3MDcxNzUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHN2Zz4K');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 10px;
-          }
-        }
-      }
-    }
-    
-    .type {
-      display: flex;
-      gap: var(--spacing-md);
-      
-      .ant-select {
-        min-width: 140px;
-        
-        .ant-select-selector {
-          height: 54px;
-          line-height: 54px;
-          border: 1px solid var(--color-gray-300);
-          border-radius: 15px;
-          background: var(--color-white);
-          font-family: 'Inter', sans-serif;
-          font-weight: 500;
-          transition: all 0.2s ease;
-          
-          &:hover {
-            border-color: var(--color-primary);
-          }
-          
-          &:focus-within {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
-          }
-        }
-        
-        .ant-select-selection-item {
-          line-height: 54px;
-          font-family: 'Inter', sans-serif;
-          font-size: var(--font-size-md);
-          color: var(--color-gray-900);
-        }
-      }
-    }
-  }
-  
-  /* 로딩 상태 */
-  .calendar-skeleton {
-    .skeleton-header,
-    .skeleton-body,
-    .skeleton-stats {
-      background: linear-gradient(90deg, var(--color-gray-200) 25%, var(--color-gray-100) 50%, var(--color-gray-200) 75%);
-      background-size: 200% 100%;
-      animation: skeleton-loading 1.5s infinite;
-      border-radius: 8px;
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .skeleton-header {
-      height: 60px;
-    }
-    
-    .skeleton-body {
-      height: 400px;
-    }
-    
-    .skeleton-stats {
-      height: 140px;
-    }
-  }
-  
-  @keyframes skeleton-loading {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-  
-  /* 에러 메시지 */
-  .error-message {
-    text-align: center;
-    padding: var(--spacing-2xl);
-    background: var(--color-white);
-    border-radius: 15px;
-    border: 2px dashed var(--color-danger);
-    
-    h3 {
-      color: var(--color-danger);
-      margin-bottom: var(--spacing-md);
-    }
-    
-    p {
-      color: var(--color-gray-600);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .btn-retry {
-      background: var(--color-primary-gradient);
-      color: var(--color-white);
-      border: none;
-      padding: var(--spacing-md) var(--spacing-xl);
-      border-radius: 15px;
-      font-size: var(--font-size-md);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-      }
-    }
-  }
-}
-
-/* ========================
-   캘린더 본체 스타일
-======================== */
-
-.calendar_box {
-  margin-top: var(--spacing-lg);
-  
-  /* 헤더 (요일) */
-  .th {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    
-    div {
-      padding: var(--spacing-sm);
-      background: var(--color-gray-800);
-      color: var(--color-white);
-      font-size: var(--font-size-md);
-      font-weight: 600;
-      text-align: center;
-      
-      &.holiday {
-        background: var(--color-gray-600);
-      }
-      
-      &:first-child {
-        border-radius: 8px 0 0 0;
-      }
-      
-      &:last-child {
-        border-radius: 0 8px 0 0;
-      }
-    }
-  }
-  
-  /* 날짜 셀들 */
-  .td {
-    .week {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      
-      > div {
-        padding: var(--spacing-sm);
-        color: var(--color-gray-900);
-        font-size: var(--font-size-md);
-        border: 1px solid var(--color-gray-200);
-        min-height: 100px;
-        position: relative;
-        background: var(--color-white);
-        transition: all 0.2s ease;
-        
-        &:hover {
-          background: var(--color-gray-100);
-          border-color: var(--color-primary);
-        }
-        
-        /* 날짜 번호 */
-        p {
-          cursor: pointer;
-          margin: 0;
-          font-weight: 500;
-          
-          .today {
-            color: var(--color-white);
-            font-size: var(--font-size-md);
-            font-weight: 700;
-            width: 24px;
-            height: 24px;
-            display: inline-block;
-            line-height: 24px;
-            background: var(--color-primary);
-            text-align: center;
-            border-radius: 50%;
-            box-shadow: var(--shadow-sm);
-          }
-        }
-        
-        /* 툴팁 모달 */
-        .Modal {
-          position: absolute;
-          display: block !important;
-          background: var(--color-gray-900);
-          z-index: 1000;
-          padding: var(--spacing-sm) var(--spacing-md);
-          color: var(--color-white);
-          border-radius: 6px;
-          font-size: var(--font-size-sm);
-          box-shadow: var(--shadow-md);
-          white-space: nowrap;
-          pointer-events: none;
-          
-          &::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 4px solid transparent;
-            border-top-color: var(--color-gray-900);
-          }
-        }
-        
-        /* 프로젝트 단계 바 */
-        span {
-          display: block;
-          height: 4px;
-          width: calc(100% + 20px);
-          margin-left: -10px;
-          margin-top: 10px;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          
-          &:first-of-type {
-            margin-top: 15px;
-          }
-          
-          &:hover {
-            height: 6px;
-            margin-top: 8px;
-            
-            &:first-of-type {
-              margin-top: 13px;
-            }
-          }
-          
-          &.start {
-            border-radius: 6px 0 0 6px;
-          }
-          
-          &.end {
-            border-radius: 0 6px 6px 0;
-          }
-          
-          &.start.end {
-            border-radius: 6px;
-          }
-          
-          /* 프로젝트 단계별 색상 */
-          &.first { background: var(--color-phase-1); }
-          &.second { background: var(--color-phase-2); }
-          &.third { background: var(--color-phase-3); }
-          &.fourth { background: var(--color-phase-4); }
-          &.fifth { background: var(--color-phase-5); }
-          &.sixth { background: var(--color-phase-6); }
-          &.seven { background: var(--color-phase-7); }
-          &.eighth { background: var(--color-phase-8); }
-          
-          /* 메모 스타일 */
-          &.memo {
-            width: 100%;
-            margin-left: 0;
-            margin-top: 4px;
-            height: auto;
-            font-size: var(--font-size-sm);
-            word-break: break-all;
-            background: var(--color-gray-100);
-            padding: var(--spacing-xs);
-            border-radius: 4px;
-            color: var(--color-gray-800);
-            line-height: 1.3;
-            
-            &:hover {
-              background: var(--color-gray-200);
-              height: auto;
-              margin-top: 4px;
-            }
-          }
-        }
-        
-        /* 이전/다음 달 날짜 */
-        &:first-child,
-        &:last-child {
-          background: var(--color-gray-100);
-          opacity: 0.7;
-        }
-      }
-    }
-  }
-  
-  /* 일 뷰 레이아웃 */
-  &.day {
-    .th {
-      grid-template-columns: 1fr;
-    }
-    
-    .td .week {
-      grid-template-columns: 1fr;
-      
-      > div {
-        min-height: 200px;
-      }
-    }
-  }
-}
-
-/* ========================
-   프로젝트 목록 스타일
-======================== */
-
-.list_box {
-  margin-top: 100px;
-  
-  .process {
-    margin-top: var(--spacing-xl);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    &:first-child {
-      margin-top: 0;
-    }
-    
-    .s_title {
-      width: 150px;
-      height: 150px;
-      padding: var(--spacing-lg);
-      color: var(--color-white);
-      font-size: var(--font-size-lg);
-      background: var(--color-primary);
-      line-height: 1.3;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      position: relative;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        right: var(--spacing-lg);
-        bottom: var(--spacing-lg);
-        width: 24px;
-        height: 24px;
-        background-size: contain;
-        background-repeat: no-repeat;
-      }
-    }
-    
-    /* 단계별 아이콘 */
-    &:nth-child(1) .s_title::after {
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMgM0gyMVYxOUgzVjNaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTcgN0gxN1Y5SDdWN1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik03IDExSDE3VjEzSDdWMTFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNyAxNUgxM1YxN0g3VjE1WiIgZmlsbD0id2hpdGUiLz4KPHN2Zz4K');
-    }
-    
-    /* Swiper 컨테이너 */
-    .swiper {
-      width: calc(100% - 180px);
-      box-shadow: var(--shadow-lg);
-      border-radius: 20px 20px 0 0;
-      height: 150px;
-      position: relative;
-      background: var(--color-white);
-      
-      .swiper-slide {
-        border-right: 1px dashed var(--color-gray-300);
-        text-align: center;
+      .date-navigation {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 20px;
         
-        &:last-child {
-          border-right: none;
+        h2 {
+          font-size: 34px;
+          font-weight: bold;
+          margin: 0;
+          color: $color-text-primary;
         }
         
-        .inner03 {
-          width: 100%;
-          padding: 0 var(--spacing-sm);
+        .nav-buttons {
+          display: flex;
+          gap: 10px;
           
-          .name {
-            font-weight: 700;
-            font-size: 17px;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            text-overflow: ellipsis;
-            color: var(--color-gray-900);
-            margin-bottom: var(--spacing-sm);
+          button {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: $color-primary;
+            color: $color-white;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            
+            &:hover {
+              background: darken($color-primary, 5%);
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+      
+      .date-type-selector {
+        display: flex;
+        gap: 10px;
+        
+        button {
+          padding: 8px 20px;
+          border: 1px solid $color-border-light;
+          background: $color-white;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: all 0.3s;
+          
+          &.active {
+            background: $color-primary;
+            color: $color-white;
+            border-color: $color-primary;
           }
           
-          .day {
-            margin-top: var(--spacing-sm);
+          &:hover:not(.active) {
+            background: $color-gray-50;
+          }
+        }
+      }
+    }
+    
+    .header-right {
+      .project-filter {
+        padding: 10px 20px;
+        border: 1px solid $color-border-light;
+        border-radius: 8px;
+        font-size: 16px;
+        min-width: 200px;
+        cursor: pointer;
+        
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+        }
+      }
+    }
+  }
+  
+  .calendar-body {
+    background: $color-white;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+      
+      .weekday {
+        text-align: center;
+        font-weight: bold;
+        color: $color-text-secondary;
+        padding: 10px;
+      }
+    }
+    
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      
+      .calendar-cell {
+        min-height: 100px;
+        border: 1px solid $color-border-medium;
+        border-radius: 10px;
+        padding: 10px;
+        position: relative;
+        transition: all 0.3s;
+        
+        &.other-month {
+          background: $color-gray-50;
+          
+          .date-number {
+            color: $color-gray-300;
+          }
+        }
+        
+        &.today {
+          background: lighten($color-primary, 45%);
+          border-color: $color-primary;
+          
+          .date-number {
+            color: $color-primary;
+            font-weight: bold;
+          }
+        }
+        
+        &:hover {
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
+        }
+        
+        .date-number {
+          font-size: 14px;
+          font-weight: 500;
+          margin-bottom: 5px;
+        }
+        
+        .project-indicators {
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+          
+          .project-bar {
+            height: 4px;
+            border-radius: 2px;
+            width: 100%;
+          }
+        }
+      }
+    }
+    
+    .week-view {
+      .week-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 15px;
+        
+        .week-column {
+          .week-header {
+            text-align: center;
+            padding: 15px 10px;
+            border-bottom: 2px solid $color-border-medium;
+            margin-bottom: 15px;
             
-            span {
-              display: block;
-              font-size: var(--font-size-sm);
-              color: var(--color-gray-600);
-              line-height: 1.2;
+            .week-day {
+              font-weight: bold;
+              color: $color-text-secondary;
+              margin-bottom: 5px;
+            }
+            
+            .week-date {
+              font-size: 20px;
               
-              &:first-child {
-                margin-bottom: 2px;
+              &.today {
+                color: $color-primary;
+                font-weight: bold;
               }
             }
           }
           
-          .no-date {
-            color: var(--color-gray-400);
-            font-size: var(--font-size-sm);
-            font-style: italic;
-          }
-          
-          .project-color-indicator {
-            width: 20px;
-            height: 4px;
-            margin: var(--spacing-xs) auto 0;
-            border-radius: 2px;
-          }
-          
-          &.no-projects {
-            .name {
-              color: var(--color-gray-400);
-              font-weight: 400;
+          .week-content {
+            min-height: 400px;
+            
+            .week-project {
+              padding: 10px;
+              border-radius: 8px;
+              color: $color-white;
+              font-size: 12px;
+              margin-bottom: 8px;
+              cursor: pointer;
+              transition: all 0.3s;
+              
+              &:hover {
+                transform: translateX(5px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+              }
             }
           }
         }
       }
-      
-      /* Swiper 스크롤바 */
-      .swiper-scrollbar {
-        width: 100%;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        z-index: 9999;
-        
-        .swiper-scrollbar-drag {
-          height: 5px;
-          background: var(--color-gray-300);
-          border-radius: 20px;
-        }
-      }
-      
-      /* Swiper 네비게이션 */
-      .swiper-button-prev,
-      .swiper-button-next {
-        color: var(--color-primary);
-        width: 30px;
-        height: 30px;
-        margin-top: -15px;
-        
-        &::after {
-          font-size: 16px;
-        }
-        
-        &.swiper-button-disabled {
-          opacity: 0.3;
-        }
-      }
-      
-      /* Swiper 페이지네이션 */
-      .swiper-pagination {
-        bottom: var(--spacing-sm);
-        
-        .swiper-pagination-bullet {
-          background: var(--color-gray-300);
-          opacity: 1;
-          
-          &.swiper-pagination-bullet-active {
-            background: var(--color-primary);
-          }
-        }
-      }
-    }
-  }
-}
-
-/* ========================
-   통계 정보 스타일
-======================== */
-
-.part {
-  margin-top: 100px;
-  
-  &:first-child {
-    margin-top: 0;
-  }
-  
-  ul.schedule {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-lg);
-    
-    li {
-      background: var(--color-secondary);
-      border-radius: 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 140px;
-      padding: 0 var(--spacing-xl);
-      color: var(--color-white);
-      font-size: var(--font-size-xl);
-      font-weight: 600;
-      transition: all 0.2s ease;
-      
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
-      }
-      
-      span {
-        font-weight: 700;
-        font-size: 50px;
-        color: var(--color-white);
-      }
-      
-      &:first-child {
-        background: var(--color-primary-gradient);
-      }
-    }
-  }
-}
-
-/* ========================
-   프로젝트 색상 범례
-======================== */
-
-.list_mark {
-  margin-top: var(--spacing-xl);
-  
-  ul {
-    text-align: right;
-    
-    li {
-      display: inline-block;
-      margin: 0 0 0 var(--spacing-lg);
-      font-size: var(--font-size-sm);
-      color: var(--color-gray-700);
-      
-      span {
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        vertical-align: middle;
-        margin: -3px var(--spacing-sm) 0 0;
-        border-radius: 50%;
-        
-        &.first { background: var(--color-phase-1); }
-        &.second { background: var(--color-phase-2); }
-        &.third { background: var(--color-phase-3); }
-        &.fourth { background: var(--color-phase-4); }
-        &.fifth { background: var(--color-phase-5); }
-        &.sixth { background: var(--color-phase-6); }
-        &.seven { background: var(--color-phase-7); }
-        &.eighth { background: var(--color-phase-8); }
-      }
-    }
-  }
-}
-
-/* ========================
-   모달 스타일
-======================== */
-
-.ant-modal-body {
-  padding: 0 !important;
-  
-  .modal-title {
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-    margin-bottom: var(--spacing-lg);
-    color: var(--color-gray-900);
-  }
-  
-  .modal-content {
-    .title {
-      font-size: var(--font-size-lg);
-      color: var(--color-gray-900);
     }
     
-    .day {
-      font-size: var(--font-size-lg);
-      font-weight: 700;
-      font-family: 'Inter', sans-serif;
-      color: var(--color-gray-900);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    textarea {
-      width: 100%;
-      min-height: 80px;
-      height: 100px;
-      padding: var(--spacing-md);
-      border: 1px solid var(--color-gray-300);
-      border-radius: 10px;
-      font-family: 'Inter', sans-serif;
-      font-size: var(--font-size-md);
-      resize: vertical;
-      transition: border-color 0.2s ease;
-      
-      &:focus {
-        border-color: var(--color-primary);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
+    .day-view {
+      h3 {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid $color-border-medium;
       }
       
-      &::placeholder {
-        color: var(--color-gray-400);
-      }
-    }
-    
-    .selec_wrap {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-lg);
-      
-      .react-datepicker-wrapper {
-        width: 100%;
-        
-        input {
-          width: 100%;
-          background: var(--color-gray-100);
-          height: 60px;
-          border: 1px solid var(--color-gray-300);
+      .day-projects {
+        .day-project-card {
+          background: $color-white;
+          border: 1px solid $color-border-medium;
+          border-left: 5px solid;
           border-radius: 10px;
+          padding: 20px;
+          margin-bottom: 15px;
+          transition: all 0.3s;
+          
+          &:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+          }
+          
+          h4 {
+            font-size: 20px;
+            margin: 0 0 15px 0;
+            color: $color-text-primary;
+          }
+          
+          p {
+            margin: 8px 0;
+            color: $color-text-secondary;
+            font-size: 14px;
+          }
+        }
+        
+        .no-projects {
           text-align: center;
-          cursor: pointer;
-          box-shadow: var(--shadow-sm);
-          font-size: 17px;
-          font-family: 'Inter', sans-serif;
-          transition: all 0.2s ease;
-          
-          &:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
-          }
-          
-          &:hover {
-            border-color: var(--color-primary);
-          }
+          color: #999;
+          font-size: 16px;
+          padding: 40px;
+          background: $color-gray-50;
+          border-radius: 10px;
         }
       }
     }
+  }
+  
+  .project-list-section {
+    background: $color-white;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     
-    .memo_txt {
-      font-size: var(--font-size-md);
-      background: var(--color-gray-100);
-      padding: var(--spacing-lg);
-      border-radius: 10px;
-      border: 1px solid var(--color-gray-300);
-      line-height: 1.5;
-      color: var(--color-gray-900);
-      margin-bottom: var(--spacing-lg);
+    h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
     }
     
-    .btn_wrap {
-      margin-top: var(--spacing-2xl);
+    .project-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--spacing-lg);
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
       
-      button {
-        height: 54px;
-        border: none;
-        border-radius: 15px;
-        font-size: var(--font-size-lg);
-        font-weight: 600;
+      .project-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        border: 1px solid $color-border-medium;
+        border-radius: 10px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        font-family: 'Inter', sans-serif;
+        transition: all 0.3s;
         
-        &.submit {
-          background: var(--color-primary-gradient);
-          color: var(--color-white);
-          
-          &:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-          }
+        &:hover {
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
         }
         
-        &.cancel {
-          background: var(--color-secondary);
-          color: var(--color-white);
+        .project-color {
+          width: 10px;
+          height: 50px;
+          border-radius: 5px;
+        }
+        
+        .project-info {
+          flex: 1;
           
-          &:hover {
-            background: var(--color-gray-600);
-            transform: translateY(-2px);
+          h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: $color-text-primary;
           }
+          
+          p {
+            margin: 0;
+            color: $color-text-secondary;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    
+    .calendar-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding-top: 20px;
+      border-top: 1px solid $color-border-medium;
+      
+      .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: $color-gray-50;
+        border-radius: 10px;
+        
+        .stat-label {
+          color: $color-text-secondary;
+          font-size: 14px;
+        }
+        
+        .stat-value {
+          font-size: 28px;
+          font-weight: bold;
+          color: $color-primary;
         }
       }
     }
   }
 }
 
-/* ========================
-   반응형 디자인
-======================== */
-
-/* 태블릿 */
-@media (max-width: 1024px) {
-  .content.calendar {
-    margin: var(--spacing-xl) 0;
-    
-    .filter {
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .calendar-page {
+    .calendar-header {
       flex-direction: column;
-      gap: var(--spacing-lg);
-      align-items: stretch;
+      gap: 20px;
       
-      .date {
-        font-size: 28px;
-        justify-content: center;
+      .header-left {
+        width: 100%;
+        justify-content: space-between;
       }
       
-      .type {
-        justify-content: center;
+      .header-right {
+        width: 100%;
+        
+        .project-filter {
+          width: 100%;
+        }
       }
     }
-  }
-  
-  .calendar_box .td .week > div {
-    min-height: 80px;
-    font-size: var(--font-size-sm);
-  }
-  
-  .list_box .process {
-    flex-direction: column;
-    gap: var(--spacing-lg);
     
-    .s_title {
-      width: 100%;
-      height: 80px;
-      text-align: center;
-    }
-    
-    .swiper {
-      width: 100%;
-    }
-  }
-  
-  .part ul.schedule {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-    
-    li {
-      height: 100px;
-      padding: 0 var(--spacing-lg);
-      font-size: var(--font-size-lg);
-      
-      span {
-        font-size: 36px;
-      }
+    .project-list-section .project-list {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
   }
 }
 
-/* 모바일 */
 @media (max-width: 768px) {
-  .content.calendar {
-    margin: var(--spacing-lg) 0;
-  }
-  
-  .calendar_box {
-    .th div {
-      padding: var(--spacing-xs);
-      font-size: var(--font-size-sm);
-    }
+  .calendar-page {
+    padding: 10px;
     
-    .td .week > div {
-      min-height: 60px;
-      padding: var(--spacing-xs);
-      font-size: var(--font-size-xs);
-      
-      span {
-        height: 3px;
-        margin-top: var(--spacing-xs);
+    .calendar-header {
+      .header-left {
+        flex-direction: column;
+        gap: 20px;
         
-        &:first-of-type {
-          margin-top: var(--spacing-sm);
-        }
-        
-        &.memo {
-          font-size: var(--font-size-xs);
-          padding: 2px;
+        .date-navigation h2 {
+          font-size: 24px;
         }
       }
     }
-  }
-  
-  .part ul.schedule {
-    grid-template-columns: 1fr;
     
-    li {
-      height: 80px;
-      font-size: var(--font-size-md);
+    .calendar-body {
+      padding: 15px;
       
-      span {
-        font-size: 28px;
+      .calendar-grid .calendar-cell {
+        min-height: 70px;
+        padding: 5px;
+        
+        .date-number {
+          font-size: 12px;
+        }
+        
+        .project-indicators .project-bar {
+          height: 3px;
+        }
+      }
+      
+      .week-view .week-grid {
+        grid-template-columns: 1fr;
+        
+        .week-column .week-content {
+          min-height: 150px;
+        }
       }
     }
-  }
-  
-  .list_mark ul li {
-    display: block;
-    margin: var(--spacing-sm) 0;
-    text-align: left;
-  }
-}
-
-/* ========================
-   접근성 개선
-======================== */
-
-/* 고대비 모드 지원 */
-@media (prefers-contrast: high) {
-  :root {
-    --color-gray-300: #999999;
-    --color-gray-400: #666666;
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
-  }
-  
-  .calendar_box .td .week > div {
-    border-color: #666666;
-  }
-}
-
-/* 모션 감소 설정 */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* 포커스 표시 개선 */
-*:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-/* 스크린 리더 전용 텍스트 */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* ========================
-   인쇄 스타일
-======================== */
-
-@media print {
-  .content.calendar {
-    .filter .type,
-    .list_box .swiper-button-prev,
-    .list_box .swiper-button-next,
-    .list_box .swiper-pagination {
-      display: none !important;
-    }
     
-    .calendar_box .td .week > div {
-      break-inside: avoid;
-    }
-    
-    * {
-      color: #000000 !important;
-      background: #ffffff !important;
+    .project-list-section {
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .calendar-stats {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }

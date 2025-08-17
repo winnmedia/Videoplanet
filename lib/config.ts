@@ -38,7 +38,7 @@ if (typeof window === 'undefined') {
   console.log('- API_BASE_URL configured:', API_BASE_URL)
   
   if (API_BASE_URL.includes('localhost')) {
-    console.warn('⚠️ Using localhost API URL in production environment')
+    console.warn('[WARNING] Using localhost API URL in production environment')
   }
 }
 

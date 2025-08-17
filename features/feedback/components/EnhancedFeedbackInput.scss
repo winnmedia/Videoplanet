@@ -1,0 +1,701 @@
+// =============================================================================
+// EnhancedFeedbackInput Styles - 강화된 시점 피드백 입력 컴포넌트 스타일
+// =============================================================================
+
+.enhanced-feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+
+  // 폼 섹션 공통 스타일
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    // 라디오 버튼 그룹
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+
+      .radio-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        input[type="radio"] {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+          accent-color: #1631F8;
+
+          &:focus {
+            outline: 2px solid #1631F8;
+            outline-offset: 2px;
+          }
+        }
+
+        label {
+          font-size: 0.95rem;
+          color: #333;
+          cursor: pointer;
+          user-select: none;
+
+          &:hover {
+            color: #1631F8;
+          }
+        }
+      }
+    }
+  }
+
+  // 타임스탬프 입력 그룹
+  .timestamp-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .timestamp-input-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+
+      .timestamp-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: 'Courier New', monospace;
+        background: #ffffff;
+        color: #333;
+        transition: all 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #1631F8;
+          box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
+        }
+
+        &.error {
+          border-color: #dc3545;
+          background: #fff5f5;
+
+          &:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+          }
+        }
+
+        &.capturing {
+          border-color: #28a745;
+          background: #f8fff8;
+          animation: captureGlow 0.5s ease-in-out;
+        }
+
+        &::placeholder {
+          color: #999;
+          font-family: inherit;
+        }
+      }
+
+      // 현재 시간 캡처 버튼
+      .capture-time-btn {
+        padding: 0.75rem;
+        background: #1631F8;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        height: 44px;
+
+        &:hover:not(:disabled) {
+          background: #0f23d1;
+          transform: translateY(-1px);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        &.capturing {
+          background: #28a745;
+          animation: pulse 0.5s ease-in-out;
+        }
+
+        &:focus {
+          outline: 2px solid #1631F8;
+          outline-offset: 2px;
+        }
+      }
+
+      // 타임스탬프로 이동 버튼
+      .jump-to-time-btn {
+        padding: 0.75rem;
+        background: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        height: 44px;
+
+        &:hover {
+          background: #5a6268;
+          transform: translateY(-1px);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:focus {
+          outline: 2px solid #6c757d;
+          outline-offset: 2px;
+        }
+      }
+    }
+
+    // 타임스탬프 제안 버튼들
+    .timestamp-suggestions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .suggestions-label {
+        font-size: 0.85rem;
+        color: #666;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .suggestion-btn {
+        padding: 0.4rem 0.8rem;
+        background: #f8f9fa;
+        color: #495057;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Courier New', monospace;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #e9ecef;
+          border-color: #adb5bd;
+        }
+
+        &.active {
+          background: #1631F8;
+          color: white;
+          border-color: #1631F8;
+        }
+
+        &:focus {
+          outline: 2px solid #1631F8;
+          outline-offset: 1px;
+        }
+      }
+    }
+
+    // 타임라인 미리보기
+    .timeline-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+
+      .timeline-bar {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+
+        .timeline-track {
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, #1631F8 0%, #4dabf7 100%);
+          opacity: 0.3;
+          border-radius: 4px;
+        }
+
+        .timeline-marker {
+          position: absolute;
+          top: -2px;
+          width: 4px;
+          height: 12px;
+          background: #1631F8;
+          border-radius: 2px;
+          transform: translateX(-50%);
+          box-shadow: 0 2px 4px rgba(22, 49, 248, 0.3);
+        }
+      }
+
+      .timeline-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+
+        .timeline-time {
+          font-family: 'Courier New', monospace;
+          font-weight: 600;
+          color: #1631F8;
+          font-size: 0.9rem;
+        }
+
+        .timeline-seconds {
+          font-size: 0.8rem;
+          color: #666;
+        }
+      }
+    }
+  }
+
+  // 피드백 내용 입력
+  .content-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .content-textarea {
+      padding: 0.75rem 1rem;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #ffffff;
+      color: #333;
+      resize: vertical;
+      min-height: 100px;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #1631F8;
+        box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
+      }
+
+      &.error {
+        border-color: #dc3545;
+        background: #fff5f5;
+
+        &:focus {
+          border-color: #dc3545;
+          box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        }
+      }
+
+      &::placeholder {
+        color: #999;
+      }
+    }
+
+    .textarea-footer {
+      display: flex;
+      justify-content: flex-end;
+
+      .character-count {
+        font-size: 0.8rem;
+        color: #666;
+      }
+    }
+  }
+
+  // 에러 메시지
+  .error-message {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    &::before {
+      content: '⚠️';
+      font-size: 0.8rem;
+    }
+  }
+
+  // 도움말 텍스트
+  .help-text {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.25rem;
+  }
+
+  // 폼 액션 버튼
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+
+    .submit-btn {
+      padding: 0.875rem 2rem;
+      background: linear-gradient(135deg, #1631F8 0%, #4dabf7 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-width: 140px;
+      position: relative;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none;
+        box-shadow: none;
+      }
+
+      &.loading {
+        cursor: not-allowed;
+        background: #6c757d;
+
+        .loading-spinner {
+          width: 16px;
+          height: 16px;
+          border: 2px solid transparent;
+          border-top: 2px solid #ffffff;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+      }
+
+      &:focus {
+        outline: 2px solid #1631F8;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  // 접근성을 위한 숨김 텍스트
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+// 애니메이션
+@keyframes captureGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .enhanced-feedback-form {
+    padding: 1rem;
+    gap: 1rem;
+
+    .timestamp-input-group {
+      .timestamp-input-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+
+        .timestamp-input {
+          margin-bottom: 0;
+        }
+
+        .capture-time-btn,
+        .jump-to-time-btn {
+          width: 100%;
+          height: 44px;
+        }
+      }
+
+      .timestamp-suggestions {
+        justify-content: center;
+
+        .suggestions-label {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+
+    .form-actions {
+      .submit-btn {
+        width: 100%;
+        padding: 1rem 2rem;
+      }
+    }
+  }
+}
+
+// 다크모드 지원
+@media (prefers-color-scheme: dark) {
+  .enhanced-feedback-form {
+    background: #2d2d2d;
+    color: #ffffff;
+
+    .form-section {
+      .radio-item label {
+        color: #ffffff;
+
+        &:hover {
+          color: #4dabf7;
+        }
+      }
+    }
+
+    .timestamp-input-group {
+      .timestamp-input-container {
+        .timestamp-input {
+          background: #3d3d3d;
+          border-color: #555;
+          color: #ffffff;
+
+          &:focus {
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+          }
+
+          &.error {
+            border-color: #dc3545;
+            background: #4d2d2d;
+          }
+
+          &.capturing {
+            border-color: #28a745;
+            background: #2d4d2d;
+          }
+
+          &::placeholder {
+            color: #aaa;
+          }
+        }
+      }
+
+      .timestamp-suggestions {
+        .suggestions-label {
+          color: #ccc;
+        }
+
+        .suggestion-btn {
+          background: #3d3d3d;
+          color: #ffffff;
+          border-color: #555;
+
+          &:hover {
+            background: #4d4d4d;
+            border-color: #666;
+          }
+
+          &.active {
+            background: #4dabf7;
+            border-color: #4dabf7;
+          }
+        }
+      }
+
+      .timeline-preview {
+        background: #3d3d3d;
+        border-color: #555;
+
+        .timeline-bar {
+          background: #555;
+
+          .timeline-track {
+            background: linear-gradient(90deg, #4dabf7 0%, #74c0fc 100%);
+          }
+
+          .timeline-marker {
+            background: #4dabf7;
+            box-shadow: 0 2px 4px rgba(77, 171, 247, 0.3);
+          }
+        }
+
+        .timeline-info {
+          .timeline-time {
+            color: #4dabf7;
+          }
+
+          .timeline-seconds {
+            color: #ccc;
+          }
+        }
+      }
+    }
+
+    .content-input-group {
+      .content-textarea {
+        background: #3d3d3d;
+        border-color: #555;
+        color: #ffffff;
+
+        &:focus {
+          border-color: #4dabf7;
+          box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+        }
+
+        &.error {
+          border-color: #dc3545;
+          background: #4d2d2d;
+        }
+
+        &::placeholder {
+          color: #aaa;
+        }
+      }
+
+      .textarea-footer {
+        .character-count {
+          color: #ccc;
+        }
+      }
+    }
+
+    .error-message {
+      color: #ff6b6b;
+    }
+
+    .help-text {
+      color: #ccc;
+    }
+  }
+}
+
+// 고대비 모드 지원
+@media (prefers-contrast: high) {
+  .enhanced-feedback-form {
+    border: 2px solid #000;
+
+    .timestamp-input-group {
+      .timestamp-input-container {
+        .timestamp-input {
+          border: 2px solid #000;
+
+          &:focus {
+            border-color: #0000ff;
+            box-shadow: 0 0 0 2px #0000ff;
+          }
+        }
+      }
+
+      .timestamp-suggestions {
+        .suggestion-btn {
+          border: 2px solid #000;
+
+          &:focus {
+            outline: 3px solid #0000ff;
+          }
+        }
+      }
+    }
+
+    .content-input-group {
+      .content-textarea {
+        border: 2px solid #000;
+
+        &:focus {
+          border-color: #0000ff;
+          box-shadow: 0 0 0 2px #0000ff;
+        }
+      }
+    }
+
+    .form-actions {
+      .submit-btn {
+        border: 2px solid #000;
+
+        &:focus {
+          outline: 3px solid #0000ff;
+        }
+      }
+    }
+  }
+}
+
+// 모션 감소 지원
+@media (prefers-reduced-motion: reduce) {
+  .enhanced-feedback-form {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

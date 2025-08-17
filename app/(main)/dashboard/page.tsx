@@ -1,228 +1,169 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import './Dashboard.scss'
+import { useSelector } from 'react-redux'
+import moment from 'moment'
 
-interface Project {
-  id: string
-  name: string
-  status: 'active' | 'completed' | 'pending'
-  progress: number
-  lastUpdate: string
-}
+// moment 한국어 로케일 설정
+moment.locale('ko')
+import Sidebar from './components/Sidebar'
+import ProjectProgressWidget from './components/ProjectProgressWidget'
+import InvitationStatusWidget from './components/InvitationStatusWidget'
+import FeedbackStatusWidget from './components/FeedbackStatusWidget'
+import { useProjectProgress, useInvitationStatus, useFeedbackStatus } from '../../../features/dashboard/hooks/useDashboard'
+import './CmsHome.scss'
 
 export default function DashboardPage() {
-  const router = useRouter()
-  const [userName, setUserName] = useState('')
-  const [projects, setProjects] = useState<Project[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const navigate = useRouter()
+  const [time, setTime] = useState('')
+  const [date, setDate] = useState(new Date())
+  const [side, setSide] = useState({ tab: '', onMenu: false })
+  const { tab, onMenu } = side
+  const intervalRef = useRef<NodeJS.Timeout>()
 
+  // 대시보드 위젯 데이터 훅들
+  const projectProgress = useProjectProgress()
+  const invitationStatus = useInvitationStatus()
+  const feedbackStatus = useFeedbackStatus()
+
+  // Redux에서 프로젝트 데이터 가져오기 (실제 API 호출 필요)
+  const projectList: Array<{ id: number; name: string; status: string }> = []
+  
+  const thisMonthProject = projectList.filter(p => p.status === 'active')
+  const nextMonthProject = projectList.filter(p => p.status === 'pending')
+
+  // 시계 업데이트
   useEffect(() => {
-    // 사용자 정보 로드
-    const loadUserData = () => {
-      try {
-        const sessionData = window.localStorage.getItem('VGID')
-        if (sessionData) {
-          const userData = JSON.parse(sessionData)
-          setUserName(userData.name || userData.email || '사용자')
-        }
-      } catch (error) {
-        console.error('사용자 정보 로드 실패:', error)
+    moment.locale('ko')
+    
+    const updateTime = () => {
+      const now = new Date()
+      setTime(moment(now).format('HH:mm:ss'))
+      setDate(now)
+    }
+
+    updateTime() // 초기 시간 설정
+    intervalRef.current = setInterval(updateTime, 1000)
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
       }
     }
-
-    // 프로젝트 목록 로드 (임시 데이터)
-    const loadProjects = () => {
-      // 실제로는 API를 통해 데이터를 가져와야 함
-      const sampleProjects: Project[] = [
-        {
-          id: '1',
-          name: '샘플 프로젝트 1',
-          status: 'active',
-          progress: 65,
-          lastUpdate: '2025-01-16'
-        },
-        {
-          id: '2',
-          name: '샘플 프로젝트 2',
-          status: 'completed',
-          progress: 100,
-          lastUpdate: '2025-01-15'
-        },
-        {
-          id: '3',
-          name: '샘플 프로젝트 3',
-          status: 'pending',
-          progress: 0,
-          lastUpdate: '2025-01-14'
-        }
-      ]
-      setProjects(sampleProjects)
-      setIsLoading(false)
-    }
-
-    loadUserData()
-    loadProjects()
   }, [])
 
-  const getStatusLabel = (status: Project['status']) => {
-    const labels = {
-      active: '진행 중',
-      completed: '완료',
-      pending: '대기 중'
+  const handleMenuClick = (menuType: string) => {
+    if (menuType === 'calendar') {
+      navigate.push('/calendar')
+    } else if (menuType === 'project' || menuType === 'feedback') {
+      if (tab === menuType) {
+        setSide({ tab: '', onMenu: false })
+      } else {
+        setSide({ tab: menuType, onMenu: true })
+      }
     }
-    return labels[status]
-  }
-
-  const getStatusClass = (status: Project['status']) => {
-    return `status-${status}`
-  }
-
-  if (isLoading) {
-    return (
-      <div className="dashboard-page-loading">
-        <div className="spinner"></div>
-        <p>대시보드를 불러오는 중...</p>
-      </div>
-    )
   }
 
   return (
-    <div className="dashboard-page" id="main-content">
-      <div className="dashboard-container">
-        {/* 환영 메시지 */}
-        <section className="welcome-section">
-          <h1>안녕하세요, {userName}님!</h1>
-          <p>VideoPlanet 대시보드에 오신 것을 환영합니다.</p>
-        </section>
+    <div className="cms_wrap">
+      <Sidebar 
+        tab={tab} 
+        onMenu={onMenu}
+        onTabChange={(newTab) => setSide({ tab: newTab, onMenu: newTab !== '' })}
+      />
 
-        {/* 빠른 액션 버튼들 */}
-        <section className="quick-actions">
-          <h2>빠른 시작</h2>
-          <div className="action-buttons">
-            <button 
-              onClick={() => router.push('/projects/create')}
-              className="action-btn primary"
-            >
-              ➕ 새 프로젝트 만들기
-            </button>
-            <button 
-              onClick={() => router.push('/projects')}
-              className="action-btn"
-            >
-              📂 프로젝트 목록
-            </button>
-            <button 
-              onClick={() => router.push('/calendar')}
-              className="action-btn"
-            >
-              📅 캘린더 보기
-            </button>
-            <button 
-              onClick={() => router.push('/feedback')}
-              className="action-btn"
-            >
-              💬 피드백 관리
-            </button>
+      <main>
+        <div className="content home">
+          {/* 대형 디지털 시계 */}
+          <div className="today">
+            <div className="clock">{time}</div>
+            <small>{moment(date).format('YYYY.MM.DD.dd')}</small>
           </div>
-        </section>
 
-        {/* 프로젝트 요약 */}
-        <section className="projects-summary">
-          <h2>최근 프로젝트</h2>
-          {projects.length > 0 ? (
-            <div className="projects-grid">
-              {projects.map(project => (
-                <div key={project.id} className="project-card">
-                  <div className="project-header">
-                    <h3>{project.name}</h3>
-                    <span className={`project-status ${getStatusClass(project.status)}`}>
-                      {getStatusLabel(project.status)}
-                    </span>
-                  </div>
-                  <div className="project-body">
-                    <div className="progress-section">
-                      <div className="progress-label">
-                        <span>진행률</span>
-                        <span>{project.progress}%</span>
-                      </div>
-                      <div className="progress-bar">
-                        <div 
-                          className="progress-fill"
-                          style={{ width: `${project.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    <div className="project-footer">
-                      <span className="last-update">
-                        마지막 업데이트: {project.lastUpdate}
-                      </span>
-                      <button 
-                        onClick={() => router.push(`/projects/${project.id}`)}
-                        className="view-btn"
-                      >
-                        자세히 보기 →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="no-projects">
-              <p>아직 프로젝트가 없습니다.</p>
-              <button 
-                onClick={() => router.push('/projects/create')}
-                className="create-btn"
+          {/* 4개 메뉴 아이콘 */}
+          <div className="menu_box">
+            <ul>
+              <li
+                className="menu_calendar"
+                onClick={() => handleMenuClick('calendar')}
               >
-                첫 프로젝트 만들기
-              </button>
-            </div>
-          )}
-        </section>
-
-        {/* 통계 섹션 */}
-        <section className="stats-section">
-          <h2>활동 통계</h2>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-icon">📊</div>
-              <div className="stat-content">
-                <div className="stat-value">{projects.length}</div>
-                <div className="stat-label">전체 프로젝트</div>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-icon">✅</div>
-              <div className="stat-content">
-                <div className="stat-value">
-                  {projects.filter(p => p.status === 'completed').length}
-                </div>
-                <div className="stat-label">완료된 프로젝트</div>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-icon">⚡</div>
-              <div className="stat-content">
-                <div className="stat-value">
-                  {projects.filter(p => p.status === 'active').length}
-                </div>
-                <div className="stat-label">진행 중</div>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-icon">⏳</div>
-              <div className="stat-content">
-                <div className="stat-value">
-                  {projects.filter(p => p.status === 'pending').length}
-                </div>
-                <div className="stat-label">대기 중</div>
-              </div>
-            </div>
+                <div className="img">캘린더</div>
+                <span>전체 일정</span>
+              </li>
+              <li
+                className="menu_project"
+                onClick={() => handleMenuClick('project')}
+              >
+                <div className="img">프로젝트</div>
+                <span>프로젝트 관리</span>
+              </li>
+              <li
+                className="menu_feedback"
+                onClick={() => handleMenuClick('feedback')}
+              >
+                <div className="img">피드백</div>
+                <span>영상 피드백</span>
+              </li>
+            </ul>
           </div>
-        </section>
-      </div>
+
+          {/* 대시보드 위젯들 */}
+          <div className="widgets-container">
+            <ProjectProgressWidget 
+              data={projectProgress.data}
+              isLoading={projectProgress.isLoading}
+              error={projectProgress.error}
+            />
+            <InvitationStatusWidget
+              data={invitationStatus.data}
+              isLoading={invitationStatus.isLoading}
+              error={invitationStatus.error}
+            />
+            <FeedbackStatusWidget
+              data={feedbackStatus.data}
+              isLoading={feedbackStatus.isLoading}
+              error={feedbackStatus.error}
+            />
+          </div>
+
+          {/* 기존 프로젝트 진행사항 (호환성 유지) */}
+          <div className="part legacy-section">
+            <div className="s_title">프로젝트 진행사항 (기존)</div>
+            <ul className="schedule">
+              <li>
+                <div className="label">
+                  전체<br />
+                  프로젝트
+                </div>
+                <span>{projectList.length}</span>
+              </li>
+              <li>
+                <div className="label">
+                  이번 달<br />
+                  프로젝트
+                </div>
+                <span>{thisMonthProject.length}</span>
+              </li>
+              <li>
+                <div className="label">
+                  다음 달<br />
+                  프로젝트
+                </div>
+                <span>{nextMonthProject.length}</span>
+              </li>
+              <li>
+                <div className="label">
+                  완료된<br />
+                  프로젝트
+                </div>
+                <span>{projectList.filter(p => p.status === 'completed').length}</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </main>
     </div>
   )
 }

@@ -11,6 +11,7 @@ const protectedRoutes = [
   '/calendar',
   '/projects',
   '/feedback',
+  '/planning',
   '/elearning',
   '/cms',
   '/dashboard',
@@ -33,16 +34,22 @@ const publicRoutes = [
 ];
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
   
-  // VGID 쿠키 확인 (localStorage 대신 쿠키 사용)
+  // 데모 모드 확인
+  const isDemoMode = searchParams.get('demo') === 'true';
+  
+  // 인증 쿠키 확인 (우선순위: vridge_session > VGID > token > Authorization header)
+  const vridgeSessionCookie = request.cookies.get('vridge_session')?.value;
   const vgidCookie = request.cookies.get('VGID')?.value;
-  const token = vgidCookie || 
+  const demoSessionCookie = request.cookies.get('demo_session')?.value;
+  const token = vridgeSessionCookie ||
+                vgidCookie || 
                 request.cookies.get('token')?.value || 
                 request.headers.get('authorization')?.replace('Bearer ', '');
 
-  // 토큰 검증 (localStorage는 서버에서 접근 불가하므로 쿠키 또는 헤더에서 확인)
-  const isAuthenticated = Boolean(token);
+  // 토큰 검증 (데모 모드이거나 정상 인증이 있는 경우)
+  const isAuthenticated = Boolean(token) || (isDemoMode || Boolean(demoSessionCookie));
 
   // 보호된 라우트 체크
   const isProtectedRoute = protectedRoutes.some(route => 
@@ -61,18 +68,31 @@ export function middleware(request: NextRequest) {
 
   // 1. 보호된 라우트에 인증 없이 접근하는 경우
   if (isProtectedRoute && !isAuthenticated) {
+    // 데모 모드인 경우 데모 세션 쿠키 설정하고 계속 진행
+    if (isDemoMode) {
+      const response = NextResponse.next();
+      response.cookies.set('demo_session', 'true', {
+        maxAge: 60 * 60 * 2, // 2시간
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/'
+      });
+      return response;
+    }
+    
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('returnUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   // 2. 인증된 사용자가 로그인/회원가입 페이지에 접근하는 경우
-  // 임시로 비활성화 - localStorage 기반 인증이므로 서버에서 확인 불가
-  // if (isAuthRoute && isAuthenticated) {
-  //   const returnUrl = request.nextUrl.searchParams.get('returnUrl');
-  //   const redirectUrl = returnUrl || '/dashboard';
-  //   return NextResponse.redirect(new URL(redirectUrl, request.url));
-  // }
+  // VGID 쿠키가 있으면 이미 로그인한 상태로 간주
+  if (isAuthRoute && isAuthenticated) {
+    const returnUrl = request.nextUrl.searchParams.get('returnUrl');
+    const redirectUrl = returnUrl || '/dashboard';
+    return NextResponse.redirect(new URL(redirectUrl, request.url));
+  }
 
   // 3. API 라우트 보호 (선택사항)
   if (pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) {

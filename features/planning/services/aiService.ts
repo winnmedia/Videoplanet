@@ -427,31 +427,61 @@ ${project.story_content}
     }
   }
 
-  // ====== 시뮬레이션 메서드 (개발용) ======
+  // ====== 시뮬레이션 메서드 (개발용) - 성능 최적화 ======
+  private simulationCache = new Map<string, AIGenerationResponse>()
+  
   private getSimulatedResponse(prompt: string, type: string): AIGenerationResponse {
-    console.log('[AI Service] Using simulated response for type:', type)
+    // 캐시 키 생성
+    const cacheKey = `${type}_${prompt.slice(0, 100)}`
     
+    // 캐시된 응답이 있으면 즉시 반환
+    if (this.simulationCache.has(cacheKey)) {
+      const cached = this.simulationCache.get(cacheKey)!
+      console.log('[AI Service] Using cached simulated response for type:', type)
+      return { ...cached, generation_time: 500 } // 캐시된 응답은 빠르게
+    }
+    
+    console.log('[AI Service] Generating new simulated response for type:', type)
+    
+    let response: AIGenerationResponse
     switch (type) {
       case 'story':
-        return {
+        response = {
           success: true,
           data: this.getSimulatedStory(prompt),
           model_used: 'simulation',
           generation_time: 2000
         }
+        break
       case 'shots':
-        return {
+        response = {
           success: true,
           data: this.getSimulatedShots(prompt),
           model_used: 'simulation',
           generation_time: 3000
         }
+        break
       default:
-        return {
+        response = {
           success: false,
           error: '지원하지 않는 생성 타입입니다'
         }
     }
+    
+    // 성공적인 응답만 캐시
+    if (response.success) {
+      this.simulationCache.set(cacheKey, response)
+      
+      // 캐시 크기 제한 (메모리 누수 방지)
+      if (this.simulationCache.size > 50) {
+        const firstKey = this.simulationCache.keys().next().value
+        if (firstKey) {
+          this.simulationCache.delete(firstKey)
+        }
+      }
+    }
+    
+    return response
   }
 
   private getSimulatedStory(prompt: string): string {
@@ -596,7 +626,7 @@ ${project.story_content}
       id: `frame_${shot.id}`,
       shotId: shot.id,
       sequence,
-      thumbnail: `🎨 ${shot.type} 프레임 ${sequence}`,
+      thumbnail: `[FRAME] ${shot.type} 프레임 ${sequence}`,
       description: `${shot.description.substring(0, 100)}...`,
       technical_notes: `앵글: ${shot.camera_angle}\n움직임: ${shot.camera_movement}\n조명: ${shot.lighting}`,
       timing: `${sequence * 5}초`,

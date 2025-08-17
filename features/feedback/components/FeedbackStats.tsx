@@ -241,7 +241,7 @@ const FeedbackStats: React.FC<FeedbackStatsProps> = memo(({
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">👤</div>
+          <div className="stat-icon">[사용자]</div>
           <div className="stat-content">
             <div className="stat-value">
               {stats.anonymous}
@@ -254,7 +254,7 @@ const FeedbackStats: React.FC<FeedbackStatsProps> = memo(({
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">⏰</div>
+          <div className="stat-icon">[시간]</div>
           <div className="stat-content">
             <div className="stat-value">
               {stats.withTimestamp}
@@ -267,7 +267,7 @@ const FeedbackStats: React.FC<FeedbackStatsProps> = memo(({
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">📝</div>
+          <div className="stat-icon">[텍스트]</div>
           <div className="stat-content">
             <div className="stat-value">{stats.averageLength}</div>
             <div className="stat-label">평균 글자 수</div>
@@ -386,7 +386,7 @@ const FeedbackStats: React.FC<FeedbackStatsProps> = memo(({
               
               {stats.withTimestamp / stats.total < 0.3 && (
                 <div className="insight-item">
-                  <span className="insight-icon">⏰</span>
+                  <span className="insight-icon">[시간]</span>
                   <span className="insight-text">
                     시점이 포함된 피드백이 적습니다. 구체적인 시점 정보를 추가해보세요.
                   </span>
@@ -395,7 +395,7 @@ const FeedbackStats: React.FC<FeedbackStatsProps> = memo(({
               
               {stats.feedbackDensity > 1 && (
                 <div className="insight-item">
-                  <span className="insight-icon">🔥</span>
+                  <span className="insight-icon">[인기]</span>
                   <span className="insight-text">
                     분당 {stats.feedbackDensity.toFixed(1)}개의 높은 피드백 밀도를 보입니다!
                   </span>
@@ -404,7 +404,7 @@ const FeedbackStats: React.FC<FeedbackStatsProps> = memo(({
               
               {stats.averageLength > 100 && (
                 <div className="insight-item">
-                  <span className="insight-icon">📝</span>
+                  <span className="insight-icon">[문서]</span>
                   <span className="insight-text">
                     평균 {stats.averageLength}자의 상세한 피드백을 받고 있습니다.
                   </span>

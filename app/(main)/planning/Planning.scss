@@ -1,0 +1,463 @@
+@import '../../../styles/design-tokens.scss';
+
+.planning-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: $spacing-2xl;
+  background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+
+  @include mobile-only {
+    padding: $spacing-md;
+  }
+}
+
+// ====== 성능 최적화용 로딩 컴포넌트 ======
+.planning-loading {
+  @include flex-center;
+  min-height: 400px;
+  padding: $spacing-2xl;
+  
+  .loading-container {
+    text-align: center;
+    
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid $color-primary;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto $spacing-lg;
+    }
+    
+    h3 {
+      color: $color-text-primary;
+      font-size: $font-size-lg;
+      margin-bottom: $spacing-sm;
+      font-weight: 600;
+    }
+    
+    p {
+      color: $color-text-secondary;
+      font-size: $font-size-md;
+    }
+  }
+}
+
+.step-loading {
+  @include flex-center;
+  min-height: 200px;
+  padding: $spacing-xl;
+  
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: $spacing-md;
+  }
+  
+  p {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+}
+
+// 로딩 스피너 애니메이션
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ====== Demo Mode Banner ======
+.demo-mode-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+  color: $color-white;
+  padding: $spacing-sm $spacing-lg;
+  box-shadow: $shadow-lg;
+  
+  .demo-banner-content {
+    @include flex-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: $spacing-md;
+    
+    @include mobile-only {
+      flex-direction: column;
+      text-align: center;
+      gap: $spacing-sm;
+    }
+  }
+  
+  .demo-icon {
+    font-size: 1.5rem;
+    
+    @include mobile-only {
+      font-size: 1.2rem;
+    }
+  }
+  
+  .demo-text {
+    flex: 1;
+    
+    strong {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg;
+      
+      @include mobile-only {
+        font-size: $font-size-md;
+      }
+    }
+    
+    p {
+      margin: 0;
+      font-size: $font-size-sm;
+      opacity: 0.9;
+      
+      @include mobile-only {
+        font-size: $font-size-xs;
+      }
+    }
+  }
+  
+  .demo-login-link {
+    display: inline-block;
+    background: $color-white;
+    color: #ff8c00;
+    border: none;
+    padding: $spacing-sm $spacing-lg;
+    border-radius: 8px;
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    
+    &:hover {
+      background: #f8f9fa;
+      transform: translateY(-1px);
+    }
+    
+    @include mobile-only {
+      padding: $spacing-xs $spacing-md;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// 데모 배너가 있을 때 메인 콘텐츠 여백 조정
+.planning-page:has(.demo-mode-banner) {
+  padding-top: calc($spacing-2xl + 70px);
+  
+  @include mobile-only {
+    padding-top: calc($spacing-md + 90px);
+  }
+}
+
+// ====== Header ======
+.planning-header {
+  @include flex-between;
+  margin-bottom: $spacing-3xl;
+  padding: $spacing-xl;
+  background: $color-white;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-md;
+
+  @include mobile-only {
+    flex-direction: column;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+  }
+}
+
+.header-content {
+  flex: 1;
+
+  .page-title {
+    @include flex-start;
+    gap: $spacing-md;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin: 0 0 $spacing-sm 0;
+
+    .title-icon {
+      font-size: 2.5rem;
+    }
+
+    @include mobile-only {
+      font-size: $font-size-2xl;
+      justify-content: center;
+    }
+  }
+
+  .page-description {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    margin: 0;
+    line-height: $line-height-relaxed;
+
+    @include mobile-only {
+      text-align: center;
+    }
+  }
+}
+
+.header-actions {
+  @include flex-start;
+  gap: $spacing-md;
+
+  @include mobile-only {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.new-project-btn {
+  @include flex-center;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-xl;
+  background: $color-primary-gradient;
+  color: $color-white;
+  border: none;
+  border-radius: $radius-lg;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: $transition-hover;
+  min-width: 140px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  span {
+    font-size: 1.2em;
+  }
+}
+
+// ====== Saved Projects ======
+.saved-projects {
+  margin-bottom: $spacing-3xl;
+
+  .section-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin: 0 0 $spacing-lg 0;
+  }
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $spacing-lg;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project-card {
+  background: $color-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $color-border-light;
+  transition: $transition-hover;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  .project-header {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+
+    .project-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      color: $color-text-primary;
+      margin: 0;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-actions {
+      @include flex-start;
+      gap: $spacing-sm;
+      flex-shrink: 0;
+      margin-left: $spacing-md;
+
+      button {
+        @include button-reset;
+        @include flex-center;
+        width: 32px;
+        height: 32px;
+        border-radius: $radius-sm;
+        transition: $transition-fast;
+        font-size: 1.1em;
+
+        &.load-btn {
+          background: $color-info;
+          color: $color-white;
+
+          &:hover {
+            background: darken($color-info, 10%);
+          }
+        }
+
+        &.delete-btn {
+          background: $color-error;
+          color: $color-white;
+
+          &:hover {
+            background: darken($color-error, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  .project-meta {
+    @include flex-start;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    flex-wrap: wrap;
+
+    span {
+      padding: $spacing-xs $spacing-sm;
+      background: $color-gray-100;
+      color: $color-text-secondary;
+      border-radius: $radius-sm;
+      font-size: $font-size-sm;
+      white-space: nowrap;
+
+      &.genre {
+        background: lighten($color-primary, 40%);
+        color: $color-primary;
+      }
+
+      &.duration {
+        background: lighten($color-success, 40%);
+        color: $color-success;
+      }
+
+      &.purpose {
+        background: lighten($color-warning, 40%);
+        color: darken($color-warning, 20%);
+      }
+    }
+  }
+
+  .project-date {
+    font-size: $font-size-sm;
+    color: $color-text-tertiary;
+    text-align: right;
+  }
+}
+
+// ====== Planning Wizard Container ======
+.planning-wizard-container {
+  background: $color-white;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  box-shadow: $shadow-md;
+  min-height: 600px;
+
+  @include mobile-only {
+    padding: $spacing-lg;
+  }
+}
+
+// ====== 반응형 레이아웃 ======
+@include tablet-up {
+  .planning-page {
+    padding: $spacing-3xl $spacing-2xl;
+  }
+
+  .planning-header {
+    padding: $spacing-2xl;
+  }
+}
+
+@include desktop-up {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  }
+}
+
+// ====== 접근성 ======
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .new-project-btn {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// ====== 다크 모드 지원 (Future) ======
+@media (prefers-color-scheme: dark) {
+  .planning-page {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+
+  .planning-header,
+  .project-card,
+  .planning-wizard-container {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .page-title,
+  .section-title,
+  .project-title {
+    color: #e2e8f0;
+  }
+
+  .page-description {
+    color: #a0aec0;
+  }
+
+  .project-meta span {
+    background: #4a5568;
+    color: #a0aec0;
+  }
+
+  .project-date {
+    color: #718096;
+  }
+}
+
+// ====== 로딩 상태 ======
+.planning-page.loading {
+  .new-project-btn {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .project-card {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+}

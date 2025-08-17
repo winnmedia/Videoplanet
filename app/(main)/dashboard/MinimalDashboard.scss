@@ -1,0 +1,343 @@
+@import '../../../styles/design-tokens-v2.scss';
+
+// ============================================================================
+// 미니멀 대시보드 스타일
+// 원칙: 최소 요소, 최대 명확성, 접근성 우선
+// ============================================================================
+
+.minimal-dashboard {
+  min-height: 100vh;
+  background-color: $color-bg-primary;
+  color: $color-text-primary;
+}
+
+// ============================================================================
+// 헤더
+// ============================================================================
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-6 $spacing-8;
+  border-bottom: 1px solid $color-border-light;
+  background-color: $color-bg-primary;
+  
+  .logo {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-primary;
+    margin: 0;
+    letter-spacing: $letter-spacing-tight;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+  }
+  
+  .user-name {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+  }
+}
+
+// ============================================================================
+// 메인 콘텐츠
+// ============================================================================
+
+.dashboard-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: $spacing-8;
+  
+  @include respond-to('sm') {
+    padding: $spacing-4;
+  }
+}
+
+// ============================================================================
+// 섹션 공통
+// ============================================================================
+
+.section-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: 0 0 $spacing-4 0;
+  line-height: $line-height-tight;
+}
+
+// ============================================================================
+// 통계 섹션
+// ============================================================================
+
+.stats-section {
+  margin-bottom: $spacing-8;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-4;
+  
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background-color: $color-bg-secondary;
+  padding: $spacing-6;
+  border-radius: $radius-md;
+  border: 1px solid $color-border-light;
+  transition: all $transition-base;
+  
+  &:hover {
+    background-color: $color-bg-tertiary;
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+  }
+  
+  .stat-label {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-2;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+  }
+  
+  .stat-value {
+    display: block;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    line-height: $line-height-tight;
+    margin: 0;
+    
+    &--warning {
+      color: $color-warning;
+    }
+    
+    &--urgent {
+      color: $color-error;
+    }
+  }
+}
+
+// ============================================================================
+// 프로젝트 진행률 섹션
+// ============================================================================
+
+.progress-section {
+  margin-bottom: $spacing-8;
+}
+
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.project-item {
+  margin: 0;
+}
+
+.project-button {
+  display: block;
+  width: 100%;
+  padding: $spacing-4;
+  background-color: $color-bg-secondary;
+  border: 1px solid $color-border-light;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-base;
+  text-align: left;
+  min-height: $touch-target-comfortable;
+  
+  &:hover {
+    background-color: $color-bg-tertiary;
+    border-color: $color-border-default;
+    transform: translateX(4px);
+  }
+  
+  &:focus {
+    @include focus-ring;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.project-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-3;
+}
+
+.project-name {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin: 0;
+  line-height: $line-height-tight;
+}
+
+.project-meta {
+  display: flex;
+  gap: $spacing-3;
+  align-items: center;
+}
+
+.project-progress-text {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.project-deadline {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-secondary;
+  
+  &--urgent {
+    color: $color-error;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: $color-bg-tertiary;
+  border-radius: $radius-full;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: $color-primary;
+  border-radius: $radius-full;
+  transition: width $transition-slow $ease-out;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.2), 
+      transparent);
+    animation: shimmer 2s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+// ============================================================================
+// 액션 섹션
+// ============================================================================
+
+.action-section {
+  display: flex;
+  justify-content: center;
+  padding-top: $spacing-4;
+}
+
+// ============================================================================
+// 버튼 스타일 (주요 CTA)
+// ============================================================================
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: $button-height-lg;
+  padding: 0 $spacing-8;
+  background-color: $color-primary;
+  color: $color-text-inverse;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    background-color: $color-primary-hover;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    @include focus-ring;
+  }
+  
+  &:active {
+    background-color: $color-primary-active;
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+  
+  &:disabled {
+    background-color: $color-text-disabled;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// ============================================================================
+// 애니메이션 비활성화 (접근성)
+// ============================================================================
+
+@include reduce-motion;
+
+// ============================================================================
+// 다크모드 지원 (선택적)
+// ============================================================================
+
+@media (prefers-color-scheme: dark) {
+  .minimal-dashboard {
+    background-color: #0F0F0F;
+    color: #F0F0F0;
+  }
+  
+  .dashboard-header {
+    background-color: #1A1A1A;
+    border-bottom-color: #2A2A2A;
+  }
+  
+  .stat-card,
+  .project-button {
+    background-color: #1A1A1A;
+    border-color: #2A2A2A;
+    
+    &:hover {
+      background-color: #242424;
+      border-color: #3A3A3A;
+    }
+  }
+  
+  .progress-bar {
+    background-color: #2A2A2A;
+  }
+}

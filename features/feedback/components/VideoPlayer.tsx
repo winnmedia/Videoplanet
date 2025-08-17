@@ -192,7 +192,7 @@ const VideoPlayer: React.FC<EnhancedVideoPlayerProps> = memo(({
     return (
       <div className={`video-error ${className}`}>
         <div className="error-content">
-          <div className="error-icon">⚠️</div>
+          <div className="error-icon">[경고]</div>
           <p className="error-message">{error}</p>
           <button 
             className="retry-button"
@@ -272,7 +272,7 @@ const VideoPlayer: React.FC<EnhancedVideoPlayerProps> = memo(({
               }}
               aria-label={isPlaying ? '일시정지' : '재생'}
             >
-              {isPlaying ? '⏸️' : '▶️'}
+              {isPlaying ? '||' : '▶'}
             </button>
             
             <span className="time-display">

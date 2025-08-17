@@ -61,18 +61,18 @@ export default function DebugTestPage() {
   
   return (
     <div style={{ padding: '50px', fontFamily: 'monospace' }}>
-      <h1>🔍 디버그 테스트 페이지</h1>
+      <h1>[DEBUG] 디버그 테스트 페이지</h1>
       
       <div style={{ marginBottom: '30px', padding: '20px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}>
         <h2>시스템 상태</h2>
-        <p>✅ Hydration: {mounted ? '완료' : '대기중'}</p>
-        <p>✅ JavaScript: 실행중</p>
-        <p>✅ 시간: {new Date().toLocaleTimeString()}</p>
+        <p>[OK] Hydration: {mounted ? '완료' : '대기중'}</p>
+        <p>[OK] JavaScript: 실행중</p>
+        <p>[OK] 시간: {new Date().toLocaleTimeString()}</p>
       </div>
       
       {errors.length > 0 && (
         <div style={{ marginBottom: '30px', padding: '20px', backgroundColor: '#ffebee', borderRadius: '5px' }}>
-          <h2 style={{ color: '#c62828' }}>⚠️ 발견된 에러</h2>
+          <h2 style={{ color: '#c62828' }}>[WARNING] 발견된 에러</h2>
           {errors.map((err, i) => (
             <p key={i} style={{ color: '#c62828' }}>{err}</p>
           ))}

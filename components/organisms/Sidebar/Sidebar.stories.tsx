@@ -387,7 +387,7 @@ export const ErrorState: Story = {
         marginBottom: '10px',
         borderRadius: '4px'
       }}>
-        ⚠️ 프로젝트 로딩에 실패했습니다.
+        [WARNING] 프로젝트 로딩에 실패했습니다.
       </div>
       <Sidebar {...args} />
     </div>

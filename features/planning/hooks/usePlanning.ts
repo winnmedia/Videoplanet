@@ -52,16 +52,17 @@ export function usePlanning(): PlanningState & PlanningActions {
     }
   }, [])
 
-  // ====== 자동 저장 설정 ======
+  // ====== 자동 저장 설정 (성능 최적화) ======
   useEffect(() => {
-    if (state.currentProject && autoSaveRef.current) {
+    if (autoSaveRef.current) {
       clearTimeout(autoSaveRef.current)
     }
 
     if (state.currentProject) {
+      // 디바운싱으로 자동 저장 최적화
       autoSaveRef.current = setTimeout(() => {
         autoSaveProject()
-      }, 30000) // 30초마다 자동 저장
+      }, 45000) // 45초로 늘려서 빈번한 저장 방지
     }
 
     return () => {
@@ -69,7 +70,7 @@ export function usePlanning(): PlanningState & PlanningActions {
         clearTimeout(autoSaveRef.current)
       }
     }
-  }, [state.currentProject])
+  }, [state.currentProject?.updated_at]) // updated_at 변경시만 재실행
 
   // ====== 로컬 스토리지 관리 ======
   const loadFromStorage = useCallback(() => {
