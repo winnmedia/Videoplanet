@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-import logging, json, jwt, my_settings, random
+import logging, json, jwt, random, os
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from . import models
 from django.views import View
 from django.http import JsonResponse
@@ -14,6 +16,7 @@ from django.utils.html import strip_tags
 
 
 ########## username이 kakao,naver,google이든 회원가입 때 중복되면 생성x
+@method_decorator(csrf_exempt, name='dispatch')
 class SignUp(View):
     def post(self, request):
         try:
@@ -36,8 +39,8 @@ class SignUp(View):
                         "user_id": new_user.id,
                         "exp": datetime.utcnow() + timedelta(days=28),
                     },
-                    my_settings.SECRET_KEY,
-                    my_settings.ALGORITHM,
+                    os.environ.get('SECRET_KEY'),
+                    os.environ.get('ALGORITHM', 'HS256'),
                 )
                 res = JsonResponse(
                     {
@@ -61,6 +64,7 @@ class SignUp(View):
             return JsonResponse({"message": "알 수 없는 에러입니다 고객센터에 문의해주세요."}, status=500)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SignIn(View):
     def post(self, request):
         try:
@@ -72,8 +76,8 @@ class SignIn(View):
             if user is not None:
                 vridge_session = jwt.encode(
                     {"user_id": user.id, "exp": datetime.utcnow() + timedelta(days=28)},
-                    my_settings.SECRET_KEY,
-                    my_settings.ALGORITHM,
+                    os.environ.get('SECRET_KEY'),
+                    os.environ.get('ALGORITHM', 'HS256'),
                 )
                 res = JsonResponse(
                     {
@@ -99,6 +103,7 @@ class SignIn(View):
             return JsonResponse({"message": str(e)}, status=500)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SendAuthNumber(View):
     def post(self, request, types):
         try:
@@ -132,6 +137,7 @@ class SendAuthNumber(View):
             return JsonResponse({"message": "알 수 없는 에러입니다 고객센터에 문의해주세요."}, status=500)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class EmailAuth(View):
     def post(self, request, types):
         try:
@@ -166,6 +172,7 @@ class EmailAuth(View):
             return JsonResponse({"message": "알 수 없는 에러입니다 고객센터에 문의해주세요."}, status=500)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ResetPassword(View):
     def post(self, request):
         try:

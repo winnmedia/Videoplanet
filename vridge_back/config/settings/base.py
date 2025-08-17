@@ -65,6 +65,7 @@ INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Static file serving for Railway
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -183,10 +184,13 @@ USE_I18N = True
 USE_TZ = True  # False 로 설정해야 DB에 변경 된 TIME_ZONE 이 반영 됨
 
 STATIC_URL = "/static/"  # 접두사
-STATIC_ROOT = BASE_DIR / "staticfiles"  # 실제 저장되는 파일
+STATIC_ROOT = BASE_DIR / "staticfiles"  # collectstatic으로 수집된 파일들이 저장되는 디렉토리
 STATICFILES_DIRS = []  # 정적 파일을 찾을 수 있는 추가적인 디렉토리 경로
 if os.path.exists(BASE_DIR / "static"):
     STATICFILES_DIRS.append(BASE_DIR / "static")
+
+# WhiteNoise configuration for better static file handling
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 # Use /data/media for Railway persistent volume

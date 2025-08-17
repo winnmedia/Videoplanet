@@ -109,12 +109,23 @@ CSRF_TRUSTED_ORIGINS = [
 if RAILWAY_PUBLIC_DOMAIN:
     CSRF_TRUSTED_ORIGINS.append(f"https://{RAILWAY_PUBLIC_DOMAIN}")
 
-# Static files - use Railway's static URL if available
+# Static files configuration for Railway
+# Override default staticfiles storage for production
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Use Railway's static URL if available, otherwise use default
 if RAILWAY_STATIC_URL:
     # Ensure STATIC_URL always ends with a slash
     STATIC_URL = RAILWAY_STATIC_URL if RAILWAY_STATIC_URL.endswith('/') else f"{RAILWAY_STATIC_URL}/"
 else:
     STATIC_URL = '/static/'
+
+# Ensure STATIC_ROOT is set for collectstatic
+STATIC_ROOT = os.environ.get('STATIC_ROOT', str(BASE_DIR / 'staticfiles'))
+
+# WhiteNoise configuration for Railway
+WHITENOISE_USE_FINDERS = True  # Useful for development and first deployment
+WHITENOISE_AUTOREFRESH = DEBUG  # Auto-refresh in debug mode
 
 # Media files - ensure using Railway volume with fallback
 # Check if /data exists and is writable
