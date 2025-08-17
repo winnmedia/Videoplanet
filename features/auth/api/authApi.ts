@@ -1,10 +1,13 @@
 import { axiosOpts, axiosCredentials } from '@/utils/util'
 import { LoginCredentials, SignupData, AuthResponse, User } from '../types'
+import { API_BASE_URL, validateEnvironment } from '@/lib/config'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || process.env.REACT_APP_BACKEND_API_URL
-
-// 디버깅용 로그
-console.log('API_BASE_URL configured:', API_BASE_URL)
+// 환경변수 검증
+try {
+  validateEnvironment()
+} catch (error) {
+  console.error('Auth API configuration error:', error)
+}
 
 export const authApi = {
   /**

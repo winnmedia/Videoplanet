@@ -15,9 +15,14 @@ import {
   FileUploadResponse,
   FeedbackError,
 } from '../types';
+import { API_BASE_URL, validateEnvironment, SOCKET_URL } from '@/lib/config'
 
-// API 기본 설정
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || process.env.REACT_APP_BACKEND_API_URL;
+// 환경변수 검증
+try {
+  validateEnvironment()
+} catch (error) {
+  console.error('Feedback API configuration error:', error)
+}
 
 // Axios 인스턴스 생성
 export const feedbackApi = axios.create({
@@ -220,8 +225,7 @@ export async function getUserFeedbacks(
  * WebSocket URL 생성
  */
 export function createWebSocketUrl(projectId: string): string {
-  const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URI || process.env.REACT_APP_SOCKET_URI;
-  return `${socketUrl}/ws/chat/${projectId}/`;
+  return `${SOCKET_URL}/ws/chat/${projectId}/`;
 }
 
 /**

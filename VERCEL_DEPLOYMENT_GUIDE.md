@@ -1,111 +1,100 @@
-# Vercel 배포 설정 가이드
+# Vercel 배포 환경변수 설정 가이드
 
-## 🚨 중요: Root Directory 설정 변경 필요
+## 필수 환경변수 설정
 
-### 문제
-- Vercel 프로젝트 설정에서 Root Directory가 `vridge_front`로 설정되어 있음
-- 실제 Next.js 프로젝트는 리포지토리 루트에 위치
+Vercel 대시보드에서 다음 환경변수들을 설정해야 합니다:
 
-### 해결 방법
+### 1. 백엔드 API URL
+```bash
+NEXT_PUBLIC_BACKEND_API_URL=https://videoplanet-backend.railway.app
+```
 
-#### 방법 1: Vercel 대시보드에서 설정 변경 (권장)
+### 2. WebSocket URL (선택사항)
+```bash
+NEXT_PUBLIC_SOCKET_URI=wss://videoplanet-backend.railway.app
+```
+
+### 3. 프론트엔드 앱 URL (선택사항)
+```bash
+NEXT_PUBLIC_APP_URL=https://videoplanet.vercel.app
+```
+
+## 설정 방법
 
 1. **Vercel 대시보드 접속**
-   - https://vercel.com 로그인
-   - 해당 프로젝트 선택
+   - https://vercel.com/dashboard 
+   - VideoPlanet 프로젝트 선택
 
-2. **Settings 탭 이동**
-   - 상단 메뉴에서 `Settings` 클릭
+2. **Environment Variables 설정**
+   - Settings → Environment Variables
+   - Add New Variable 클릭
 
-3. **General 섹션**
-   - 좌측 메뉴에서 `General` 선택
+3. **각 환경변수 추가**
+   ```
+   Name: NEXT_PUBLIC_BACKEND_API_URL
+   Value: https://videoplanet-backend.railway.app
+   Environment: ✅ Production ✅ Preview ✅ Development
+   ```
 
-4. **Root Directory 수정**
-   - Root Directory 필드 찾기
-   - 현재 값: `vridge_front`
-   - **변경할 값: 비워두기 또는 `./` 입력**
+4. **배포 트리거**
+   - GitHub에 커밋 푸시하면 자동 재배포
+   - 또는 Vercel 대시보드에서 수동 재배포
 
-5. **저장**
-   - `Save` 버튼 클릭
+## 검증 방법
 
-6. **재배포**
-   - Deployments 탭으로 이동
-   - 최신 커밋에서 `Redeploy` 클릭
-   - "Use existing Build Cache" 체크 해제
-   - `Redeploy` 확인
+배포 후 다음 방법으로 환경변수가 올바르게 설정되었는지 확인:
 
-#### 방법 2: 새 프로젝트로 다시 연결
+1. **브라우저 개발자 도구**
+   ```javascript
+   // 콘솔에서 확인
+   console.log('API_BASE_URL configured:', process.env.NEXT_PUBLIC_BACKEND_API_URL)
+   ```
 
-1. **현재 프로젝트 삭제** (선택사항)
-   - Settings → Advanced → Delete Project
+2. **Network 탭 확인**
+   - API 요청이 https://videoplanet-backend.railway.app으로 전송되는지 확인
+   - undefined 또는 localhost로 요청되면 환경변수 미설정
 
-2. **새 프로젝트 Import**
-   - Vercel 대시보드에서 `New Project`
-   - GitHub 리포지토리 선택
-   - **Root Directory: 비워두기**
-   - Framework Preset: Next.js
-   - Deploy 클릭
+3. **로그인 페이지 테스트**
+   - 로그인 시도 시 올바른 API 엔드포인트로 요청되는지 확인
 
-### 프로젝트 구조 확인
+## 문제 해결
 
-```
-Videoplanet/ (리포지토리 루트)
-├── app/           # Next.js App Router
-├── components/    # React 컴포넌트
-├── features/      # 기능별 모듈
-├── src/           # 소스 코드
-├── public/        # 정적 파일
-├── package.json   # 의존성 관리
-├── next.config.js # Next.js 설정
-├── vercel.json    # Vercel 설정
-└── .vercelignore  # Vercel 무시 파일
-```
+### API_BASE_URL이 undefined인 경우
+1. Vercel 환경변수 설정 확인
+2. 변수명 정확성 확인 (`NEXT_PUBLIC_` 접두사 필수)
+3. 재배포 필요 (환경변수 변경 후)
 
-### vercel.json 설정
+### localhost로 요청되는 경우
+1. 프로덕션 환경에서 개발 환경변수가 사용되고 있음
+2. Environment 설정에서 Production 체크 확인
+3. 캐시 클리어 후 재배포
 
-```json
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "framework": "nextjs",
-  "regions": ["icn1"],
-  "installCommand": "npm install"
-}
-```
+## 주의사항
 
-### 체크리스트
+- `NEXT_PUBLIC_` 접두사가 있는 환경변수만 클라이언트에서 접근 가능
+- 환경변수 변경 후 반드시 재배포 필요
+- 민감한 정보는 `NEXT_PUBLIC_` 접두사 사용 금지
 
-- [ ] Vercel 대시보드에서 Root Directory 설정 확인
-- [ ] Root Directory가 비어있거나 `./`로 설정되어 있는지 확인
-- [ ] Framework Preset이 Next.js로 설정되어 있는지 확인
-- [ ] Build & Development Settings 확인
-- [ ] Environment Variables 설정 확인 (필요한 경우)
+## 현재 설정 상태
 
-### 환경 변수 (필요시)
+✅ 개발 환경: .env.local 파일로 설정 완료
+❌ 프로덕션 환경: Vercel 환경변수 설정 필요
 
-```
-NEXT_PUBLIC_API_BASE_URL=https://api.videoplanet.com
+## 추가 확인 사항
+
+### Railway 백엔드 CORS 설정
+Django 백엔드에서 Vercel 도메인 허용 확인:
+```python
+# settings.py
+CORS_ALLOWED_ORIGINS = [
+    "https://videoplanet.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:3001", 
+    "http://localhost:3002",
+]
 ```
 
-### 문제 해결
-
-#### 빌드 에러 발생 시
-
-1. **캐시 삭제 후 재배포**
-   - Deployments → Redeploy
-   - "Use existing Build Cache" 체크 해제
-
-2. **로그 확인**
-   - Build Logs에서 상세 에러 메시지 확인
-   - Function Logs에서 런타임 에러 확인
-
-### 지원
-
-- Vercel 문서: https://vercel.com/docs
-- Next.js 문서: https://nextjs.org/docs
-- 프로젝트 GitHub: https://github.com/winnmedia/Videoplanet
-
----
-
-**마지막 업데이트**: 2025-08-16
-**작성자**: Claude Code Assistant
+### 환경변수 우선순위
+1. `NEXT_PUBLIC_BACKEND_API_URL` (최우선)
+2. `REACT_APP_BACKEND_API_URL` (레거시 호환)
+3. 기본값: `https://videoplanet-backend.railway.app`

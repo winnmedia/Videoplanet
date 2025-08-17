@@ -21,10 +21,14 @@ import type {
 
 // ===== API 기본 설정 =====
 
-/**
- * API 기본 URL
- */
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:8000';
+import { API_BASE_URL, validateEnvironment } from '@/lib/config'
+
+// 환경변수 검증
+try {
+  validateEnvironment()
+} catch (error) {
+  console.error('Projects API configuration error:', error)
+}
 
 /**
  * Axios 인스턴스 생성 (인증 포함)
