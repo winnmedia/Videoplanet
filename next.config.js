@@ -31,7 +31,7 @@ const nextConfig = {
   
   // 실험적 기능 활성화
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // critters 모듈 문제로 비활성화
     scrollRestoration: true,
   },
   
