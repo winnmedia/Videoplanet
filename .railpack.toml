@@ -17,7 +17,7 @@ python manage.py collectstatic --noinput --clear || echo "Static collection skip
 
 [start]
 # Start Gunicorn ASGI server with uvicorn worker
-cmd = "cd vridge_back && export PYTHONPATH=/app/vridge_back:$PYTHONPATH && python manage.py migrate --noinput && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000}"
+cmd = "cd vridge_back && python manage.py migrate --noinput && gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000} --chdir /app/vridge_back"
 
 [variables]
 DJANGO_SETTINGS_MODULE = "config.settings"

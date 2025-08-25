@@ -1,1 +1,0 @@
-web: cd vridge_back && export PYTHONPATH=/app/vridge_back:$PYTHONPATH && python manage.py migrate --noinput && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT
