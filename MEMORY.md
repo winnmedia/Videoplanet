@@ -6,6 +6,49 @@
 
 ## 📅 작업 히스토리 (최신순)
 
+### 2025-08-25: Railway 백엔드 배포 오류 해결
+**요청 내용**: Railway 빌드 중 requirements.txt 파일을 찾지 못하는 오류 해결
+
+**수행 작업**:
+1. **문제 분석**
+   - 에러: `/vridge_back/requirements.txt: not found` 
+   - 원인: Dockerfile이 잘못된 빌드 컨텍스트 경로 참조
+   - Railway가 Dockerfile을 사용하여 빌드 시도
+
+2. **프로젝트 구조 확인**
+   - 백엔드 코드: `/vridge_back/` 디렉토리에 위치
+   - requirements.txt: 루트와 vridge_back 두 곳에 존재
+   - Django 설정: config/asgi.py, manage.py 정상 확인
+
+3. **해결 방안 적용**
+   - Dockerfile을 Dockerfile.backup으로 이름 변경
+   - Railway가 Railpack 빌더를 사용하도록 강제
+   - railway.json에서 builder: "RAILPACK" 설정 확인
+   - .railpack.toml 파일로 Python 환경 구성
+
+4. **배포 설정 검증**
+   - runtime.txt: Python 3.11 지정
+   - Procfile: Django Daphne 서버 실행 명령
+   - requirements.txt: 루트 디렉토리에 위치 (Railpack이 참조)
+
+**핵심 해결책**:
+- Dockerfile 비활성화로 Railpack 빌더 강제 사용
+- 루트 디렉토리의 requirements.txt 활용
+- Python 프로젝트 감지 파일들 정상 배치
+
+**결과**:
+- Railway가 Railpack을 사용하여 빌드하도록 설정 완료
+- requirements.txt 경로 문제 해결
+- Django 백엔드 배포 준비 완료
+
+**주요 파일**:
+- `/home/winnmedia/Videoplanet/Dockerfile.backup` (백업됨)
+- `/home/winnmedia/Videoplanet/railway.json` (Railpack 설정)
+- `/home/winnmedia/Videoplanet/.railpack.toml` (빌드 설정)
+- `/home/winnmedia/Videoplanet/requirements.txt` (종속성 목록)
+
+## 📅 작업 히스토리 (최신순)
+
 ### 2025-08-25: WebSocket 오류 분석 및 서브메뉴 연관성 조사 완료
 **요청 내용**: Videoplanet 프로젝트에서 WebSocket 관련 오류를 분석하고 서브메뉴 오류와의 연관성 조사
 
