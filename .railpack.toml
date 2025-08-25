@@ -16,7 +16,7 @@ python manage.py collectstatic --noinput --clear || echo "Static collection skip
 
 [start]
 # Start Daphne ASGI server
-cmd = "cd vridge_back && export PYTHONPATH=/app/vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
+cmd = "cd vridge_back && python -m daphne -b 0.0.0.0 -p $PORT config.asgi:application"
 
 [variables]
 DJANGO_SETTINGS_MODULE = "config.settings"

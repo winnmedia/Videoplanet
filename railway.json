@@ -4,8 +4,8 @@
     "builder": "RAILPACK"
   },
   "deploy": {
-    "startCommand": "cd vridge_back && export PYTHONPATH=/app/vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application",
-    "healthcheckPath": "/admin/",
+    "startCommand": "cd vridge_back && python -m daphne -b 0.0.0.0 -p $PORT config.asgi:application",
+    "healthcheckPath": "/health/",
     "healthcheckTimeout": 120,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10

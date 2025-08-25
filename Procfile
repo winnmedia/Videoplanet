@@ -1,1 +1,1 @@
-web: cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application
+web: cd vridge_back && python -m daphne -b 0.0.0.0 -p $PORT config.asgi:application
