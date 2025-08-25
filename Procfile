@@ -1,0 +1,1 @@
+web: cd vridge_back && python manage.py migrate --noinput && gunicorn config.asgi:application --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --chdir /app/vridge_back --timeout 120
