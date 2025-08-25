@@ -1,0 +1,26 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
+  },
+  "deploy": {
+    "startCommand": "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application",
+    "healthcheckPath": "/health/",
+    "healthcheckTimeout": 100,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "DJANGO_SETTINGS_MODULE": "config.settings",
+        "DEBUG": "False",
+        "PYTHONPATH": "/app/vridge_back",
+        "PYTHONUNBUFFERED": "1",
+        "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+        "STATIC_URL": "/static/",
+        "MEDIA_URL": "/media/"
+      }
+    }
+  }
+}
