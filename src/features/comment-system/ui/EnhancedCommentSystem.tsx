@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react'
 import { Button } from '@/shared/ui/Button/Button'
-import { Icon, IconType } from '@/shared/ui/Icon/Icon'
+import { Icon } from '@/shared/ui/Icon/Icon'
 import styles from './EnhancedCommentSystem.module.scss'
 
 interface Comment {

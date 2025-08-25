@@ -46,7 +46,7 @@ export type IconMetadata = {
 };
 
 // Enum exports for backward compatibility
-export enum IconType {
+export enum IconTypeEnum {
   // Navigation
   ARROW_UP = 'arrow-up',
   ARROW_DOWN = 'arrow-down',

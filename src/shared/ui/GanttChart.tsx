@@ -370,7 +370,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     return (
       <div className={classNames(styles.ganttChart, styles.error, className)} role="alert">
         <div className={styles.errorIcon}>
-          <Icon type={IconType.WARNING} size="lg" variant="warning" ariaLabel="경고" />
+          <Icon type="warning" size="lg" variant="warning" ariaLabel="경고" />
         </div>
         <p>{error}</p>
       </div>

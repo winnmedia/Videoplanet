@@ -3,7 +3,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { selectFormData, selectValidation } from '../../../model/creation.slice'
-import { Icon, IconType } from '@/shared/ui/icons'
+import { Icon } from '@/shared/ui/icons'
 import styles from './ReviewStep.module.scss'
 
 interface ReviewStepProps {

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectFormData, updateFormData } from '../../../model/creation.slice'
 import { Button } from '@/shared/ui/Button'
 import { Input } from '@/shared/ui/Input'
-import { Icon, IconType } from '@/shared/ui/icons'
+import { Icon } from '@/shared/ui/icons'
 import styles from './CollaborationStep.module.scss'
 
 interface CollaborationStepProps {

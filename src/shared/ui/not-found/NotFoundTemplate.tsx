@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import styles from './NotFoundTemplate.module.scss'
 import { Button } from '@/shared/ui/Button/Button'

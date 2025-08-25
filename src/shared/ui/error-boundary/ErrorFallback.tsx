@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import styles from './ErrorFallback.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
-import { Icon, IconType } from '@/shared/ui/icons'
+import { Icon, IconTypeEnum } from '@/shared/ui/icons'
 
 interface ErrorFallbackProps {
   error: Error & { digest?: string }
@@ -34,21 +34,21 @@ export default function ErrorFallback({
         return {
           title: '앗! 문제가 발생했습니다',
           description: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-          iconType: IconType.EXCLAMATION,
+          iconType: IconTypeEnum.EXCLAMATION,
           iconVariant: 'error'
         }
       case 'component':
         return {
           title: '콘텐츠를 불러올 수 없습니다',
           description: '이 섹션을 표시하는 중 문제가 발생했습니다.',
-          iconType: IconType.WARNING,
+          iconType: IconTypeEnum.WARNING,
           iconVariant: 'warning'
         }
       default:
         return {
           title: '페이지를 불러올 수 없습니다',
           description: '요청하신 페이지를 표시하는 중 오류가 발생했습니다.',
-          iconType: IconType.ERROR_CIRCLE,
+          iconType: IconTypeEnum.ERROR_CIRCLE,
           iconVariant: 'error'
         }
     }
