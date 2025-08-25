@@ -1,12 +1,16 @@
 # Nixpacks Configuration for VideoPlanet Django Backend
-[providers]
-python = "3.11"
+
+[phases.setup]
+nixPkgs = ["python311", "postgresql"]
+
+[phases.install]
+cmd = "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt"
+
+[phases.build]
+cmd = "cd vridge_back && python manage.py collectstatic --noinput --clear"
 
 [start]
 cmd = "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
-
-[build]
-cmd = "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
 
 [variables]
 DJANGO_SETTINGS_MODULE = "config.settings"
