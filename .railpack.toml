@@ -1,16 +1,15 @@
-# Railpack Configuration for VideoPlanet Django Backend
+providers = ["python"]
 
-[providers]
-python = "3.11"
+[provider.python]
+version = "3.11"
 
 [build]
-cmd = "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
+cmd = """
+cd vridge_back && \
+pip install --no-cache-dir --upgrade pip && \
+pip install --no-cache-dir -r requirements.txt && \
+python manage.py collectstatic --noinput --clear
+"""
 
-[start] 
+[start]
 cmd = "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
-
-[env]
-DJANGO_SETTINGS_MODULE = "config.settings"
-PYTHONPATH = "/app/vridge_back"
-PYTHONUNBUFFERED = "1"
-SECRET_KEY = "4(7b%fv3+tc0ptvzu9j2yh9)wotp(lty83a^b)d$79^+r(=trg"
