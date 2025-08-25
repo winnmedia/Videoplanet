@@ -1,0 +1,59 @@
+// 🚨 긴급 Z-Index 레이어 정리
+// 바이브코딩 충돌 해결을 위한 핫픽스
+
+// 전역 z-index 레이어 시스템 (레이어 순서대로)
+:root {
+  // 기본 콘텐츠 레이어 (0-99)
+  --z-base: 0;
+  --z-content: 1;
+  
+  // 네비게이션 레이어 (100-199)  
+  --z-sidebar: 100;
+  --z-submenu: 101;
+  --z-hamburger: 102;
+  
+  // 오버레이 레이어 (200-999)
+  --z-overlay: 200;
+  --z-dropdown: 300;
+  
+  // 모달 레이어 (1000-1999)
+  --z-modal-backdrop: 1000;
+  --z-modal: 1001;
+  --z-popover: 1100;
+  --z-tooltip: 1200;
+  
+  // 시스템 레이어 (2000+)
+  --z-toast: 2000;
+  --z-debug: 9999;
+}
+
+// 기존 충돌 컴포넌트 강제 수정
+.sideBar,
+[class*="sideBar"] {
+  z-index: var(--z-sidebar) !important;
+}
+
+.submenu,
+[class*="submenu"] {
+  z-index: var(--z-submenu) !important;
+}
+
+.hamburger,
+[class*="hamburger"] {
+  z-index: var(--z-hamburger) !important;
+}
+
+// 토스트는 최상위 유지
+[class*="toast"],
+[class*="notification"] {
+  z-index: var(--z-toast) !important;
+}
+
+// 모달 관련
+[class*="modal"] {
+  z-index: var(--z-modal) !important;
+}
+
+[class*="tooltip"] {
+  z-index: var(--z-tooltip) !important;
+}

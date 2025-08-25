@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"],
+      "env": {}
+    },
+    "upstash-context": {
+      "command": "node",
+      "args": ["/home/winnmedia/mcp-servers/context7/dist/index.js"],
+      "env": {
+        "UPSTASH_REDIS_REST_URL": "https://learning-doe-46152.upstash.io",
+        "UPSTASH_REDIS_REST_TOKEN": "AbRIAAIncDFmM2JlZTdkZmZkNGM0MDQxOWQyZjhjMTAxNWIyMzAxMHAxNDYxNTI"
+      }
+    },
+    "sequential-thinking": {
+      "command": "node",
+      "args": ["/home/winnmedia/local/lib/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js"],
+      "env": {}
+    }
+  }
+}

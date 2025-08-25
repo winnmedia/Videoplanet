@@ -1,0 +1,503 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # 매일 오전 2시(KST 11시)에 실행
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - auth
+          - projects
+          - feedback
+          - critical-path
+          - accessibility
+          - performance
+      browser:
+        description: 'Browser to test'
+        required: false
+        default: 'chromium'
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+          - all
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.10'
+
+jobs:
+  setup:
+    name: Setup Test Environment
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-keys.outputs.key }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate cache keys
+        id: cache-keys
+        run: |
+          echo "key=${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: ${{ steps.cache-keys.outputs.key }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            .next
+            public
+          retention-days: 1
+
+  lint-and-type-check:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript type check
+        run: npm run type-check
+
+  e2e-tests:
+    name: E2E Tests - ${{ matrix.browser }} - ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        shard: [1/4, 2/4, 3/4, 4/4]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Setup Python (for backend)
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install backend dependencies
+        working-directory: ./vridge_back
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || true
+
+      - name: Start backend server
+        working-directory: ./vridge_back
+        run: |
+          python manage.py migrate || true
+          python manage.py runserver &
+        env:
+          DEBUG: 'True'
+          SECRET_KEY: 'test-secret-key'
+
+      - name: Start Next.js server
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000 -t 60000
+
+      - name: Run E2E tests
+        run: |
+          npx playwright test \
+            --project=${{ matrix.browser }}-desktop \
+            --shard=${{ matrix.shard }} \
+            --reporter=json,html
+        env:
+          BASE_URL: http://localhost:3000
+          API_URL: http://localhost:8000
+          CI: true
+          BROWSER_FILTER: ${{ github.event.inputs.browser || matrix.browser }}
+          TEST_SUITE: ${{ github.event.inputs.test_suite || 'all' }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-results-${{ matrix.browser }}-${{ strategy.job-index }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: failure-screenshots-${{ matrix.browser }}-${{ strategy.job-index }}
+          path: test-results/**/*.png
+          retention-days: 7
+
+  accessibility-tests:
+    name: Accessibility Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Start Next.js server
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000 -t 60000
+
+      - name: Run accessibility tests
+        run: npx playwright test test/e2e/accessibility/
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Run axe accessibility audit
+        run: |
+          npm install -g @axe-core/cli
+          axe http://localhost:3000 --save accessibility-report.json
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-report
+          path: |
+            accessibility-report.json
+            test-results/
+          retention-days: 30
+
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Start Next.js server
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000 -t 60000
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun --config=lighthouserc.js
+
+      - name: Run performance tests
+        run: npx playwright test test/performance/
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/
+          retention-days: 30
+
+  visual-regression:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Start Next.js server
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000 -t 60000
+
+      - name: Run visual regression tests
+        run: |
+          npx playwright test test/visual-regression/ \
+            --update-snapshots \
+            --reporter=html
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Upload visual diff report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual-diff-report
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
+
+  test-report:
+    name: Generate Test Report
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, accessibility-tests, performance-tests]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all test results
+        uses: actions/download-artifact@v3
+        with:
+          path: all-results/
+
+      - name: Merge test results
+        run: |
+          mkdir -p merged-results
+          find all-results -name "*.json" -exec cp {} merged-results/ \;
+
+      - name: Generate consolidated report
+        run: |
+          npx playwright merge-reports --reporter=html merged-results/
+
+      - name: Upload consolidated report
+        uses: actions/upload-artifact@v3
+        with:
+          name: consolidated-test-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Parse test results
+            let totalTests = 0;
+            let passedTests = 0;
+            let failedTests = 0;
+            let skippedTests = 0;
+            
+            const resultsDir = 'merged-results';
+            if (fs.existsSync(resultsDir)) {
+              const files = fs.readdirSync(resultsDir);
+              for (const file of files) {
+                if (file.endsWith('.json')) {
+                  const content = fs.readFileSync(path.join(resultsDir, file), 'utf8');
+                  const data = JSON.parse(content);
+                  if (data.stats) {
+                    totalTests += data.stats.total || 0;
+                    passedTests += data.stats.passed || 0;
+                    failedTests += data.stats.failed || 0;
+                    skippedTests += data.stats.skipped || 0;
+                  }
+                }
+              }
+            }
+            
+            const passRate = totalTests > 0 ? ((passedTests / totalTests) * 100).toFixed(2) : 0;
+            
+            const comment = `## 🎭 E2E Test Results
+            
+            ### Summary
+            - **Total Tests**: ${totalTests}
+            - **Passed**: ✅ ${passedTests}
+            - **Failed**: ❌ ${failedTests}
+            - **Skipped**: ⏭️ ${skippedTests}
+            - **Pass Rate**: ${passRate}%
+            
+            ### Test Suites
+            - **Authentication**: ${passedTests > 0 ? '✅' : '❌'}
+            - **Project Management**: ${passedTests > 0 ? '✅' : '❌'}
+            - **Feedback System**: ${passedTests > 0 ? '✅' : '❌'}
+            - **Accessibility**: ${passedTests > 0 ? '✅' : '❌'}
+            - **Performance**: ${passedTests > 0 ? '✅' : '❌'}
+            
+            ### Artifacts
+            - [📊 Full Test Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - [📸 Screenshots](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            ${failedTests > 0 ? '### ⚠️ Action Required\nSome tests failed. Please review the test report and fix the issues before merging.' : '### ✅ All Tests Passed\nGreat job! All E2E tests are passing.'}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  deploy-report:
+    name: Deploy Test Report to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: test-report
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download test report
+        uses: actions/download-artifact@v3
+        with:
+          name: consolidated-test-report
+          path: test-report/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./test-report
+          destination_dir: e2e-reports/${{ github.run_number }}
+
+  notify:
+    name: Send Notifications
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, accessibility-tests, performance-tests]
+    if: always()
+    steps:
+      - name: Determine status
+        id: status
+        run: |
+          if [[ "${{ needs.e2e-tests.result }}" == "failure" || "${{ needs.accessibility-tests.result }}" == "failure" || "${{ needs.performance-tests.result }}" == "failure" ]]; then
+            echo "status=failure" >> $GITHUB_OUTPUT
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify Slack
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          STATUS="${{ steps.status.outputs.status }}"
+          COLOR=$([ "$STATUS" == "success" ] && echo "good" || echo "danger")
+          EMOJI=$([ "$STATUS" == "success" ] && echo ":white_check_mark:" || echo ":x:")
+          
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"attachments\": [{
+                \"color\": \"$COLOR\",
+                \"title\": \"$EMOJI E2E Tests $STATUS\",
+                \"text\": \"Branch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+              }]
+            }" \
+            $SLACK_WEBHOOK_URL

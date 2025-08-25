@@ -1,0 +1,299 @@
+// Auth Form styles - matching original design
+.authForm {
+  height: 100%;
+  position: relative;
+  background: #fcfcfc;
+}
+
+.formWrap {
+  width: 400px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  font-size: 36px;
+  color: #000;
+  text-align: center;
+  font-family: 'SUIT Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-bottom: 0;
+}
+
+// Input styles
+.input {
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  font-family: 'SUIT Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  
+  &.ty01 {
+    border: 1px solid #eeeeee;
+    border-radius: 15px;
+    padding: 0 15px;
+    height: 54px;
+    font-size: 16px;
+    background: #fcfcfc;
+    transition: all 0.3s ease;
+    
+    &::placeholder {
+      font-size: 16px;
+      font-family: 'SUIT Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #919191;
+    }
+    
+    &:focus {
+      background: #fff;
+      box-shadow: 5px 5px 10px #e8e8e8;
+      border-color: #ddd;
+    }
+    
+    &:hover:not(:disabled) {
+      background: #fff;
+      box-shadow: 5px 5px 10px #e8e8e8;
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Checkbox styles
+.checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  user-select: none;
+  
+  input[type="checkbox"] {
+    display: none;
+    
+    &:checked ~ .checkmark {
+      background-color: #1631F8;
+      border-color: #1631F8;
+      
+      &:after {
+        display: block;
+      }
+    }
+  }
+  
+  .checkmark {
+    position: relative;
+    height: 18px;
+    width: 18px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-right: 8px;
+    transition: all 0.2s ease;
+    
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+  
+  .checkboxText {
+    font-family: 'SUIT Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  &:hover .checkmark {
+    border-color: #1631F8;
+  }
+}
+
+// Margin utilities
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mt50 {
+  margin-top: 50px;
+}
+
+// Text alignment
+.tr {
+  text-align: right;
+}
+
+// Error styling
+.error {
+  color: #d93a3a;
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+}
+
+// Find link styling
+.findLink {
+  margin-top: 15px;
+  padding: 0;
+  font-size: 14px;
+  justify-content: flex-end;
+  color: #919191;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #666;
+  }
+}
+
+// Signup link styling
+.signupLink {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.signupButton {
+  color: #0058da;
+  font-weight: bold;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #0041a3;
+  }
+}
+
+// Divider line
+.line {
+  margin: 50px 0;
+  background: #e6e6e6;
+  height: 1px;
+  position: relative;
+  
+  &:before {
+    content: '또는';
+    display: block;
+    font-family: 'SUIT Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding: 4px 20px;
+    transform: translate(-50%, -50%);
+    color: #919191;
+    font-size: 14px;
+    background: #fcfcfc;
+  }
+}
+
+// Social login styling
+.snsLogin {
+  .snsButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .googleButton {
+    width: 100%;
+    height: 54px;
+    background: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 15px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'SUIT Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #333;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      width: 24px;
+      height: 24px;
+      background: url('/images/User/google_icon.svg') no-repeat center;
+      background-size: contain;
+    }
+    
+    &:hover:not(:disabled) {
+      background: #f8f8f8;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-color: #ddd;
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .googleText {
+      padding-left: 36px;
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .formWrap {
+    width: 90%;
+    max-width: 400px;
+    padding: 0 20px;
+  }
+  
+  .title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formWrap {
+    width: 100%;
+    padding: 0 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .line {
+    margin: 30px 0;
+    
+    &:before {
+      font-size: 13px;
+      padding: 4px 12px;
+    }
+  }
+}

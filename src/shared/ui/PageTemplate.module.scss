@@ -1,0 +1,6 @@
+.pageTemplate {
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text);
+  transition: background-color 300ms ease, color 300ms ease;
+}

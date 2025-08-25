@@ -1,0 +1,24 @@
+// Design System - Spacing Tokens
+
+// Base unit
+$spacing-unit: 4px;
+
+// Spacing scale
+$spacing-xs: $spacing-unit * 1;   // 4px
+$spacing-sm: $spacing-unit * 2;   // 8px
+$spacing-md: $spacing-unit * 4;   // 16px
+$spacing-lg: $spacing-unit * 6;   // 24px
+$spacing-xl: $spacing-unit * 8;   // 32px
+$spacing-2xl: $spacing-unit * 12; // 48px
+$spacing-3xl: $spacing-unit * 16; // 64px
+$spacing-4xl: $spacing-unit * 20; // 80px
+
+// Component specific spacing
+$spacing-button-padding-x: $spacing-md;
+$spacing-button-padding-y: $spacing-sm;
+$spacing-card-padding: $spacing-lg;
+$spacing-section-margin: $spacing-2xl;
+
+// Layout spacing
+$spacing-container-padding: $spacing-xl;
+$spacing-page-margin: $spacing-3xl;

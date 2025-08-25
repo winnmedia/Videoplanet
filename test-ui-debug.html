@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Debug Test</title>
+    <script>
+        // 로그인 상태 설정
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify({
+            id: 1,
+            name: 'Test User',
+            email: 'test@example.com'
+        }));
+        
+        // 페이지 리다이렉트
+        setTimeout(() => {
+            window.location.href = '/planning';
+        }, 1000);
+    </script>
+</head>
+<body>
+    <h1>Setting up authentication...</h1>
+    <p>Redirecting to Planning page...</p>
+</body>
+</html>

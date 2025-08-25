@@ -1,0 +1,135 @@
+{
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "react": {
+      "version": "19.0.0"
+    }
+  },
+  "rules": {
+    // === Next.js Strict Rules ===
+    "@next/next/no-html-link-for-pages": "error",
+    "@next/next/no-img-element": "warn",
+    "@next/next/no-unwanted-polyfillio": "error",
+    
+    // === Code Quality Rules ===
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-debugger": "error",
+    "no-alert": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    
+    // === Architectural Stability Rules ===
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "console",
+        "message": "운영 환경에서는 console 사용을 제한합니다. logger 유틸리티를 사용하세요."
+      }
+    ],
+    
+    // === FSD Architecture Import Rules ===
+    "no-restricted-imports": [
+      "error", 
+      {
+        "patterns": [
+          {
+            "group": ["../../../*"],
+            "message": "상대 경로는 2단계까지만 허용됩니다. src/에서 절대 경로를 사용하세요."
+          },
+          {
+            "group": ["**/features/*/ui/*", "**/features/*/model/*"],
+            "message": "features는 public API (index.ts)를 통해서만 import 가능합니다."
+          },
+          {
+            "group": ["**/entities/*/ui/*", "**/entities/*/model/*"],
+            "message": "entities는 public API (index.ts)를 통해서만 import 가능합니다."
+          },
+          {
+            "group": ["**/widgets/*/ui/*", "**/widgets/*/model/*"],
+            "message": "widgets는 public API (index.ts)를 통해서만 import 가능합니다."
+          },
+          {
+            "group": ["**/processes/*"],
+            "message": "processes 레이어는 현재 사용되지 않습니다."
+          },
+          {
+            "group": ["../../entities/*/*", "../../features/*/*", "../../widgets/*/*"],
+            "message": "상위 레이어에서 하위 레이어로만 import 가능합니다. FSD 의존성 규칙을 확인하세요."
+          },
+          {
+            "group": ["**/shared/ui/**/model/**", "**/shared/lib/**/model/**"],
+            "message": "shared 레이어에서는 비즈니스 로직을 포함하지 않아야 합니다."
+          },
+          {
+            "group": ["**/shared/**/api/**/*", "**/shared/**/services/**/*"],
+            "message": "shared 레이어에서는 특정 API 서비스에 의존하지 않아야 합니다."
+          }
+        ]
+      }
+    ],
+    
+    // === AI 영상 기획 시스템 특화 규칙 ===
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ImportDeclaration[source.value*='storyboard'] MemberExpression[property.name!=/^(select|use|create|update|generate|reset|clear)/]",
+        "message": "Storyboard entity에서는 표준 명명 규칙을 따른 함수만 import하세요."
+      }
+    ],
+    
+    // === TypeScript 특화 규칙 ===
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    
+    // === React 특화 규칙 ===
+    "react-hooks/exhaustive-deps": "warn",
+    "react/no-unescaped-entities": "error"
+  },
+  "overrides": [
+    {
+      "files": ["src/entities/*/index.ts", "src/features/*/index.ts", "src/widgets/*/index.ts"],
+      "rules": {
+        "import/no-default-export": "error"
+      }
+    },
+    {
+      "files": ["src/app/**/*.tsx", "src/app/**/*.ts"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    },
+    {
+      "files": ["**/*.test.{js,jsx,ts,tsx}", "**/*.spec.{js,jsx,ts,tsx}"],
+      "rules": {
+        "no-console": "off",
+        "@typescript-eslint/no-explicit-any": "off"
+      }
+    },
+    {
+      "files": ["*.config.{js,ts}", ".eslintrc.{js,ts}"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "no-console": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    ".next/",
+    "node_modules/",
+    "out/",
+    "dist/",
+    ".env*",
+    "*.config.js",
+    "coverage/",
+    ".storybook/",
+    "storybook-static/",
+    "__MACOSX/",
+    "vridge_back/",
+    "vridge_front/",
+    "test/",
+    ".claude/"
+  ]
+}

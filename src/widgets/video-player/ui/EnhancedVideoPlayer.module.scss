@@ -1,0 +1,289 @@
+@import '@/app/styles/variables.scss';
+
+.playerContainer {
+  width: 100%;
+  background: $color-white;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+}
+
+// 프로젝트 정보 섹션 (상단)
+.projectInfo {
+  padding: $spacing-lg;
+  border-bottom: 1px solid $color-gray-200;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+
+  .projectTitle {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $color-gray-900;
+    margin-bottom: $spacing-md;
+
+  }
+}
+
+// 비디오 래퍼
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; // 16:9 비율
+  background: $color-black;
+  overflow: hidden;
+  
+  .video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+  }
+  
+  // 업로드 영역
+  .uploadZone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: $color-gray-400;
+    
+    p {
+      margin: $spacing-md 0;
+      font-size: $font-size-lg;
+    }
+  }
+  
+  // 오버레이 컨트롤
+  .overlayControls {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    display: flex;
+    gap: $spacing-sm;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity $transition-normal;
+    
+    button {
+      background: rgba($color-black, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba($color-white, 0.1);
+      
+      &:hover {
+        background: rgba($color-black, 0.8);
+        border-color: rgba($color-white, 0.2);
+      }
+    }
+  }
+  
+  // 재생/일시정지 버튼
+  .playButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba($color-black, 0.6);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba($color-white, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all $transition-normal;
+    opacity: 0;
+    
+    &:hover {
+      background: rgba($color-black, 0.8);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    
+    &:active {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+  }
+  
+  // 호버 시 컨트롤 표시
+  &:hover {
+    .overlayControls,
+    .playButton {
+      opacity: 1;
+    }
+  }
+}
+
+// 하단 컨트롤
+.bottomControls {
+  padding: $spacing-md $spacing-lg;
+  background: $color-gray-50;
+  border-top: 1px solid $color-gray-200;
+
+  .confirmReplace {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    
+    span {
+      color: $color-gray-700;
+      font-size: $font-size-sm;
+
+    }
+  }
+}
+
+// 진행바 (추가 기능)
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba($color-white, 0.2);
+  cursor: pointer;
+  
+  .progress {
+    height: 100%;
+    background: $color-primary;
+    transition: width $transition-fast;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: -3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.3);
+      opacity: 0;
+      transition: opacity $transition-fast;
+    }
+  }
+  
+  &:hover .progress::after {
+    opacity: 1;
+  }
+}
+
+// 시간 표시
+.timeDisplay {
+  position: absolute;
+  bottom: $spacing-md;
+  left: $spacing-md;
+  color: $color-white;
+  font-size: $font-size-sm;
+  background: rgba($color-black, 0.6);
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  backdrop-filter: blur(8px);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+}
+
+// 볼륨 컨트롤
+.volumeControl {
+  position: absolute;
+  bottom: $spacing-md;
+  right: $spacing-md;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  
+  .volumeSlider {
+    width: 100px;
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
+  
+  &:hover .volumeSlider {
+    opacity: 1;
+  }
+}
+
+// 로딩 스피너
+.loadingSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba($color-white, 0.2);
+  border-top-color: $color-white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+// 모바일 반응형
+@include mobile {
+  .projectInfo {
+    padding: $spacing-md;
+    
+    .projectTitle {
+      font-size: $font-size-lg;
+    }
+  }
+  
+  .videoWrapper {
+    .overlayControls {
+      top: $spacing-sm;
+      right: $spacing-sm;
+      opacity: 1; // 모바일에서는 항상 표시
+      
+      button {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
+    }
+    
+    .playButton {
+      width: 60px;
+      height: 60px;
+      opacity: 1; // 모바일에서는 항상 표시
+    }
+  }
+  
+  .bottomControls {
+    padding: $spacing-sm $spacing-md;
+  }
+}
+
+// 태블릿 반응형
+@include tablet {
+  .videoWrapper {
+    .overlayControls {
+      opacity: 1; // 태블릿에서는 항상 표시
+    }
+    
+    .playButton {
+      opacity: 1; // 태블릿에서는 항상 표시
+    }
+  }
+}
+
+// 접근성 - 키보드 포커스
+.playerContainer *:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// 모션 감소 선호
+@media (prefers-reduced-motion: reduce) {
+  .playerContainer * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,429 @@
+/**
+ * 1단계 스토리 입력 폼 스타일
+ * VideoPlanet 브랜드 가이드라인 준수
+ */
+
+.storyInputForm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(22, 49, 248, 0.1);
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+  
+  h2 {
+    color: #1631F8;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+// ============================
+// 섹션 스타일
+// ============================
+
+.section {
+  background: #fcfcfc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  
+  h3 {
+    color: #1631F8;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.sectionDescription {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+}
+
+.required {
+  color: #dc3545;
+  font-size: 0.9em;
+}
+
+// ============================
+// 폼 그룹 스타일
+// ============================
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+// ============================
+// 입력 필드 스타일
+// ============================
+
+.input, .textarea, .select {
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  
+  &:focus {
+    outline: none;
+    border-color: #1631F8;
+    box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
+  }
+  
+  &::placeholder {
+    color: #919191;
+  }
+  
+  &.error {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+// ============================
+// 입력 그룹 스타일
+// ============================
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  
+  .input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    flex: 1;
+  }
+}
+
+.inputSuffix {
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  border-left: none;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 0.75rem;
+  color: #666;
+  font-weight: 500;
+}
+
+// ============================
+// 선택 옵션 스타일
+// ============================
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.optionCard {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  &:hover {
+    border-color: #1631F8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(22, 49, 248, 0.15);
+  }
+  
+  &.selected {
+    border-color: #1631F8;
+    background: rgba(22, 49, 248, 0.05);
+    box-shadow: 0 2px 8px rgba(22, 49, 248, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.optionLabel {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.optionDescription {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+// ============================
+// 라디오 버튼 스타일
+// ============================
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radioOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background: rgba(22, 49, 248, 0.02);
+  }
+}
+
+.radioInput {
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.1rem;
+  cursor: pointer;
+  accent-color: #1631F8;
+}
+
+.radioLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+// ============================
+// 헬프 텍스트 및 에러 메시지
+// ============================
+
+.fieldHelp {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  
+  &::before {
+    content: "⚠";
+    font-size: 0.9em;
+  }
+}
+
+.textCount {
+  align-self: flex-end;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+// ============================
+// 반응형 스타일
+// ============================
+
+@media (max-width: 768px) {
+  .storyInputForm {
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .header {
+    h2 {
+      font-size: 1.5rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+  }
+  
+  .optionGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .radioGroup {
+    gap: 0.5rem;
+  }
+  
+  .radioOption {
+    padding: 0.5rem;
+  }
+  
+  .section {
+    padding: 1rem;
+  }
+  
+  .form {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .storyInputForm {
+    padding: 0.75rem;
+    margin: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .header {
+    margin-bottom: 1.5rem;
+    
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+  
+  .section {
+    padding: 0.75rem;
+    
+    h3 {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .input, .textarea, .select {
+    padding: 0.625rem;
+    font-size: 0.95rem;
+  }
+  
+  .optionCard {
+    padding: 0.75rem;
+  }
+  
+  .inputGroup {
+    .inputSuffix {
+      padding: 0.625rem 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// ============================
+// 접근성 개선
+// ============================
+
+@media (prefers-reduced-motion: reduce) {
+  .optionCard, .input, .textarea, .select, .radioOption {
+    transition: none;
+  }
+}
+
+// 고대비 모드 지원
+@media (prefers-contrast: high) {
+  .input, .textarea, .select {
+    border-color: #000;
+    
+    &:focus {
+      border-color: #1631F8;
+      box-shadow: 0 0 0 2px #1631F8;
+    }
+  }
+  
+  .optionCard {
+    border-color: #000;
+    
+    &.selected {
+      background: #1631F8;
+      color: #fff;
+      
+      .optionDescription {
+        color: #ddd;
+      }
+    }
+  }
+}
+
+// 다크모드 지원 (미래 확장용)
+@media (prefers-color-scheme: dark) {
+  .storyInputForm {
+    background: #1a1a1a;
+    color: #fff;
+  }
+  
+  .section {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+  
+  .input, .textarea, .select {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #fff;
+    
+    &::placeholder {
+      color: #999;
+    }
+  }
+  
+  .optionCard {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+}

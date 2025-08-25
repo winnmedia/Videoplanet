@@ -1,0 +1,73 @@
+@use '../../styles/unified-design-tokens.scss' as tokens;
+
+.card {
+  background: tokens.$color-white;
+  border-radius: tokens.$border-radius-lg;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+// Variants
+.card--default {
+  border: 1px solid tokens.$color-gray-200;
+  box-shadow: tokens.$shadow-sm;
+}
+
+.card--elevated {
+  border: none;
+  box-shadow: tokens.$shadow-md;
+  
+  &:hover {
+    box-shadow: tokens.$shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+.card--outlined {
+  border: 2px solid tokens.$color-gray-200;
+  box-shadow: none;
+  
+  &:hover {
+    border-color: tokens.$color-primary;
+    box-shadow: 0 0 0 1px tokens.$color-primary;
+  }
+}
+
+// Padding variants
+.card--padding-none {
+  padding: 0;
+}
+
+.card--padding-sm {
+  padding: tokens.$spacing-sm;
+}
+
+.card--padding-md {
+  padding: tokens.$spacing-md;
+}
+
+.card--padding-lg {
+  padding: tokens.$spacing-lg;
+}
+
+.card--padding-xl {
+  padding: tokens.$spacing-xl;
+}
+
+// Focus styles for accessibility
+.card:focus-visible {
+  outline: 2px solid tokens.$color-primary;
+  outline-offset: 2px;
+}
+
+// Responsive adjustments
+@include tokens.mobile-only {
+  .card--padding-lg {
+    padding: tokens.$spacing-md;
+  }
+  
+  .card--padding-xl {
+    padding: tokens.$spacing-lg;
+  }
+}

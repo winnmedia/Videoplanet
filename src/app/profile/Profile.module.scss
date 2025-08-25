@@ -1,0 +1,144 @@
+@use '@/app/styles/variables' as *;
+
+.profilePage {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $border-color;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: $text-primary;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .profileCard {
+    background: white;
+    border-radius: $border-radius-lg;
+    padding: 2rem;
+    box-shadow: $shadow-sm;
+
+    .avatarSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid $color-primary;
+      }
+    }
+
+    .infoSection {
+      .formGroup {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: $text-secondary;
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          font-size: 1rem;
+          color: $text-primary;
+          margin: 0;
+        }
+
+        input,
+        textarea {
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid $border-color;
+          border-radius: $border-radius;
+          font-size: 1rem;
+          color: $text-primary;
+          background: white;
+          transition: border-color 0.2s;
+
+          &:focus {
+            outline: none;
+            border-color: $color-primary;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+      }
+    }
+  }
+
+  .statsCard {
+    background: white;
+    border-radius: $border-radius-lg;
+    padding: 2rem;
+    box-shadow: $shadow-sm;
+    height: fit-content;
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+
+      .statItem {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: $background-light;
+        border-radius: $border-radius;
+        text-align: center;
+
+        .statValue {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: $color-primary;
+          margin-bottom: 0.25rem;
+        }
+
+        .statLabel {
+          font-size: 0.875rem;
+          color: $text-secondary;
+        }
+      }
+    }
+  }
+}

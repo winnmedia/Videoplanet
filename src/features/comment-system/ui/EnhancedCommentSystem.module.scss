@@ -1,0 +1,418 @@
+@import '@/app/styles/variables.scss';
+
+.commentSystem {
+  background: $color-white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+}
+
+.header {
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-md;
+  border-bottom: 2px solid $color-gray-200;
+
+  .title {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $color-gray-900;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    .count {
+      font-size: $font-size-lg;
+      color: $color-gray-500;
+      font-weight: normal;
+    }
+  }
+}
+
+// 코멘트 작성 폼
+.commentForm {
+  margin-bottom: $spacing-xl;
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+  
+  .inputGroup {
+    display: flex;
+    gap: $spacing-md;
+  }
+  
+  .inputWrapper {
+    flex: 1;
+    
+    .textarea {
+      width: 100%;
+      padding: $spacing-md;
+      border: 1px solid $color-gray-300;
+      border-radius: $border-radius-md;
+      font-size: $font-size-md;
+      resize: vertical;
+      min-height: 80px;
+      transition: border-color $transition-fast;
+      
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+      }
+
+    }
+    
+    .timestampInfo {
+      margin-top: $spacing-sm;
+      padding: $spacing-sm;
+      background: rgba($color-primary, 0.05);
+      border-radius: $border-radius-sm;
+      
+      .timestampCheckbox {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        cursor: pointer;
+        font-size: $font-size-sm;
+        color: $color-primary;
+        
+        input[type="checkbox"] {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  
+  .formActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .hint {
+      font-size: $font-size-sm;
+      color: $color-gray-500;
+      font-style: italic;
+    }
+  }
+}
+
+// 아바타
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: $font-size-md;
+  flex-shrink: 0;
+  
+  &.small {
+    width: 32px;
+    height: 32px;
+    font-size: $font-size-sm;
+  }
+  
+  &.admin {
+    background: linear-gradient(135deg, $color-primary 0%, darken($color-primary, 10%) 100%);
+    color: $color-white;
+  }
+  
+  &.basic {
+    background: $color-gray-200;
+    color: $color-gray-700;
+
+  }
+  
+  &.guest {
+    background: linear-gradient(135deg, $color-gray-300 0%, $color-gray-400 100%);
+    color: $color-white;
+  }
+}
+
+// 코멘트 리스트
+.commentsList {
+  .emptyState {
+    text-align: center;
+    padding: $spacing-2xl;
+    color: $color-gray-500;
+    
+    p {
+      margin: $spacing-sm 0;
+      
+      &:first-child {
+        font-size: $font-size-lg;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// 개별 코멘트
+.comment {
+  padding: $spacing-lg 0;
+  border-bottom: 1px solid $color-gray-200;
+
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &.reply {
+    margin-left: $spacing-2xl;
+    padding-left: $spacing-md;
+    border-left: 2px solid $color-gray-200;
+
+  }
+}
+
+.commentHeader {
+  margin-bottom: $spacing-md;
+  
+  .authorInfo {
+    display: flex;
+    gap: $spacing-md;
+    align-items: flex-start;
+  }
+  
+  .authorDetails {
+    flex: 1;
+    
+    .authorName {
+      font-weight: 600;
+      color: $color-gray-900;
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+
+      .adminBadge,
+      .guestBadge {
+        font-size: $font-size-xs;
+        padding: 2px 6px;
+        border-radius: $border-radius-sm;
+        font-weight: normal;
+      }
+      
+      .adminBadge {
+        background: $color-primary;
+        color: $color-white;
+      }
+      
+      .guestBadge {
+        background: $color-gray-400;
+        color: $color-white;
+      }
+    }
+    
+    .timestamp {
+      font-size: $font-size-sm;
+      color: $color-gray-500;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      
+      .videoTime {
+        background: rgba($color-primary, 0.1);
+        color: $color-primary;
+        padding: 2px 8px;
+        border-radius: $border-radius-sm;
+        border: none;
+        cursor: pointer;
+        font-size: $font-size-xs;
+        transition: all $transition-fast;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        
+        &:hover {
+          background: rgba($color-primary, 0.2);
+          transform: translateY(-1px);
+        }
+        
+        .timeIcon {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+}
+
+.commentContent {
+  margin-bottom: $spacing-md;
+  color: $color-gray-800;
+  line-height: 1.6;
+  word-break: break-word;
+
+}
+
+.commentActions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+  
+  .reactions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+  
+  .reactionButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid $color-gray-300;
+    border-radius: $border-radius-full;
+    background: $color-white;
+    cursor: pointer;
+    transition: all $transition-fast;
+    font-size: $font-size-sm;
+
+    &:hover {
+      border-color: $color-primary;
+      background: rgba($color-primary, 0.05);
+    }
+    
+    &.active {
+      background: $color-primary;
+      border-color: $color-primary;
+      color: $color-white;
+      
+      .reactionIcon {
+        animation: bounce 0.3s ease-out;
+      }
+    }
+    
+    .reactionIcon {
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .reactionCount {
+      font-weight: 500;
+      min-width: 16px;
+      text-align: center;
+    }
+  }
+  
+  .replyButton {
+    // Button 컴포넌트 스타일 사용
+  }
+  
+  .expandButton {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: $color-primary;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: $border-radius-sm;
+    transition: background $transition-fast;
+    
+    &:hover {
+      background: rgba($color-primary, 0.05);
+    }
+    
+    .expandIcon {
+      display: inline-flex;
+      transition: transform $transition-fast;
+    }
+  }
+}
+
+// 답글 작성 폼
+.replyForm {
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background: $color-gray-50;
+  border-radius: $border-radius-md;
+
+  .replyInputGroup {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .replyTextarea {
+    flex: 1;
+    padding: $spacing-sm;
+    border: 1px solid $color-gray-300;
+    border-radius: $border-radius-sm;
+    resize: vertical;
+    font-size: $font-size-sm;
+    
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+    }
+
+  }
+  
+  .replyActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+  }
+}
+
+// 답글 리스트
+.replies {
+  margin-top: $spacing-md;
+}
+
+// 애니메이션
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+// 모바일 반응형
+@include mobile {
+  .commentSystem {
+    padding: $spacing-md;
+  }
+  
+  .comment {
+    &.reply {
+      margin-left: $spacing-lg;
+      padding-left: $spacing-sm;
+    }
+  }
+  
+  .commentActions {
+    .reactions {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .expandButton {
+      width: 100%;
+      justify-content: center;
+      margin-top: $spacing-sm;
+    }
+  }
+}
+
+// 접근성
+.commentSystem *:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// 모션 감소
+@media (prefers-reduced-motion: reduce) {
+  .reactionButton.active .reactionIcon {
+    animation: none;
+  }
+}

@@ -1,0 +1,74 @@
+// VideoPlanet Design System - Color Tokens
+// 브랜드 색상 통일 및 일관된 인터랙션 패턴
+
+// Primary Colors
+$color-primary: #1631F8;
+$color-primary-dark: #0131ff;
+$color-primary-darker: #0029d1;
+$color-primary-light: #4d5fff;
+$color-primary-lighter: #e3f2fd;
+
+// Secondary Colors  
+$color-secondary: #25282f;
+$color-secondary-light: #707175;
+$color-secondary-lighter: #efefef;
+$color-secondary-lightest: #f8f8f8;
+
+// Status Colors
+$color-success: #28a745;
+$color-success-light: #5cb85c;
+$color-success-lighter: #d4edda;
+
+$color-danger: #dc3545;
+$color-danger-light: #e74c3c;
+$color-danger-lighter: #f8d7da;
+
+$color-warning: #ffc107;
+$color-warning-light: #ffdb4d;
+$color-warning-lighter: #fff3cd;
+
+$color-info: #17a2b8;
+$color-info-light: #5bc0de;
+$color-info-lighter: #d1ecf1;
+
+// Neutral Colors
+$color-white: #ffffff;
+$color-black: #000000;
+$color-gray-50: #f9fafb;
+$color-gray-100: #f8f9fa;
+$color-gray-200: #e9ecef;
+$color-gray-300: #dee2e6;
+$color-gray-400: #ced4da;
+$color-gray-500: #adb5bd;
+$color-gray-600: #6c757d;
+$color-gray-700: #495057;
+$color-gray-800: #343a40;
+$color-gray-900: #212529;
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #1631F8 0%, #0131ff 100%);
+$gradient-secondary: linear-gradient(135deg, #25282f 0%, #000000 100%);
+$gradient-success: linear-gradient(135deg, #28a745 0%, #218838 100%);
+$gradient-danger: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.2);
+$shadow-2xl: 0 12px 48px rgba(0, 0, 0, 0.25);
+
+// Project Status Colors
+$color-status-active: #1976d2;
+$color-status-active-bg: #e3f2fd;
+
+$color-status-review: #f57c00;
+$color-status-review-bg: #fff3e0;
+
+$color-status-planning: #7b1fa2;
+$color-status-planning-bg: #f3e5f5;
+
+$color-status-completed: #2e7d32;
+$color-status-completed-bg: #e8f5e9;
+
+// CSS variables are exported in globals.css to avoid CSS modules conflicts

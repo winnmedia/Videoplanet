@@ -1,0 +1,110 @@
+// 🚨 레이아웃 우선순위 강제 정리
+// CSS 모듈 vs Tailwind 충돌 해결
+
+// Tailwind utility 강제 우선순위 적용
+.force-tailwind {
+  // 마진 강제 적용
+  &.ml-0 { margin-left: 0 !important; }
+  &.ml-auto { margin-left: auto !important; }
+  &.mr-0 { margin-right: 0 !important; }
+  &.mr-auto { margin-right: auto !important; }
+  
+  // 패딩 강제 적용
+  &.p-0 { padding: 0 !important; }
+  &.px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+  &.py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+  
+  // Display 강제 적용
+  &.flex { display: flex !important; }
+  &.grid { display: grid !important; }
+  &.block { display: block !important; }
+  &.hidden { display: none !important; }
+  
+  // Flexbox 방향 강제
+  &.flex-col { flex-direction: column !important; }
+  &.flex-row { flex-direction: row !important; }
+}
+
+// CSS 모듈 레이아웃 보호
+.layout-protected {
+  // 기존 CSS 모듈 스타일 보호
+  margin: inherit !important;
+  padding: inherit !important;
+  display: inherit !important;
+  position: inherit !important;
+}
+
+// 반응형 레이아웃 강제 적용
+@media (max-width: 768px) {
+  .mobile-force {
+    // 모바일에서 강제 스타일
+    margin-left: 0 !important;
+    padding: 20px !important;
+    width: 100% !important;
+  }
+  
+  .mobile-hidden {
+    display: none !important;
+  }
+}
+
+// 사이드바 관련 강제 수정
+.sidebar-layout {
+  .mainContent {
+    // 사이드바 있을 때 강제 마진
+    margin-left: 300px !important;
+    transition: margin-left 0.3s ease !important;
+  }
+  
+  &.submenu-open .mainContent {
+    // 서브메뉴 열렸을 때 강제 마진  
+    margin-left: 600px !important;
+  }
+  
+  @media (max-width: 768px) {
+    .mainContent {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+// 텍스트 겹침 방지
+.text-overlap-fix {
+  // 줄 높이 강제 적용
+  line-height: 1.5 !important;
+  
+  // 글자 간격 강제 적용
+  letter-spacing: normal !important;
+  
+  // 단어 줄바꿈 강제
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+// 버튼 디자인 명확성 강제
+.button-clarity-fix {
+  // 최소 크기 보장
+  min-height: 44px !important;
+  min-width: 44px !important;
+  
+  // 터치 타겟 보장
+  padding: 12px 24px !important;
+  
+  // 명확한 테두리
+  border: 1px solid transparent !important;
+  
+  // 기본 커서
+  cursor: pointer !important;
+  
+  // 호버 상태 명확화
+  &:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  // 포커스 상태 명확화
+  &:focus-visible {
+    outline: 2px solid #1631F8 !important;
+    outline-offset: 2px !important;
+  }
+}

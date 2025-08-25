@@ -1,0 +1,250 @@
+// Design tokens
+$color-success: #22c55e;
+$color-success-bg: #dcfce7;
+$color-success-border: #86efac;
+
+$color-error: #ef4444;
+$color-error-bg: #fee2e2;
+$color-error-border: #fca5a5;
+
+$color-warning: #f59e0b;
+$color-warning-bg: #fef3c7;
+$color-warning-border: #fcd34d;
+
+$color-info: #3b82f6;
+$color-info-bg: #dbeafe;
+$color-info-border: #93c5fd;
+
+$color-text: #1f2937;
+$border-radius: 6px;
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+
+.form-feedback {
+  display: flex;
+  border-radius: $border-radius;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    width: 100%;
+    padding: $spacing-md $spacing-lg;
+  }
+  
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &-svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  &__text {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  &__title {
+    font-weight: 600;
+    margin-bottom: $spacing-xs;
+    line-height: 1.4;
+  }
+  
+  &__message {
+    line-height: 1.5;
+  }
+  
+  &__list {
+    margin: 0;
+    padding: 0 0 0 $spacing-lg;
+    line-height: 1.6;
+    
+    li {
+      margin-bottom: $spacing-xs;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  &__dismiss {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: $spacing-xs;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 1;
+    }
+    
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  // Type variants
+  &--success {
+    background-color: $color-success-bg;
+    border: 1px solid $color-success-border;
+    color: darken($color-success, 10%);
+    
+    .form-feedback__icon {
+      color: $color-success;
+    }
+  }
+  
+  &--error {
+    background-color: $color-error-bg;
+    border: 1px solid $color-error-border;
+    color: darken($color-error, 10%);
+    
+    .form-feedback__icon {
+      color: $color-error;
+    }
+  }
+  
+  &--warning {
+    background-color: $color-warning-bg;
+    border: 1px solid $color-warning-border;
+    color: darken($color-warning, 15%);
+    
+    .form-feedback__icon {
+      color: $color-warning;
+    }
+  }
+  
+  &--info {
+    background-color: $color-info-bg;
+    border: 1px solid $color-info-border;
+    color: darken($color-info, 10%);
+    
+    .form-feedback__icon {
+      color: $color-info;
+    }
+  }
+  
+  // Display variants
+  &--inline {
+    display: inline-flex;
+    
+    .form-feedback__content {
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+  
+  &--block {
+    display: flex;
+    width: 100%;
+  }
+  
+  &--floating {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  // Size variants
+  &--small {
+    font-size: 13px;
+    
+    .form-feedback__content {
+      padding: $spacing-sm $spacing-md;
+      gap: $spacing-sm;
+    }
+    
+    .form-feedback__icon-svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  &--medium {
+    font-size: 14px;
+  }
+  
+  &--large {
+    font-size: 16px;
+    
+    .form-feedback__content {
+      padding: $spacing-lg $spacing-lg * 1.25;
+      gap: $spacing-lg;
+    }
+    
+    .form-feedback__icon-svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  // Animation
+  &--animated {
+    animation: slideIn 0.3s ease-out;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .form-feedback {
+    &--success {
+      background-color: rgba($color-success, 0.15);
+      border-color: rgba($color-success, 0.3);
+      color: lighten($color-success, 10%);
+    }
+    
+    &--error {
+      background-color: rgba($color-error, 0.15);
+      border-color: rgba($color-error, 0.3);
+      color: lighten($color-error, 10%);
+    }
+    
+    &--warning {
+      background-color: rgba($color-warning, 0.15);
+      border-color: rgba($color-warning, 0.3);
+      color: lighten($color-warning, 10%);
+    }
+    
+    &--info {
+      background-color: rgba($color-info, 0.15);
+      border-color: rgba($color-info, 0.3);
+      color: lighten($color-info, 10%);
+    }
+  }
+}

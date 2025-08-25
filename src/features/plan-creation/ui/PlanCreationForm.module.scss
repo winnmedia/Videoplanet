@@ -1,0 +1,330 @@
+// Plan Creation Form Styles
+.planCreationForm {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+    margin: 1rem;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Step Indicator
+.stepIndicator {
+  margin-bottom: 3rem;
+  
+  .progressBar {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    
+    .progressFill {
+      height: 100%;
+      background: linear-gradient(135deg, #1631F8, #0029d1);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+  }
+  
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f9fafb;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    
+    &.current {
+      border-color: #1631F8;
+      background: #f0f4ff;
+    }
+    
+    &.completed {
+      background: #ecfdf5;
+      border-color: #10b981;
+    }
+    
+    .stepNumber {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: #e5e7eb;
+      color: #6b7280;
+      transition: all 0.2s ease;
+    }
+    
+    &.current .stepNumber {
+      background: #1631F8;
+      color: white;
+    }
+    
+    &.completed .stepNumber {
+      background: #10b981;
+      color: white;
+      
+      .checkmark {
+        font-size: 0.75rem;
+      }
+    }
+    
+    .stepLabel {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .stepTitle {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+    
+    .stepDescription {
+      font-size: 0.75rem;
+      color: #6b7280;
+      line-height: 1.3;
+    }
+    
+    &.current .stepTitle {
+      color: #1631F8;
+    }
+    
+    &.completed .stepTitle {
+      color: #059669;
+    }
+  }
+}
+
+// Content Area
+.content {
+  margin-bottom: 2rem;
+  
+  .errorMessage {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    color: #dc2626;
+    font-size: 0.875rem;
+    
+    strong {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+  }
+  
+  .stepContent {
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 2rem;
+    min-height: 400px;
+    
+    @media (max-width: 768px) {
+      padding: 1.5rem;
+    }
+  }
+}
+
+// Validation Errors
+.validationErrors {
+  background: #fff3cd;
+  border: 1px solid #ffecb5;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #856404;
+  font-size: 0.875rem;
+  
+  .errorGroup {
+    &:not(:last-child) {
+      margin-bottom: 0.75rem;
+    }
+    
+    strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      text-transform: capitalize;
+    }
+    
+    ul {
+      margin: 0;
+      padding-left: 1.5rem;
+      
+      li {
+        margin-bottom: 0.125rem;
+        line-height: 1.4;
+      }
+    }
+  }
+}
+
+// Navigation
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .leftButtons {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .rightButtons {
+    display: flex;
+    gap: 0.75rem;
+    
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
+  }
+  
+  .previousButton {
+    min-width: 80px;
+  }
+  
+  .nextButton,
+  .submitButton {
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+  
+  .submitButton {
+    min-width: 150px;
+    background: linear-gradient(135deg, #1631F8, #0029d1);
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #0029d1, #001ea8);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .planCreationForm {
+    max-width: 100%;
+    margin: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .planCreationForm {
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  
+  .stepIndicator {
+    margin-bottom: 2rem;
+    
+    .progressBar {
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  .content .stepContent {
+    min-height: 300px;
+  }
+}
+
+// Animation for step transitions
+.stepContent {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Loading state for submit button
+.submitButton {
+  &:disabled {
+    background: #9ca3af !important;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+}

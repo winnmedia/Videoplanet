@@ -1,0 +1,129 @@
+// 🚨 디자인 토큰 통일
+// 중복된 색상/스타일 정의 해결
+
+// CSS Custom Properties로 전역 통일
+:root {
+  // 브랜드 색상 (최종 결정된 값)
+  --color-primary: #1631F8;
+  --color-primary-hover: #0f26d8;
+  --color-primary-light: #4d5fff;
+  --color-primary-lighter: #e3f2fd;
+  
+  // 레거시 색상 매핑 (기존 하드코딩 대체)
+  --color-legacy-blue: var(--color-primary);
+  --color-legacy-blue-dark: var(--color-primary-hover);
+  
+  // 상태 색상
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-info: #17a2b8;
+  
+  // 중성 색상
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f8f9fa;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #dee2e6;
+  --color-gray-400: #ced4da;
+  --color-gray-500: #adb5bd;
+  --color-gray-600: #6c757d;
+  --color-gray-700: #495057;
+  --color-gray-800: #343a40;
+  --color-gray-900: #212529;
+  
+  // 통일된 간격 시스템
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  
+  // 통일된 브레이크포인트
+  --breakpoint-mobile: 640px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1280px;
+  
+  // 통일된 그림자
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  
+  // 통일된 border-radius
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+}
+
+// 하드코딩된 색상 강제 대체
+* {
+  // 기존 하드코딩 색상들 감지해서 CSS 변수로 대체
+  &[style*="#1631F8"],
+  &[style*="#0f26d8"],
+  &[style*="#0059db"],
+  &[style*="#012fff"] {
+    // 인라인 스타일 무시하고 CSS 변수 적용
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+  }
+}
+
+// 클래스별 색상 통일 강제
+.btn-primary,
+.button-primary,
+[class*="primary"] {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  
+  &:hover {
+    background-color: var(--color-primary-hover) !important;
+    border-color: var(--color-primary-hover) !important;
+  }
+}
+
+// 텍스트 색상 통일
+.text-primary {
+  color: var(--color-primary) !important;
+}
+
+// 레거시 클래스들 매핑
+.legacy-blue,
+.color-blue,
+[class*="blue"] {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+}
+
+// 간격 통일 강제
+.spacing-fix {
+  // 일관된 마진
+  &.mb-sm { margin-bottom: var(--spacing-sm) !important; }
+  &.mb-md { margin-bottom: var(--spacing-md) !important; }
+  &.mb-lg { margin-bottom: var(--spacing-lg) !important; }
+  
+  // 일관된 패딩
+  &.p-sm { padding: var(--spacing-sm) !important; }
+  &.p-md { padding: var(--spacing-md) !important; }
+  &.p-lg { padding: var(--spacing-lg) !important; }
+}
+
+// 그림자 통일
+.shadow-fix {
+  &.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+  &.shadow-md { box-shadow: var(--shadow-md) !important; }
+  &.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+}
+
+// border-radius 통일
+.radius-fix {
+  &.rounded-sm { border-radius: var(--radius-sm) !important; }
+  &.rounded-md { border-radius: var(--radius-md) !important; }
+  &.rounded-lg { border-radius: var(--radius-lg) !important; }
+}

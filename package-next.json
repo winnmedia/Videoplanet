@@ -1,0 +1,153 @@
+{
+  "name": "videoplanet-frontend",
+  "version": "2.0.0",
+  "description": "VideoPlanet Frontend - Next.js 15 with Feature-Sliced Design",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "prepare": "husky install",
+    "analyze": "ANALYZE=true npm run build",
+    "clean": "rm -rf .next out dist",
+    "migrate:deps": "npm-check-updates -u"
+  },
+  "dependencies": {
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    
+    "@reduxjs/toolkit": "^2.3.0",
+    "react-redux": "^9.1.2",
+    "@tanstack/react-query": "^5.59.0",
+    "@tanstack/react-query-devtools": "^5.59.0",
+    "zustand": "^5.0.0",
+    
+    "antd": "^5.22.0",
+    "tailwindcss": "^3.4.0",
+    "clsx": "^2.1.0",
+    "class-variance-authority": "^0.7.0",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/typography": "^0.5.0",
+    
+    "axios": "^1.7.0",
+    "ky": "^1.7.0",
+    "zod": "^3.23.0",
+    "date-fns": "^4.1.0",
+    "immer": "^10.1.0",
+    
+    "framer-motion": "^12.0.0",
+    "react-hook-form": "^7.54.0",
+    "@hookform/resolvers": "^3.10.0",
+    "react-use": "^17.5.0",
+    
+    "@react-oauth/google": "^0.12.0",
+    "react-intersection-observer": "^9.13.0",
+    
+    "sharp": "^0.33.0",
+    "next-themes": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    
+    "@next/bundle-analyzer": "^15.5.0",
+    "eslint": "^9.15.0",
+    "eslint-config-next": "^15.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint-plugin-boundaries": "^4.2.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-import": "^2.31.0",
+    
+    "prettier": "^3.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    
+    "vitest": "^2.1.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/user-event": "^14.5.0",
+    "jsdom": "^25.0.0",
+    "@vitest/ui": "^2.1.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    
+    "@playwright/test": "^1.49.0",
+    
+    "@storybook/react": "^8.4.0",
+    "@storybook/react-vite": "^8.4.0",
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/addon-interactions": "^8.4.0",
+    "@storybook/addon-a11y": "^8.4.0",
+    "@storybook/addon-docs": "^8.4.0",
+    "@storybook/test": "^8.4.0",
+    
+    "msw": "^2.6.0",
+    "@mswjs/data": "^0.16.0",
+    
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.0",
+    "sass": "^1.80.0",
+    
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    
+    "cross-env": "^7.0.0",
+    "npm-check-updates": "^17.1.0",
+    "rimraf": "^6.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,css,scss}": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "packageManager": "npm@10.9.0"
+}

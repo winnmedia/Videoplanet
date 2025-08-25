@@ -1,0 +1,101 @@
+@use '../styles/unified-design-tokens.scss' as tokens;
+
+.appLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: tokens.$color-gray-50;
+}
+
+.layoutContent {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: tokens.$color-gray-50;
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 300px; // SideBar 기본 너비
+  padding: tokens.$spacing-2xl;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  background-color: tokens.$color-gray-50;
+  min-height: calc(100vh - 70px); // Header 높이를 뺀 높이
+  position: relative;
+
+  // 페이지별 래퍼를 위한 기본 스타일
+  > div {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1024px) {
+    margin-left: 240px;
+    padding: tokens.$spacing-xl;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: tokens.$spacing-lg;
+  }
+}
+
+// 서브메뉴가 열렸을 때 메인 콘텐츠 조정 - 브라우저 호환성 개선
+:global(.has-open-submenu) {
+  .mainContent {
+    margin-left: 600px !important; // SideBar(300px) + SubMenu(300px)
+
+    @media (max-width: 1024px) {
+      margin-left: 540px !important; // 조정된 값 (240px + 300px)
+    }
+
+    @media (max-width: 768px) {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+// 대체 방식: withSubmenu 클래스 사용
+.mainContent.withSubmenu {
+  margin-left: 600px; // SideBar(300px) + SubMenu(300px)
+
+  @media (max-width: 1024px) {
+    margin-left: 540px; // 조정된 값 (240px + 300px)
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// 풀 너비 레이아웃 (사이드바 없을 때)
+.appLayout:has(.mainContent:only-child) {
+  .mainContent {
+    margin-left: 0;
+  }
+}
+
+// 모바일에서 사이드바 오버레이
+@media (max-width: 768px) {
+  .layoutContent {
+    :global(.sideBar) {
+      position: fixed;
+      left: 0;
+      top: 70px;
+      height: calc(100vh - 70px);
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      
+      &.active {
+        transform: translateX(0);
+      }
+    }
+    
+    // 서브메뉴 모바일 스타일은 EnhancedSideBar에서 처리
+    // :global(.submenu) 블록 제거 (중복 방지)
+  }
+}

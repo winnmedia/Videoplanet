@@ -1,0 +1,186 @@
+// Design tokens
+$color-danger: #ef4444;
+$color-danger-light: #fee2e2;
+$color-text: #1f2937;
+$color-text-secondary: #6b7280;
+$color-primary: #1631F8;
+$color-primary-hover: #1428d6;
+$border-radius: 8px;
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: $spacing-xl;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+
+  &__icon {
+    margin-bottom: $spacing-lg;
+    animation: shake 0.5s ease-in-out;
+    
+    svg {
+      width: 64px;
+      height: 64px;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: $color-text;
+    margin: 0 0 $spacing-md 0;
+    line-height: 1.3;
+  }
+
+  &__message {
+    font-size: 16px;
+    color: $color-text-secondary;
+    line-height: 1.6;
+    margin: 0 0 $spacing-lg 0;
+    max-width: 480px;
+  }
+
+  &__details {
+    width: 100%;
+    margin-bottom: $spacing-lg;
+    text-align: left;
+    background: $color-danger-light;
+    border-radius: $border-radius;
+    padding: $spacing-md;
+    
+    summary {
+      font-weight: 500;
+      color: $color-danger;
+      cursor: pointer;
+      user-select: none;
+      padding: $spacing-sm;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__stack {
+    margin-top: $spacing-md;
+    padding: $spacing-md;
+    background: white;
+    border-radius: $spacing-xs;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: $color-text;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+    
+    @media (max-width: 480px) {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  &__button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: $border-radius;
+    background: linear-gradient(135deg, $color-primary 0%, lighten($color-primary, 10%) 100%);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: linear-gradient(135deg, $color-primary-hover 0%, $color-primary 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &:focus-visible {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+    
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+    
+    &--secondary {
+      @extend .error-boundary__button;
+      background: white;
+      color: $color-primary;
+      border: 2px solid $color-primary;
+      
+      &:hover {
+        background: rgba($color-primary, 0.05);
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .error-boundary {
+    background: #1f2937;
+    color: #f3f4f6;
+    
+    &__title {
+      color: #f3f4f6;
+    }
+    
+    &__message {
+      color: #d1d5db;
+    }
+    
+    &__details {
+      background: #374151;
+      
+      summary {
+        color: #f87171;
+      }
+    }
+    
+    &__stack {
+      background: #111827;
+      color: #f3f4f6;
+    }
+  }
+}

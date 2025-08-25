@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Poppins Font Family */
+
+/* SUIT Variable Font - Load from CDN or remove if not needed */
+/* @font-face {
+  font-family: 'SUIT Variable';
+  src: url('/fonts/SUIT-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+} */
+
+/* Font utility classes */
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-suit {
+  font-family: 'SUIT Variable', sans-serif;
+}
+
+/* Font weight utilities */
+.font-light { font-weight: 300; }
+.font-regular { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }

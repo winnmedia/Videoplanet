@@ -1,0 +1,227 @@
+@import '@/app/styles/variables.scss';
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 3rem;
+  font-size: 1.125rem;
+}
+
+.testGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.testSection {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #1631F8 0%, #0f23d6 100%);
+  color: white;
+}
+
+.dangerButton {
+  background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+  color: white;
+}
+
+.warningButton {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #333;
+}
+
+.successButton {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  color: white;
+}
+
+.clearButton {
+  background: #6c757d;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  
+  &:hover {
+    background: #5a6268;
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.125rem;
+  color: #666;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.results {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+}
+
+.resultList {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.resultItem {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  border-left: 4px solid #1631F8;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.resultHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  
+  strong {
+    color: #333;
+    font-size: 1rem;
+  }
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.resultContent {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+// 다크모드 지원
+@media (prefers-color-scheme: dark) {
+  .container {
+    color: #f0f0f0;
+  }
+  
+  .title {
+    color: #f0f0f0;
+  }
+  
+  .description {
+    color: #a0a0a0;
+  }
+  
+  .testSection,
+  .results {
+    background: #1a1a1a;
+    
+    h2 {
+      color: #f0f0f0;
+    }
+  }
+  
+  .resultItem {
+    background: #2a2a2a;
+    
+    strong {
+      color: #f0f0f0;
+    }
+  }
+  
+  .resultContent {
+    background: #1a1a1a;
+    color: #f0f0f0;
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .testGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+}

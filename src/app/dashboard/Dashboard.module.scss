@@ -1,0 +1,814 @@
+@use '../../shared/styles/unified-design-tokens.scss' as tokens;
+
+// Loading State
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: tokens.$color-gray-50;
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: tokens.$spacing-lg;
+}
+
+.loadingSpinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid tokens.$color-gray-200;
+  border-top-color: tokens.$color-primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+  color: tokens.$color-gray-600;
+  font-size: tokens.$font-size-sm;
+  font-weight: tokens.$font-weight-medium;
+  margin: 0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+// Main Container
+.dashboardContainer {
+  min-height: 100vh;
+  background: tokens.$color-gray-50;
+  padding: tokens.$spacing-2xl;
+  max-width: 100%;
+  overflow-x: hidden;
+  
+  @include tokens.tablet-up {
+    padding: tokens.$spacing-md;
+  }
+  
+  @include tokens.mobile-only {
+    padding: tokens.$spacing-sm;
+  }
+}
+
+// Header
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid tokens.$color-gray-200;
+  
+  .dashboardTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: tokens.$color-gray-900;
+    letter-spacing: -0.02em;
+  }
+  
+  .headerInfo {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    
+    .userName {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: tokens.$color-gray-600;
+      padding: 8px 16px;
+      background: tokens.$color-white;
+      border-radius: 20px;
+      border: 1px solid tokens.$color-gray-200;
+      
+      svg {
+        color: tokens.$color-gray-400;
+      }
+    }
+    
+    .todayDate {
+      font-size: 14px;
+      color: tokens.$color-gray-400;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    
+    .dashboardTitle {
+      font-size: 24px;
+    }
+    
+    .headerInfo {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
+
+// Main Content Grid
+.dashboardMain {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Section Base Styles
+.dashboardSection {
+  background: tokens.$color-white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: tokens.$shadow-sm;
+  border: 1px solid tokens.$color-gray-200;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    box-shadow: tokens.$shadow-md;
+  }
+}
+
+// Section Header
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid tokens.$color-gray-200;
+  
+  .sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: tokens.$color-gray-900;
+    
+    .icon {
+      color: tokens.$color-gray-600;
+      opacity: 0.7;
+    }
+    
+    .liveIndicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      background: rgba(tokens.$color-success, 0.1);
+      color: tokens.$color-success;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 12px;
+      letter-spacing: 0.5px;
+      
+      .liveDot {
+        width: 6px;
+        height: 6px;
+        background: tokens.$color-success;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+    }
+  }
+  
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    background: tokens.$color-primary;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 12px;
+  }
+}
+
+// Filter Actions
+.filterActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid tokens.$color-gray-200;
+  flex-wrap: wrap;
+  
+  .filterGroup {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+    flex: 1 1 auto;
+    
+    // Ensure buttons meet WCAG minimum size
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      touch-action: manipulation;
+    }
+  }
+  
+  .actionGroup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    
+    .sortSelect {
+      padding: 10px 12px;
+      min-height: 44px;
+      background: white;
+      color: tokens.$color-gray-900;
+      border: 1px solid tokens.$color-gray-200;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+      
+      &:hover {
+        border-color: tokens.$color-primary;
+      }
+      
+      &:focus {
+        outline: none;
+        border-color: tokens.$color-primary;
+        box-shadow: 0 0 0 3px rgba(tokens.$color-primary, 0.2);
+      }
+      
+      &:focus-visible {
+        outline: 2px solid tokens.$color-primary;
+        outline-offset: 2px;
+      }
+    }
+    
+    // Ensure buttons meet WCAG minimum size
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      touch-action: manipulation;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    
+    .filterGroup {
+      width: 100%;
+      justify-content: flex-start;
+      
+      button {
+        flex: 1 1 auto;
+        min-width: calc(33.333% - 6px);
+      }
+    }
+    
+    .actionGroup {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+  
+  @media (max-width: 375px) {
+    .filterGroup {
+      button {
+        font-size: 12px;
+        padding: 8px 10px;
+        min-width: unset;
+        flex: 1 1 calc(33.333% - 6px);
+      }
+    }
+    
+    .actionGroup {
+      .sortSelect {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+    }
+  }
+}
+
+// Empty State
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  
+  .emptyIcon {
+    color: tokens.$color-gray-400;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  .emptyText {
+    font-size: 14px;
+    color: tokens.$color-gray-400;
+  }
+}
+
+// Notification Sections
+.notificationSection {
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  
+  .notificationList {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: tokens.$color-gray-50;
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: tokens.$color-gray-200;
+      border-radius: 3px;
+      
+      &:hover {
+        background: tokens.$color-gray-400;
+      }
+    }
+  }
+  
+  .notificationItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: tokens.$color-gray-50;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    &:hover {
+      background: white;
+      border-color: tokens.$color-gray-200;
+      transform: translateX(4px);
+    }
+    
+    &.read {
+      opacity: 0.6;
+      
+      .notificationContent {
+        .notificationTitle,
+        .notificationMessage {
+          color: tokens.$color-gray-400;
+        }
+      }
+    }
+    
+    .notificationContent {
+      flex: 1;
+      min-width: 0;
+      
+      .notificationHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        
+        .notificationType {
+          display: inline-block;
+          padding: 4px 8px;
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          border-radius: 4px;
+          background: tokens.$color-gray-50;
+          color: tokens.$color-gray-600;
+          
+          &.high {
+            background: rgba(tokens.$color-danger, 0.1);
+            color: tokens.$color-danger;
+          }
+          
+          &.medium {
+            background: rgba(tokens.$color-warning, 0.1);
+            color: tokens.$color-warning;
+          }
+          
+          &.low {
+            background: rgba(tokens.$color-success, 0.1);
+            color: tokens.$color-success;
+          }
+          
+          &.actionRequired {
+            background: rgba(tokens.$color-primary, 0.1);
+            color: tokens.$color-primary;
+          }
+        }
+        
+        .notificationTime {
+          font-size: 12px;
+          color: tokens.$color-gray-400;
+        }
+      }
+      
+      .notificationTitle {
+        font-size: 14px;
+        font-weight: 600;
+        color: tokens.$color-gray-900;
+        margin-bottom: 4px;
+      }
+      
+      .notificationMessage {
+        font-size: 13px;
+        color: tokens.$color-gray-600;
+        line-height: 1.5;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .notificationAuthor,
+      .projectName {
+        font-size: 12px;
+        color: tokens.$color-gray-400;
+        font-weight: 500;
+      }
+    }
+    
+    .markAsRead {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+      width: 44px;
+      height: 44px;
+      margin-left: 12px;
+      flex-shrink: 0;
+      touch-action: manipulation;
+      
+      &:focus-visible {
+        outline: 2px solid tokens.$color-primary;
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+// Progress Section
+.progressSection {
+  .progressList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .progressItem {
+    padding: 16px;
+    background: tokens.$color-gray-50;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+    touch-action: manipulation;
+    
+    &:hover {
+      background: white;
+      box-shadow: tokens.$shadow-sm;
+      transform: translateY(-2px);
+    }
+    
+    &:focus-visible {
+      outline: 2px solid tokens.$color-primary;
+      outline-offset: 2px;
+    }
+    
+    .progressHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      
+      .projectName {
+        font-size: 15px;
+        font-weight: 600;
+        color: tokens.$color-gray-900;
+      }
+      
+      .statusBadge {
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        color: white;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+    
+    .progressInfo {
+      .progressMeta {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        
+        .phase,
+        .dueDate {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 13px;
+          color: tokens.$color-gray-600;
+          
+          svg {
+            color: tokens.$color-gray-400;
+            flex-shrink: 0;
+          }
+        }
+        
+        @media (max-width: 375px) {
+          gap: 12px;
+          
+          .phase,
+          .dueDate {
+            font-size: 12px;
+          }
+        }
+      }
+      
+      .progressBar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        
+        .progressTrack {
+          flex: 1;
+          height: 8px;
+          background: tokens.$color-gray-200;
+          border-radius: 4px;
+          overflow: hidden;
+          
+          .progressFill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+          }
+        }
+        
+        .progressPercent {
+          font-size: 13px;
+          font-weight: 600;
+          color: tokens.$color-gray-900;
+          min-width: 40px;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+// Stats Section
+.statsSection {
+  grid-column: span 2;
+  
+  @media (max-width: 1024px) {
+    grid-column: span 1;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .statCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: tokens.$color-gray-50;
+    border-radius: 12px;
+    border: 1px solid tokens.$color-gray-200;
+    transition: all 0.2s ease;
+    min-height: 88px;
+    touch-action: manipulation;
+    
+    &:hover {
+      background: white;
+      border-color: tokens.$color-primary;
+      box-shadow: tokens.$shadow-sm;
+      
+      .statIcon {
+        background: tokens.$color-primary;
+        color: white;
+      }
+    }
+    
+    &:focus-visible {
+      outline: 2px solid tokens.$color-primary;
+      outline-offset: 2px;
+    }
+    
+    @media (max-width: 375px) {
+      padding: 16px;
+      gap: 12px;
+    }
+    
+    .statIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: white;
+      border: 1px solid tokens.$color-gray-200;
+      border-radius: 12px;
+      color: tokens.$color-gray-600;
+      transition: all 0.2s ease;
+    }
+    
+    .statInfo {
+      display: flex;
+      flex-direction: column;
+      
+      .statLabel {
+        font-size: 13px;
+        color: tokens.$color-gray-400;
+        margin-bottom: 4px;
+      }
+      
+      .statValue {
+        font-size: 28px;
+        font-weight: 700;
+        color: tokens.$color-gray-900;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+// Error State
+.errorContainer {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: tokens.$color-white;
+  border-radius: 16px;
+  box-shadow: tokens.$shadow-sm;
+  border: 1px solid tokens.$color-gray-200;
+}
+
+.errorContent {
+  max-width: 500px;
+  text-align: center;
+}
+
+.errorIcon {
+  color: tokens.$color-danger;
+  margin-bottom: 24px;
+}
+
+.errorTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: tokens.$color-gray-900;
+  margin-bottom: 12px;
+}
+
+.errorMessage {
+  font-size: 16px;
+  color: tokens.$color-gray-600;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+// Remove old retryButton styles as we're using Button component now
+
+// Screen Reader Only (for accessibility)
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Focus Management
+.dashboardContainer {
+  :global(*:focus-visible) {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+}
+
+// High Contrast Mode Support
+@media (prefers-contrast: high) {
+  .dashboardSection {
+    border-width: 2px;
+  }
+  
+  .badge {
+    border: 2px solid transparent;
+  }
+  
+  .notificationItem {
+    border-width: 2px;
+    
+    &:hover {
+      border-color: tokens.$color-primary;
+    }
+  }
+}
+
+// Reduced Motion Support
+@media (prefers-reduced-motion: reduce) {
+  .dashboardContainer :global(*) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dashboardSection {
+  animation: slideIn 0.3s ease;
+  
+  &:nth-child(1) { animation-delay: 0.05s; }
+  &:nth-child(2) { animation-delay: 0.1s; }
+  &:nth-child(3) { animation-delay: 0.15s; }
+  &:nth-child(4) { animation-delay: 0.2s; }
+}

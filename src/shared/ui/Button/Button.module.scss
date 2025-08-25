@@ -1,0 +1,318 @@
+@use '../../styles/unified-design-tokens.scss' as tokens;
+
+.button {
+  // Base styles
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$spacing-sm;
+  font-weight: tokens.$font-weight-medium;
+  text-decoration: none;
+  border: none;
+  border-radius: tokens.$border-radius-lg;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  white-space: nowrap;
+  
+  // Ensure minimum touch target size (44x44px)
+  min-height: 44px;
+  min-width: 44px;
+  
+  // Focus styles for accessibility
+  &:focus-visible {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+  
+  // Hover state
+  &:hover:not(:disabled):not(.button--loading) {
+    transform: translateY(-1px);
+    box-shadow: tokens.$shadow-md;
+  }
+  
+  // Active state
+  &:active:not(:disabled):not(.button--loading) {
+    transform: translateY(0);
+    box-shadow: tokens.$shadow-sm;
+  }
+  
+  // Disabled state
+  &:disabled,
+  &.button--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  // Loading state
+  &.button--loading {
+    cursor: wait;
+    pointer-events: none;
+  }
+}
+
+// Variants
+.button--primary {
+  background: linear-gradient(135deg, tokens.$color-primary-light 0%, tokens.$color-primary 100%);
+  color: tokens.$color-white;
+  
+  &:hover:not(:disabled):not(.button--loading) {
+    background: linear-gradient(135deg, tokens.$color-primary-light 0%, tokens.$color-primary 100%);
+    filter: brightness(1.05);
+  }
+  
+  &:active:not(:disabled):not(.button--loading) {
+    background: linear-gradient(135deg, tokens.$color-primary-light 0%, tokens.$color-primary 100%);
+    filter: brightness(0.95);
+  }
+}
+
+.button--secondary {
+  background-color: tokens.$color-gray-100;
+  color: tokens.$color-gray-900;
+  border: 1px solid tokens.$color-gray-200;
+  
+  &:hover:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-gray-200;
+    border-color: tokens.$color-gray-300;
+  }
+  
+  &:active:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-gray-300;
+  }
+}
+
+.button--tertiary {
+  background-color: transparent;
+  color: tokens.$color-primary;
+  border: 1px solid tokens.$color-primary;
+  
+  &:hover:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-action-selected;
+    border-color: tokens.$color-primary-hover;
+  }
+  
+  &:active:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-action-selected;
+    opacity: 0.8;
+  }
+}
+
+.button--danger {
+  background-color: tokens.$color-danger;
+  color: tokens.$color-white;
+  
+  &:hover:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-danger;
+    filter: brightness(1.1);
+  }
+  
+  &:active:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-danger;
+    filter: brightness(0.9);
+  }
+}
+
+.button--ghost {
+  background-color: transparent;
+  color: tokens.$color-gray-700;
+  
+  &:hover:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-gray-100;
+  }
+  
+  &:active:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-action-selected;
+  }
+}
+
+.button--success {
+  background-color: tokens.$color-success;
+  color: tokens.$color-white;
+  
+  &:hover:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-success;
+    filter: brightness(1.1);
+  }
+  
+  &:active:not(:disabled):not(.button--loading) {
+    background-color: tokens.$color-success;
+    filter: brightness(0.9);
+  }
+}
+
+// Sizes
+.button--small {
+  padding: tokens.$spacing-xs tokens.$spacing-md;
+  font-size: tokens.$font-size-sm;
+  
+  &.button--iconOnly {
+    padding: tokens.$spacing-xs;
+  }
+}
+
+.button--medium {
+  padding: tokens.$spacing-sm tokens.$spacing-md;
+  font-size: tokens.$font-size-md;
+  
+  &.button--iconOnly {
+    padding: tokens.$spacing-sm;
+  }
+}
+
+.button--large {
+  padding: tokens.$spacing-md tokens.$spacing-xl;
+  font-size: tokens.$font-size-lg;
+  min-height: 54px;
+  
+  &.button--iconOnly {
+    padding: tokens.$spacing-md;
+  }
+}
+
+// Full width
+.button--fullWidth {
+  width: 100%;
+}
+
+// Icon positioning
+.button--iconOnly {
+  .button__text {
+    display: none;
+  }
+}
+
+.button--iconRight {
+  flex-direction: row-reverse;
+}
+
+// Button elements
+.button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.button__text {
+  display: inline-block;
+}
+
+.button__loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+}
+
+// Ripple effect
+.button__ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: scale(0);
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+// Tooltip
+.button__tooltip {
+  position: absolute;
+  padding: tokens.$spacing-xs tokens.$spacing-sm;
+  background-color: tokens.$color-gray-900;
+  color: tokens.$color-white;
+  font-size: tokens.$font-size-sm;
+  border-radius: tokens.$border-radius-sm;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  animation: tooltipFadeIn 0.2s ease-in forwards;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    border: 4px solid transparent;
+  }
+  
+  &--top {
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    &::after {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: tokens.$color-gray-900;
+    }
+  }
+  
+  &--bottom {
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    &::after {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: tokens.$color-gray-900;
+    }
+  }
+  
+  &--left {
+    right: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    
+    &::after {
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: tokens.$color-gray-900;
+    }
+  }
+  
+  &--right {
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    
+    &::after {
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: tokens.$color-gray-900;
+    }
+  }
+}
+
+@keyframes tooltipFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@include tokens.mobile-only {
+  .button {
+    min-height: 48px; // Slightly larger touch target on mobile
+  }
+  
+  .button--small {
+    min-height: 44px;
+  }
+}

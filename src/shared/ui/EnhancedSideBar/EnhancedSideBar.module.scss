@@ -1,0 +1,701 @@
+@use '../../styles/unified-design-tokens.scss' as tokens;
+
+// 햄버거 메뉴 (모바일)
+.hamburger {
+  display: none;
+  position: fixed;
+  top: tokens.$spacing-md;
+  left: tokens.$spacing-md;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  padding: tokens.$spacing-sm;
+  
+  background: tokens.$color-white;
+  border: 1px solid tokens.$color-gray-200;
+  border-radius: tokens.$border-radius-md;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  @include tokens.mobile-only {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: tokens.$spacing-xs;
+  }
+
+  &:hover {
+    background: tokens.$color-gray-50;
+    border-color: tokens.$color-gray-300;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+
+  .hamburgerLine {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: tokens.$color-gray-700;
+    transition: all 0.3s ease;
+  }
+
+  &[aria-expanded="true"] {
+    .hamburgerLine {
+      &:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+      &:nth-child(2) {
+        opacity: 0;
+      }
+      &:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+    }
+  }
+}
+
+// 모바일 오버레이
+.overlay {
+  display: none;
+  
+  @include tokens.mobile-only {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+// 메인 사이드바
+.sideBar {
+  width: 300px;
+  height: 100vh;
+  padding: tokens.$spacing-3xl tokens.$spacing-xl;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: tokens.$color-white;
+  box-shadow: tokens.$shadow-lg;
+  border-radius: 0 tokens.$border-radius-2xl tokens.$border-radius-2xl 0;
+  z-index: var(--z-sidebar);  // 통합 Z-index 시스템 사용
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+
+  // 스크롤바 스타일
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: tokens.$color-gray-100;
+    border-radius: tokens.$border-radius-full;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: tokens.$color-gray-400;
+    border-radius: tokens.$border-radius-full;
+
+    &:hover {
+      background: tokens.$color-gray-500;
+    }
+  }
+
+  // 모바일 스타일
+  @include tokens.mobile-only {
+    width: 280px;
+    transform: translateX(-100%);
+    
+    &[data-open="true"],
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  @include tokens.tablet-up {
+    position: relative;
+    height: 100%;
+  }
+}
+
+// 브레드크럼
+.breadcrumbs {
+  margin-bottom: tokens.$spacing-lg;
+  
+  ol {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: tokens.$spacing-xs;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    font-size: tokens.$font-size-sm;
+    color: tokens.$color-gray-600;
+
+    a {
+      color: tokens.$color-primary;
+      text-decoration: none;
+      padding: tokens.$spacing-xs;
+      border-radius: tokens.$border-radius-sm;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: tokens.$color-gray-50;
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: 2px solid tokens.$color-primary;
+        outline-offset: 2px;
+      }
+    }
+
+    &[aria-current="page"] {
+      color: tokens.$color-gray-900;
+      font-weight: 600;
+    }
+
+    .separator {
+      margin: 0 tokens.$spacing-xs;
+      color: tokens.$color-gray-400;
+    }
+  }
+}
+
+// 검색바
+.searchBar {
+  position: relative;
+  margin-bottom: tokens.$spacing-lg;
+
+  .searchInput {
+    width: 100%;
+    padding: tokens.$spacing-sm tokens.$spacing-md;
+    padding-right: 44px;
+    border: 1px solid tokens.$color-gray-300;
+    border-radius: tokens.$border-radius-md;
+    font-size: tokens.$font-size-md;
+    transition: all 0.2s ease;
+    min-height: 44px;
+
+    &:focus {
+      outline: none;
+      border-color: tokens.$color-primary;
+      box-shadow: 0 0 0 3px rgba(tokens.$color-primary, 0.1);
+    }
+
+    &::placeholder {
+      color: tokens.$color-gray-400;
+    }
+  }
+
+  .clearButton {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    color: tokens.$color-gray-500;
+    font-size: tokens.$font-size-xl;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: tokens.$color-gray-700;
+      background: tokens.$color-gray-50;
+    }
+
+    &:focus-visible {
+      outline: 2px solid tokens.$color-primary;
+      outline-offset: -2px;
+      border-radius: tokens.$border-radius-sm;
+    }
+  }
+}
+
+// 메뉴 네비게이션
+.navigation {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// 메뉴 아이템
+.menuItem {
+  width: 100%;
+  margin-top: 50px;
+  padding: 0px 0px 0px 50px;
+  display: flex;
+  align-items: center;
+  gap: tokens.$spacing-sm;
+  background: transparent;
+  border: none;
+  border-radius: 15px;
+  font-size: 18px;
+  color: tokens.$color-gray-700;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  text-align: left;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  // TODO(human): 하드코딩된 색상들을 디자인 토큰으로 교체
+  // #012fff (레거시) → tokens.$color-primary (#1631F8)로 통일
+  // 그라데이션도 표준 패턴 linear-gradient(135deg, tokens.$color-primary 0%, tokens.$color-primary-dark 100%) 적용
+  // 호버 상태와 액티브 상태의 색상도 토큰 기반으로 통일
+  
+  &:hover {
+    color: tokens.$color-primary;
+
+    .badge {
+      color: #000;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+
+  &.active {
+    color: tokens.$color-primary;
+
+    .icon {
+      background: tokens.$color-primary;
+      
+      svg {
+        color: white;
+      }
+    }
+
+    .badge {
+      color: #000;
+    }
+  }
+
+  .icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    background: #e4e4e4;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .badge {
+    margin-left: auto;
+    padding: 2px 10px;
+    background: #3dcdbf;
+    color: tokens.$color-white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 24px;
+    text-align: center;
+  }
+}
+
+// 검색 결과 없음
+.noResults {
+  padding: tokens.$spacing-lg;
+  text-align: center;
+  color: tokens.$color-gray-500;
+  font-size: tokens.$font-size-sm;
+}
+
+// 로그아웃 버튼
+.logout {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 50px;
+  width: calc(100% - 60px);
+  text-align: center;
+  line-height: 54px;
+  background: #25282f;
+  color: #fff;
+  border-radius: 15px;
+  height: 54px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #1a1c21;
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: tokens.$shadow-lg;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+// 서브메뉴
+.submenu {
+  width: 300px;  // 디자인 토큰 기준 축소 (메인 사이드바와 동일)
+  height: 100vh;
+  padding: tokens.$spacing-2xl tokens.$spacing-lg;  // 48px 24px (디자인 토큰 준수)
+  position: fixed;
+  left: 300px;  // 사이드바 오른쪽에 위치
+  top: 0;
+  background: tokens.$color-gray-50;  // #FAFAFA
+  box-shadow: tokens.$shadow-lg;  // 일관된 그림자
+  border-radius: 0;  // 불필요한 둥근 모서리 제거
+  border-right: 1px solid tokens.$color-gray-200;  // 구분선 추가
+  z-index: var(--z-submenu);  // 통합 Z-index 시스템 사용
+  overflow-y: auto;
+  
+  // 항상 DOM에 존재하도록 설정
+  display: block !important;
+  
+  // 트랜지션 개선
+  transition: 
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease,
+    visibility 0s 0.4s;  // visibility는 트랜지션 끝난 후 변경
+  
+  // 초기 상태 (숨김)
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;  // 비활성 시 클릭 방지
+
+  &.active {
+    transform: translateX(0);  // 활성화시 제자리
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;  // 활성 시 클릭 가능
+    transition-delay: 0s;  // visibility 즉시 적용
+  }
+
+  // 스크롤바 숨기기
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  @include tokens.mobile-only {
+    position: fixed;
+    left: 0;
+    width: 100vw;
+    max-width: 330px;
+    transform: translateX(-100%);
+    
+    &.active {
+      transform: translateX(0);  // 모바일에서 왼쪽에서 슬라이드
+    }
+  }
+}
+
+// 서브메뉴 헤더
+.submenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;  // 마진 간격 조정
+  padding-bottom: 24px;  // 패딩 증가
+  border-bottom: 2px solid #e4e4e4;  // 테두리 두께 증가
+}
+
+.submenuTitle {
+  font-size: 24px;  // 타이틀 크기 증가
+  font-weight: 700;
+  color: #25282f;
+  margin: 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.submenuActions {
+  display: flex;
+  gap: 10px;
+}
+
+.addButton,
+.closeButton {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 100%;
+  background: #efefef;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-indent: -99999px;
+
+  &:hover {
+    background: #e4e4e4;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.addButton {
+  background: #efefef url('/images/Common/plus_icon.png') no-repeat;
+  background-size: 16px;
+  background-position: center;
+}
+
+.closeButton {
+  background: #efefef url('/images/Common/close_icon.png') no-repeat;
+  background-size: 12px;
+  background-position: center;
+}
+
+// 서브메뉴 네비게이션
+.submenuNav {
+  margin-top: 30px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: tokens.$spacing-md;  // 16px (메뉴 항목간 간격 증가)
+    position: relative;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: tokens.$spacing-md tokens.$spacing-lg;  // 16px 24px (패딩 증가)
+    padding-left: 72px;  // 아이콘 영역 24px + 간격 48px = 72px
+    background: transparent;
+    border: none;
+    border-radius: tokens.$border-radius-lg;  // 12px
+    font-size: tokens.$font-size-md;  // 16px
+    font-weight: tokens.$font-weight-medium;  // 500
+    color: tokens.$color-gray-600;  // #666
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1.5;  // 적절한 라인 높이
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 48px;  // 터치 타겟 크기 증가
+    box-sizing: border-box;  // 박스 모델 명확화
+
+    &:hover {
+      background: tokens.$color-primary-light;  // rgba(22, 49, 248, 0.08)
+      color: tokens.$color-primary;  // #1631F8
+      transform: translateX(2px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid tokens.$color-primary;
+      outline-offset: 2px;
+    }
+
+    &.active {
+      background: tokens.$color-action-selected;  // rgba(22, 49, 248, 0.12)
+      color: tokens.$color-primary;
+      font-weight: tokens.$font-weight-semibold;  // 600
+      border-left: 4px solid tokens.$color-primary;  // 테두리 두께 증가
+      padding-left: 68px;  // 활성 상태시 4px 보더 고려
+    }
+  }
+}
+
+// 서브메뉴 아이콘
+.submenuIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;  // 아이콘 크기 증가
+  height: 24px;
+  background: tokens.$color-gray-200;  // 배경 색상 개선
+  border-radius: tokens.$border-radius-md;  // 8px (더 부드러운 모서리)
+  position: absolute;
+  left: tokens.$spacing-lg;  // 24px (왼쪽 여백 증가)
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;  // 트랜지션 시간 증가
+  flex-shrink: 0;
+  
+  &::before {
+    content: '';
+    display: block;
+    width: 12px;  // 내부 원 크기 증가
+    height: 12px;
+    background: tokens.$color-gray-500;  // 더 명확한 색상
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+}
+
+.submenuNav button:hover .submenuIcon {
+  background: tokens.$color-primary-light;  // #4A5BF9
+  transform: translateY(-50%) scale(1.05);  // 부드러운 스케일 효과
+  
+  &::before {
+    background: tokens.$color-white;
+    width: 10px;  // 호버 시 적절한 크기
+    height: 10px;
+  }
+}
+
+.submenuNav button.active .submenuIcon {
+  background: tokens.$color-primary;
+  box-shadow: tokens.$shadow-md;
+  transform: translateY(-50%) scale(1.15);  // 활성 상태 최대 스케일
+  
+  &::before {
+    background: tokens.$color-white;
+    width: 8px;  // 활성 상태에도 작은 크기 유지
+    height: 8px;
+  }
+}
+
+// 빈 상태
+.emptyState {
+  margin-top: 80px;  // 상단 여백 증가
+  font-size: 18px;
+  text-align: center;
+  padding: 0 20px;  // 좌우 패딩 추가
+
+  p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;  // 라인 높이 증가
+  }
+
+  .ctaButton {
+    margin-top: 30px;
+    padding: 12px 24px;
+    background: tokens.$color-primary;
+    color: tokens.$color-white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    min-width: 150px;
+
+    &:hover {
+      background: tokens.$color-primary-dark;
+      transform: translateY(-2px);
+      box-shadow: tokens.$shadow-md;
+    }
+
+    &:focus-visible {
+      outline: 2px solid tokens.$color-primary;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// 애니메이션
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+// 접근성 개선 - 글로벌 스타일시트로 이동 필요
+// @media (prefers-reduced-motion: reduce) 스타일은 
+// globals.css 또는 app/globals.css에 추가해야 함

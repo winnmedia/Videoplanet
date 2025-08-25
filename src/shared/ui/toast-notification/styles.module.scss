@@ -1,0 +1,359 @@
+// Design tokens
+$color-success: #22c55e;
+$color-success-bg: #dcfce7;
+$color-success-border: #86efac;
+
+$color-error: #ef4444;
+$color-error-bg: #fee2e2;
+$color-error-border: #fca5a5;
+
+$color-warning: #f59e0b;
+$color-warning-bg: #fef3c7;
+$color-warning-border: #fcd34d;
+
+$color-info: #3b82f6;
+$color-info-bg: #dbeafe;
+$color-info-border: #93c5fd;
+
+$color-text: #1f2937;
+$color-text-secondary: #6b7280;
+$border-radius: 8px;
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+// Toast container positioning
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  
+  &--top-left {
+    top: 0;
+    left: 0;
+    align-items: flex-start;
+  }
+  
+  &--top-center {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+  
+  &--top-right {
+    top: 0;
+    right: 0;
+    align-items: flex-end;
+  }
+  
+  &--bottom-left {
+    bottom: 0;
+    left: 0;
+    align-items: flex-start;
+  }
+  
+  &--bottom-center {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+  
+  &--bottom-right {
+    bottom: 0;
+    right: 0;
+    align-items: flex-end;
+  }
+  
+  @media (max-width: 640px) {
+    padding: $spacing-sm;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    align-items: stretch !important;
+    
+    &--top-left,
+    &--top-center,
+    &--top-right {
+      top: 0;
+    }
+    
+    &--bottom-left,
+    &--bottom-center,
+    &--bottom-right {
+      bottom: 0;
+    }
+  }
+}
+
+// Individual toast
+.toast {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 500px;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  @media (max-width: 640px) {
+    max-width: 100%;
+    min-width: 0;
+  }
+  
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+  }
+  
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &-svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  &__text {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  &__title {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: $spacing-xs;
+    color: $color-text;
+  }
+  
+  &__message {
+    font-size: 14px;
+    line-height: 1.5;
+    color: $color-text-secondary;
+  }
+  
+  &__action {
+    margin-top: $spacing-sm;
+    padding: $spacing-xs $spacing-sm;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    color: inherit;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+    
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+  }
+  
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: $spacing-xs;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    color: $color-text-secondary;
+    
+    &:hover {
+      opacity: 1;
+    }
+    
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  &__progress {
+    height: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  &__progress-bar {
+    height: 100%;
+    transition: width 0.1s linear;
+    background: currentColor;
+    opacity: 0.3;
+  }
+  
+  // Type variants
+  &--success {
+    border-left: 4px solid $color-success;
+    
+    .toast__icon {
+      color: $color-success;
+    }
+    
+    .toast__action {
+      color: $color-success;
+    }
+    
+    .toast__progress-bar {
+      background: $color-success;
+    }
+  }
+  
+  &--error {
+    border-left: 4px solid $color-error;
+    
+    .toast__icon {
+      color: $color-error;
+    }
+    
+    .toast__action {
+      color: $color-error;
+    }
+    
+    .toast__progress-bar {
+      background: $color-error;
+    }
+  }
+  
+  &--warning {
+    border-left: 4px solid $color-warning;
+    
+    .toast__icon {
+      color: $color-warning;
+    }
+    
+    .toast__action {
+      color: $color-warning;
+    }
+    
+    .toast__progress-bar {
+      background: $color-warning;
+    }
+  }
+  
+  &--info {
+    border-left: 4px solid $color-info;
+    
+    .toast__icon {
+      color: $color-info;
+    }
+    
+    .toast__action {
+      color: $color-info;
+    }
+    
+    .toast__progress-bar {
+      background: $color-info;
+    }
+  }
+  
+  // Animation
+  &--enter {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+  
+  &--exit {
+    animation: slideOut 0.3s ease-out forwards;
+  }
+}
+
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .toast {
+    background: #1f2937;
+    border-color: #374151;
+    
+    &__title {
+      color: #f3f4f6;
+    }
+    
+    &__message {
+      color: #d1d5db;
+    }
+    
+    &__close {
+      color: #9ca3af;
+    }
+    
+    &__progress {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &--success {
+      border-left-color: $color-success;
+      background: rgba($color-success, 0.05);
+    }
+    
+    &--error {
+      border-left-color: $color-error;
+      background: rgba($color-error, 0.05);
+    }
+    
+    &--warning {
+      border-left-color: $color-warning;
+      background: rgba($color-warning, 0.05);
+    }
+    
+    &--info {
+      border-left-color: $color-info;
+      background: rgba($color-info, 0.05);
+    }
+  }
+}

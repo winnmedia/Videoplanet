@@ -1,0 +1,171 @@
+// Design tokens
+$skeleton-bg: #e2e5e7;
+$skeleton-highlight: #f0f3f5;
+$animation-duration: 1.5s;
+$border-radius: 4px;
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+
+.skeleton {
+  display: inline-block;
+  background-color: $skeleton-bg;
+  border-radius: $border-radius;
+  position: relative;
+  overflow: hidden;
+  
+  // Animation base
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+  }
+
+  // Pulse animation
+  &--pulse {
+    animation: pulse $animation-duration ease-in-out infinite;
+  }
+
+  // Wave animation
+  &--wave {
+    &::after {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--highlight-color, $skeleton-highlight),
+        transparent
+      );
+      animation: wave $animation-duration ease-in-out infinite;
+    }
+  }
+
+  // Circle variant
+  &--circle {
+    border-radius: 50%;
+  }
+
+  // Text variant
+  &--text {
+    margin-bottom: $spacing-sm;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Responsive variant
+  &--responsive {
+    @media (max-width: 767px) {
+      width: var(--size-mobile);
+      height: var(--size-mobile);
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: var(--size-tablet);
+      height: var(--size-tablet);
+    }
+
+    @media (min-width: 1024px) {
+      width: var(--size-desktop);
+      height: var(--size-desktop);
+    }
+  }
+}
+
+// Card skeleton
+.skeleton-card {
+  padding: $spacing-lg;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skeleton__card-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.skeleton__card-header-text {
+  flex: 1;
+}
+
+.skeleton__card-title {
+  margin-bottom: $spacing-xs;
+}
+
+.skeleton__card-content {
+  border-radius: $border-radius;
+}
+
+// Table skeleton
+.skeleton-table {
+  width: 100%;
+}
+
+.skeleton__table-row {
+  display: flex;
+  margin-bottom: $spacing-sm;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.skeleton__table-cell {
+  flex: 1;
+  
+  &:not(:last-child) {
+    margin-right: $spacing-sm;
+  }
+}
+
+// List skeleton
+.skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.skeleton__list-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-sm 0;
+  border-bottom: 1px solid #f0f0f0;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.skeleton__list-content {
+  flex: 1;
+}
+
+// Animations
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

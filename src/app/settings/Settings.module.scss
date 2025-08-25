@@ -1,0 +1,208 @@
+@use '@/app/styles/variables' as *;
+
+.settingsPage {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $border-color;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  .content {
+    background: white;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+  }
+
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid $border-color;
+    background: $background-light;
+
+    button {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      color: $text-secondary;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+
+      &:hover {
+        color: $text-primary;
+        background: rgba($color-primary, 0.05);
+      }
+
+      &.active {
+        color: $color-primary;
+        font-weight: 500;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: $color-primary;
+        }
+      }
+    }
+  }
+
+  .tabContent {
+    padding: 2rem;
+  }
+
+  .section {
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .settingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba($border-color, 0.5);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .settingInfo {
+      flex: 1;
+      margin-right: 2rem;
+
+      h3 {
+        font-size: 1rem;
+        font-weight: 500;
+        color: $text-primary;
+        margin-bottom: 0.25rem;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: $text-secondary;
+        margin: 0;
+      }
+    }
+
+    select {
+      padding: 0.5rem 1rem;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      font-size: 0.875rem;
+      color: $text-primary;
+      background: white;
+      cursor: pointer;
+      min-width: 150px;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  // Toggle Switch
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + .slider {
+        background-color: $color-primary;
+
+        &:before {
+          transform: translateX(22px);
+        }
+      }
+
+      &:focus + .slider {
+        box-shadow: 0 0 1px $color-primary;
+      }
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 34px;
+
+      &:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .tabs {
+      button {
+        font-size: 0.875rem;
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    .tabContent {
+      padding: 1rem;
+    }
+
+    .settingItem {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .settingInfo {
+        margin-right: 0;
+      }
+
+      select,
+      .switch {
+        align-self: flex-end;
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+/* 긴급 UI 핫픽스 - 바이브코딩으로 인한 레이아웃 충돌 해결 */
+
+/* Z-Index 레이어 체계화 */
+:root {
+  --z-sidebar: 100;
+  --z-submenu: 101; 
+  --z-hamburger: 102;
+  --z-overlay: 150;
+  --z-modal: 1001;
+  --z-toast: 2000;
+}
+
+/* 사이드바/서브메뉴 레이어 충돌 해결 */
+.sideBar {
+  z-index: var(--z-sidebar) !important;
+}
+
+.submenu {
+  z-index: var(--z-submenu) !important;
+}
+
+.hamburger {
+  z-index: var(--z-hamburger) !important;
+}
+
+/* 글자 겹침 문제 해결 */
+.text-overlap-fix {
+  line-height: 1.5 !important;
+  letter-spacing: 0 !important;
+  word-spacing: normal !important;
+}
+
+/* 버튼 명확성 개선 */
+.button-clarity-fix {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(22, 49, 248, 0.15) !important;
+  }
+  
+  &:active {
+    transform: translateY(0) !important;
+  }
+}
+
+/* 레이아웃 컨테이너 안정화 */
+.layout-container {
+  display: flex !important;
+  min-height: 100vh !important;
+}
+
+.sidebar-layout .main-content {
+  margin-left: 300px !important;
+  width: calc(100% - 300px) !important;
+  transition: margin-left 0.3s ease !important;
+}
+
+.sidebar-layout.submenu-open .main-content {
+  margin-left: 600px !important;
+  width: calc(100% - 600px) !important;
+}
+
+/* Tailwind CSS 우선순위 강제 */
+.force-tailwind {
+  /* 여백 강제 문제 해결 */
+  margin: revert !important;
+  padding: revert !important;
+}
+
+.force-tailwind * {
+  box-sizing: border-box !important;
+}
+
+/* 색상 토큰 통일 (하드코딩 제거) */
+.primary-color-fix {
+  color: #1631F8 !important;
+  border-color: #1631F8 !important;
+}
+
+.primary-bg-fix {
+  background-color: #1631F8 !important;
+}
+
+/* 반응형 브레이크포인트 통일 */
+@media (max-width: 768px) {
+  .sidebar-layout .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  .sidebar-layout.submenu-open .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* 접근성 개선 */
+.accessibility-fix:focus-visible {
+  outline: 2px solid #1631F8 !important;
+  outline-offset: 2px !important;
+}
+
+/* CSS 모듈 vs Tailwind 충돌 해결 */
+[class*="module_"] {
+  /* CSS 모듈이 Tailwind보다 우선순위를 가지도록 */
+  position: relative;
+  z-index: 1;
+}

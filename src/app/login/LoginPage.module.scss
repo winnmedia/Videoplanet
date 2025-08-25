@@ -1,0 +1,16 @@
+// LoginPage styles - split screen layout
+.loginPage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .loginPage {
+    grid-template-columns: 1fr;
+  }
+}

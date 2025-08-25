@@ -1,0 +1,178 @@
+/* 통합 디자인 토큰 - 모든 중복 제거 */
+
+/* === Z-Index 레이어 시스템 === */
+:root {
+  /* 기본 레이어 */
+  --z-base: 0;
+  --z-content: 10;
+  
+  /* UI 레이어 (100번대) */
+  --z-sidebar: 100;
+  --z-submenu: 101;
+  --z-hamburger: 102;
+  --z-dropdown: 110;
+  --z-tooltip: 120;
+  
+  /* 오버레이 레이어 (1000번대) */
+  --z-overlay: 1000;
+  --z-modal: 1001;
+  --z-popover: 1010;
+  --z-toast: 2000;
+  
+  /* === 통일된 색상 시스템 === */
+  --color-primary: #1631F8;
+  --color-primary-hover: #1431D8;
+  --color-primary-active: #1229C4;
+  --color-primary-light: #4A5BF9;
+  --color-primary-dark: #0F23C5;
+  
+  /* 상태 색상 */
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-info: #17a2b8;
+  
+  /* 중성 색상 */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  
+  /* === 간격 시스템 === */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  
+  /* === 타이포그래피 === */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* === 반응형 브레이크포인트 === */
+  --breakpoint-mobile: 640px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1440px;
+  
+  /* === 그림자 시스템 === */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+  
+  /* === 보더 반경 === */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-2xl: 24px;
+  --border-radius-full: 9999px;
+}
+
+/* === SCSS 변수 (하위 호환성) === */
+$color-primary: var(--color-primary);
+$color-primary-hover: var(--color-primary-hover);
+$color-primary-active: var(--color-primary-active);
+$color-primary-light: var(--color-primary-light);
+$color-primary-dark: var(--color-primary-dark);
+
+$color-success: var(--color-success);
+$color-warning: var(--color-warning);
+$color-danger: var(--color-danger);
+$color-info: var(--color-info);
+
+$color-white: var(--color-white);
+$color-black: var(--color-black);
+$color-gray-50: var(--color-gray-50);
+$color-gray-100: var(--color-gray-100);
+$color-gray-200: var(--color-gray-200);
+$color-gray-300: var(--color-gray-300);
+$color-gray-400: var(--color-gray-400);
+$color-gray-500: var(--color-gray-500);
+$color-gray-600: var(--color-gray-600);
+$color-gray-700: var(--color-gray-700);
+$color-gray-800: var(--color-gray-800);
+$color-gray-900: var(--color-gray-900);
+
+$spacing-xs: var(--spacing-xs);
+$spacing-sm: var(--spacing-sm);
+$spacing-md: var(--spacing-md);
+$spacing-lg: var(--spacing-lg);
+$spacing-xl: var(--spacing-xl);
+$spacing-2xl: var(--spacing-2xl);
+$spacing-3xl: var(--spacing-3xl);
+
+$font-size-xs: var(--font-size-xs);
+$font-size-sm: var(--font-size-sm);
+$font-size-md: var(--font-size-md);
+$font-size-lg: var(--font-size-lg);
+$font-size-xl: var(--font-size-xl);
+$font-size-2xl: var(--font-size-2xl);
+
+$font-weight-light: var(--font-weight-light);
+$font-weight-normal: var(--font-weight-normal);
+$font-weight-medium: var(--font-weight-medium);
+$font-weight-semibold: var(--font-weight-semibold);
+$font-weight-bold: var(--font-weight-bold);
+
+$shadow-sm: var(--shadow-sm);
+$shadow-md: var(--shadow-md);
+$shadow-lg: var(--shadow-lg);
+$shadow-xl: var(--shadow-xl);
+$shadow-2xl: var(--shadow-2xl);
+
+$border-radius-sm: var(--border-radius-sm);
+$border-radius-md: var(--border-radius-md);
+$border-radius-lg: var(--border-radius-lg);
+$border-radius-xl: var(--border-radius-xl);
+$border-radius-2xl: var(--border-radius-2xl);
+$border-radius-full: var(--border-radius-full);
+
+/* === 반응형 믹스인 === */
+@mixin mobile-only {
+  @media (max-width: calc(var(--breakpoint-mobile) - 1px)) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: var(--breakpoint-tablet)) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: var(--breakpoint-desktop)) {
+    @content;
+  }
+}
+
+@mixin wide-up {
+  @media (min-width: var(--breakpoint-wide)) {
+    @content;
+  }
+}

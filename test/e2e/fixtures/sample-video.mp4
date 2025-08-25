@@ -1,0 +1,15 @@
+# Sample Video File Placeholder
+
+This is a placeholder for the sample video file used in E2E tests.
+In a real scenario, you would place an actual MP4 video file here.
+
+For testing purposes, you can:
+1. Use a small sample video (< 1MB)
+2. Create a mock video file
+3. Use a public domain video
+
+The video should be:
+- Format: MP4
+- Duration: 30-60 seconds
+- Resolution: 720p or lower (for faster testing)
+- Size: < 5MB

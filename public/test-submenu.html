@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>서브메뉴 테스트</title>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            color: #333; 
+            border-bottom: 2px solid #012fff; 
+            padding-bottom: 10px; 
+        }
+        .test-section { 
+            margin: 30px 0; 
+            padding: 20px; 
+            background: #f9f9f9; 
+            border-radius: 8px; 
+        }
+        .test-title { 
+            font-weight: bold; 
+            color: #012fff; 
+            margin-bottom: 15px; 
+            font-size: 18px; 
+        }
+        button { 
+            background: #012fff; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            margin: 5px; 
+            transition: all 0.3s; 
+        }
+        button:hover { 
+            background: #0124dd; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+        .result { 
+            margin-top: 15px; 
+            padding: 15px; 
+            background: white; 
+            border-radius: 6px; 
+            border: 1px solid #e0e0e0; 
+            font-family: 'Courier New', monospace; 
+            white-space: pre-wrap; 
+            min-height: 100px; 
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            border-color: #c3e6cb; 
+        }
+        .error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border-color: #f5c6cb; 
+        }
+        .info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border-color: #bee5eb; 
+        }
+        code { 
+            background: #f4f4f4; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            font-size: 14px; 
+        }
+        .code-block { 
+            background: #2d2d2d; 
+            color: #f8f8f2; 
+            padding: 20px; 
+            border-radius: 8px; 
+            overflow-x: auto; 
+            margin: 10px 0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 VideoplaNet 서브메뉴 진단 도구</h1>
+        
+        <div class="test-section">
+            <div class="test-title">📊 실시간 서브메뉴 상태</div>
+            <button onclick="checkSubmenuStatus()">상태 확인</button>
+            <button onclick="forceShowSubmenu()">강제 표시</button>
+            <button onclick="toggleSubmenu()">토글</button>
+            <div id="status-result" class="result">대기 중...</div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🎯 메뉴 클릭 시뮬레이션</div>
+            <button onclick="clickProjectMenu()">프로젝트 관리 클릭</button>
+            <button onclick="clickPlanningMenu()">영상 기획 클릭</button>
+            <button onclick="clickFeedbackMenu()">영상 피드백 클릭</button>
+            <div id="click-result" class="result">대기 중...</div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🔧 CSS 진단</div>
+            <button onclick="checkCSS()">CSS 로드 확인</button>
+            <button onclick="findCSSClasses()">CSS 클래스 찾기</button>
+            <div id="css-result" class="result">대기 중...</div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">💻 콘솔 명령어</div>
+            <div class="code-block">
+// 1. 서브메뉴 찾기
+const submenu = document.querySelector('[data-testid="submenu"]');
+console.log('서브메뉴:', submenu);
+
+// 2. 강제 표시
+if (submenu) {
+    submenu.style.cssText = \`
+        display: block !important;
+        position: fixed !important;
+        left: 300px !important;
+        top: 0 !important;
+        width: 330px !important;
+        height: 100vh !important;
+        background: #f8f8f8 !important;
+        z-index: 9999 !important;
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    \`;
+}
+
+// 3. CSS 클래스 확인
+console.log('클래스:', submenu?.className);
+
+// 4. 메뉴 버튼 클릭
+const btn = Array.from(document.querySelectorAll('button'))
+    .find(b => b.textContent.includes('프로젝트 관리'));
+if (btn) btn.click();
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkSubmenuStatus() {
+            const submenu = parent.document.querySelector('[data-testid="submenu"]');
+            const result = document.getElementById('status-result');
+            
+            if (submenu) {
+                const styles = parent.getComputedStyle(submenu);
+                const rect = submenu.getBoundingClientRect();
+                
+                result.className = 'result success';
+                result.textContent = `✅ 서브메뉴 발견!
+- 클래스: ${submenu.className}
+- data-open: ${submenu.dataset.open}
+- data-tab: ${submenu.dataset.tab}
+- visibility: ${styles.visibility}
+- opacity: ${styles.opacity}
+- transform: ${styles.transform}
+- display: ${styles.display}
+- z-index: ${styles.zIndex}
+- 위치: left=${rect.left}px, top=${rect.top}px
+- 크기: ${rect.width}x${rect.height}px`;
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ 서브메뉴를 찾을 수 없습니다';
+            }
+        }
+
+        function forceShowSubmenu() {
+            const submenu = parent.document.querySelector('[data-testid="submenu"]');
+            const result = document.getElementById('status-result');
+            
+            if (submenu) {
+                submenu.style.cssText = `
+                    display: block !important;
+                    position: fixed !important;
+                    left: 300px !important;
+                    top: 0 !important;
+                    width: 330px !important;
+                    height: 100vh !important;
+                    background: #f8f8f8 !important;
+                    z-index: 9999 !important;
+                    transform: translateX(0) !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    pointer-events: auto !important;
+                    box-shadow: 0 0 20px rgba(0,0,0,0.2) !important;
+                `;
+                
+                result.className = 'result success';
+                result.textContent = '✅ 서브메뉴를 강제로 표시했습니다!';
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ 서브메뉴를 찾을 수 없습니다';
+            }
+        }
+
+        function toggleSubmenu() {
+            const submenu = parent.document.querySelector('[data-testid="submenu"]');
+            const result = document.getElementById('status-result');
+            
+            if (submenu) {
+                const isVisible = submenu.dataset.open === 'true';
+                
+                if (isVisible) {
+                    submenu.classList.remove('active');
+                    submenu.dataset.open = 'false';
+                } else {
+                    submenu.classList.add('active');
+                    submenu.dataset.open = 'true';
+                }
+                
+                result.className = 'result info';
+                result.textContent = `서브메뉴 토글: ${isVisible ? '닫기' : '열기'}`;
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ 서브메뉴를 찾을 수 없습니다';
+            }
+        }
+
+        function clickProjectMenu() {
+            const buttons = Array.from(parent.document.querySelectorAll('button'));
+            const btn = buttons.find(b => b.textContent?.includes('프로젝트 관리'));
+            const result = document.getElementById('click-result');
+            
+            if (btn) {
+                btn.click();
+                result.className = 'result success';
+                result.textContent = '✅ 프로젝트 관리 버튼 클릭됨';
+                
+                setTimeout(() => {
+                    checkSubmenuStatus();
+                }, 500);
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ 프로젝트 관리 버튼을 찾을 수 없습니다';
+            }
+        }
+
+        function clickPlanningMenu() {
+            const buttons = Array.from(parent.document.querySelectorAll('button'));
+            const btn = buttons.find(b => b.textContent?.includes('영상 기획'));
+            const result = document.getElementById('click-result');
+            
+            if (btn) {
+                btn.click();
+                result.className = 'result success';
+                result.textContent = '✅ 영상 기획 버튼 클릭됨';
+                
+                setTimeout(() => {
+                    checkSubmenuStatus();
+                }, 500);
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ 영상 기획 버튼을 찾을 수 없습니다';
+            }
+        }
+
+        function clickFeedbackMenu() {
+            const buttons = Array.from(parent.document.querySelectorAll('button'));
+            const btn = buttons.find(b => b.textContent?.includes('영상 피드백'));
+            const result = document.getElementById('click-result');
+            
+            if (btn) {
+                btn.click();
+                result.className = 'result success';
+                result.textContent = '✅ 영상 피드백 버튼 클릭됨';
+                
+                setTimeout(() => {
+                    checkSubmenuStatus();
+                }, 500);
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ 영상 피드백 버튼을 찾을 수 없습니다';
+            }
+        }
+
+        function checkCSS() {
+            const result = document.getElementById('css-result');
+            const links = Array.from(parent.document.querySelectorAll('link[rel="stylesheet"]'));
+            const cssFiles = links.map(link => link.href.split('/').pop());
+            
+            result.className = 'result info';
+            result.textContent = `CSS 파일 목록:
+${cssFiles.join('\n')}
+
+총 ${cssFiles.length}개의 CSS 파일이 로드됨`;
+        }
+
+        function findCSSClasses() {
+            const result = document.getElementById('css-result');
+            const submenu = parent.document.querySelector('[data-testid="submenu"]');
+            
+            if (submenu) {
+                const allClasses = Array.from(parent.document.querySelectorAll('*'))
+                    .map(el => el.className)
+                    .filter(cls => cls && cls.includes('submenu'))
+                    .filter((v, i, a) => a.indexOf(v) === i);
+                
+                result.className = 'result info';
+                result.textContent = `서브메뉴 관련 CSS 클래스:
+${allClasses.join('\n')}
+
+현재 서브메뉴 클래스: ${submenu.className}`;
+            } else {
+                result.className = 'result error';
+                result.textContent = '서브메뉴를 찾을 수 없습니다';
+            }
+        }
+
+        // 페이지 로드 시 자동 체크
+        window.addEventListener('load', () => {
+            if (parent !== window) {
+                setTimeout(checkSubmenuStatus, 1000);
+            } else {
+                document.body.innerHTML = '<h1>이 페이지를 http://localhost:3001/test-submenu.html 에서 열어주세요</h1>';
+            }
+        });
+    </script>
+</body>
+</html>

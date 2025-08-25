@@ -1,0 +1,473 @@
+@import '../../styles/design-tokens.scss';
+
+.iconButton {
+  // Reset button styles
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  
+  // Layout
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  
+  // Minimum touch target
+  min-width: 44px;
+  min-height: 44px;
+  
+  // Interactive states
+  transition: all 0.2s ease-in-out;
+  border-radius: $radius-full;
+  
+  // Focus styles
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+  
+  // Prevent text selection
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  
+  // Size variants
+  &--small {
+    width: 32px;
+    height: 32px;
+    
+    .iconWrapper {
+      font-size: $font-size-sm;
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  &--medium {
+    width: 40px;
+    height: 40px;
+    
+    .iconWrapper {
+      font-size: $font-size-base;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  &--large {
+    width: 48px;
+    height: 48px;
+    
+    .iconWrapper {
+      font-size: $font-size-lg;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  // Variant styles
+  &--primary {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    color: $color-white;
+    box-shadow: $shadow-sm;
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, $color-primary-dark 0%, $color-primary 100%);
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: $shadow-sm;
+    }
+  }
+  
+  &--secondary {
+    background: $color-gray-100;
+    color: $color-gray-700;
+    border: 1px solid $color-gray-300;
+    
+    &:hover:not(:disabled) {
+      background: $color-gray-200;
+      border-color: $color-gray-400;
+    }
+    
+    &:active:not(:disabled) {
+      background: $color-gray-300;
+    }
+  }
+  
+  &--ghost {
+    background: transparent;
+    color: $color-gray-600;
+    
+    &:hover:not(:disabled) {
+      background: rgba($color-gray-500, 0.1);
+      color: $color-gray-800;
+    }
+    
+    &:active:not(:disabled) {
+      background: rgba($color-gray-500, 0.2);
+    }
+  }
+  
+  &--danger {
+    background: $color-error;
+    color: $color-white;
+    box-shadow: $shadow-sm;
+    
+    &:hover:not(:disabled) {
+      background: darken($color-error, 10%);
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: $shadow-sm;
+    }
+  }
+  
+  // State modifiers
+  &--active {
+    &.iconButton--primary {
+      background: linear-gradient(135deg, $color-primary-dark 0%, $color-primary 100%);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    &.iconButton--secondary {
+      background: $color-gray-300;
+      border-color: $color-gray-500;
+    }
+    
+    &.iconButton--ghost {
+      background: rgba($color-gray-500, 0.2);
+      color: $color-gray-900;
+    }
+    
+    &.iconButton--danger {
+      background: darken($color-error, 15%);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+  
+  // Dark mode
+  &--dark {
+    &.iconButton--primary {
+      background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+      }
+    }
+    
+    &.iconButton--secondary {
+      background: $color-gray-800;
+      color: $color-gray-200;
+      border-color: $color-gray-600;
+      
+      &:hover:not(:disabled) {
+        background: $color-gray-700;
+        border-color: $color-gray-500;
+      }
+    }
+    
+    &.iconButton--ghost {
+      color: $color-gray-300;
+      
+      &:hover:not(:disabled) {
+        background: rgba($color-gray-100, 0.1);
+        color: $color-gray-100;
+      }
+    }
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Loading spinner
+.spinner {
+  animation: spin 1s linear infinite;
+  
+  .spinnerTrack {
+    // Track styles handled by component
+  }
+  
+  .spinnerFill {
+    animation: spinnerDash 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinnerDash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+// Ripple effect
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba($color-white, 0.5);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: rippleAnimation 0.6s ease-out;
+  
+  .iconButton--ghost &,
+  .iconButton--secondary & {
+    background: rgba($color-gray-500, 0.3);
+  }
+  
+  .iconButton--dark & {
+    background: rgba($color-white, 0.2);
+  }
+}
+
+@keyframes rippleAnimation {
+  from {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  to {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+  }
+}
+
+// Tooltip
+.tooltip {
+  position: absolute;
+  padding: $spacing-xs $spacing-sm;
+  background: $color-gray-900;
+  color: $color-white;
+  font-size: $font-size-sm;
+  border-radius: $radius-md;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  animation: tooltipFadeIn 0.2s ease-in-out;
+  box-shadow: $shadow-lg;
+  
+  // Arrow
+  &::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+  
+  // Position variants
+  &--top {
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    &::before {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 4px 4px 0 4px;
+      border-color: $color-gray-900 transparent transparent transparent;
+    }
+  }
+  
+  &--bottom {
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    &::before {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 0 4px 4px 4px;
+      border-color: transparent transparent $color-gray-900 transparent;
+    }
+  }
+  
+  &--left {
+    right: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    
+    &::before {
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 4px 0 4px 4px;
+      border-color: transparent transparent transparent $color-gray-900;
+    }
+  }
+  
+  &--right {
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    
+    &::before {
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 4px 4px 4px 0;
+      border-color: transparent $color-gray-900 transparent transparent;
+    }
+  }
+  
+  // Dark mode tooltip
+  &--dark {
+    background: $color-gray-100;
+    color: $color-gray-900;
+    
+    &.tooltip--top::before {
+      border-color: $color-gray-100 transparent transparent transparent;
+    }
+    
+    &.tooltip--bottom::before {
+      border-color: transparent transparent $color-gray-100 transparent;
+    }
+    
+    &.tooltip--left::before {
+      border-color: transparent transparent transparent $color-gray-100;
+    }
+    
+    &.tooltip--right::before {
+      border-color: transparent $color-gray-100 transparent transparent;
+    }
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+// Tooltip position-specific animations
+.tooltip--top {
+  animation: tooltipFadeInTop 0.2s ease-in-out;
+}
+
+.tooltip--bottom {
+  animation: tooltipFadeInBottom 0.2s ease-in-out;
+}
+
+.tooltip--left {
+  animation: tooltipFadeInLeft 0.2s ease-in-out;
+}
+
+.tooltip--right {
+  animation: tooltipFadeInRight 0.2s ease-in-out;
+}
+
+@keyframes tooltipFadeInTop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes tooltipFadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes tooltipFadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes tooltipFadeInRight {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .iconButton {
+    // Ensure touch targets are always 44px minimum on mobile
+    &--small {
+      min-width: 44px;
+      min-height: 44px;
+    }
+  }
+  
+  .tooltip {
+    // Hide tooltips on mobile devices (touch doesn't hover)
+    display: none;
+  }
+}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서브메뉴 DOM 테스트</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .test-result {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>VideoplaNet 서브메뉴 DOM 테스트</h1>
+    
+    <div class="test-section">
+        <div class="test-title">1. DOM 요소 확인</div>
+        <button onclick="checkSubmenuDOM()">DOM 체크 실행</button>
+        <div id="dom-result"></div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">2. CSS 스타일 확인</div>
+        <button onclick="checkSubmenuStyles()">스타일 체크 실행</button>
+        <div id="style-result"></div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">3. 상태 변경 테스트</div>
+        <button onclick="toggleSubmenu()">서브메뉴 토글</button>
+        <div id="state-result"></div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">4. 콘솔 명령어</div>
+        <pre>// 복사해서 브라우저 콘솔에서 실행하세요
+
+// 서브메뉴 찾기
+const submenu = document.querySelector('[data-testid="submenu"]');
+console.log('서브메뉴 요소:', submenu);
+
+// 데이터 속성 확인
+console.log('data-open:', submenu?.dataset.open);
+console.log('data-tab:', submenu?.dataset.tab);
+
+// 계산된 스타일 확인
+const styles = window.getComputedStyle(submenu);
+console.log('visibility:', styles.visibility);
+console.log('opacity:', styles.opacity);
+console.log('transform:', styles.transform);
+console.log('display:', styles.display);
+console.log('z-index:', styles.zIndex);
+
+// 클래스 확인
+console.log('클래스 목록:', submenu?.classList.toString());
+
+// 강제로 보이게 하기
+submenu.style.cssText = 'transform: translateX(0) !important; opacity: 1 !important; visibility: visible !important;';
+</pre>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">5. React DevTools 체크리스트</div>
+        <ul>
+            <li>EnhancedSideBar 컴포넌트 찾기</li>
+            <li>Props 확인: isOpen, tab, projects</li>
+            <li>State 확인: subMenuOpen, tabName</li>
+            <li>서브메뉴 관련 이벤트 핸들러 동작 확인</li>
+        </ul>
+    </div>
+
+    <script>
+        function checkSubmenuDOM() {
+            const resultDiv = document.getElementById('dom-result');
+            const submenu = document.querySelector('[data-testid="submenu"]');
+            
+            if (submenu) {
+                const rect = submenu.getBoundingClientRect();
+                resultDiv.innerHTML = `
+                    <div class="test-result success">✅ 서브메뉴 DOM 요소 발견!</div>
+                    <div class="test-result info">
+                        위치: left=${rect.left}px, top=${rect.top}px<br>
+                        크기: width=${rect.width}px, height=${rect.height}px<br>
+                        데이터 속성: open="${submenu.dataset.open}", tab="${submenu.dataset.tab}"
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="test-result error">❌ 서브메뉴 DOM 요소를 찾을 수 없습니다</div>
+                    <div class="test-result warning">가능한 원인:
+                        <ul>
+                            <li>컴포넌트가 렌더링되지 않음</li>
+                            <li>조건부 렌더링이 false</li>
+                            <li>서버사이드 렌더링 문제</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        function checkSubmenuStyles() {
+            const resultDiv = document.getElementById('style-result');
+            const submenu = document.querySelector('[data-testid="submenu"]');
+            
+            if (!submenu) {
+                resultDiv.innerHTML = '<div class="test-result error">먼저 DOM 체크를 실행하세요</div>';
+                return;
+            }
+            
+            const styles = window.getComputedStyle(submenu);
+            const isVisible = styles.visibility === 'visible' && 
+                            styles.opacity === '1' && 
+                            styles.display !== 'none';
+            
+            resultDiv.innerHTML = `
+                <div class="test-result ${isVisible ? 'success' : 'warning'}">
+                    ${isVisible ? '✅ 서브메뉴가 보이는 상태입니다' : '⚠️ 서브메뉴가 숨겨진 상태입니다'}
+                </div>
+                <div class="test-result info">
+                    <strong>계산된 스타일:</strong><br>
+                    display: ${styles.display}<br>
+                    visibility: ${styles.visibility}<br>
+                    opacity: ${styles.opacity}<br>
+                    transform: ${styles.transform}<br>
+                    z-index: ${styles.zIndex}<br>
+                    position: ${styles.position}<br>
+                    left: ${styles.left}<br>
+                    pointer-events: ${styles.pointerEvents}
+                </div>
+            `;
+            
+            // active 클래스 확인
+            const hasActiveClass = submenu.classList.contains('active');
+            resultDiv.innerHTML += `
+                <div class="test-result ${hasActiveClass ? 'success' : 'info'}">
+                    active 클래스: ${hasActiveClass ? '있음' : '없음'}
+                </div>
+            `;
+        }
+
+        function toggleSubmenu() {
+            const resultDiv = document.getElementById('state-result');
+            const submenu = document.querySelector('[data-testid="submenu"]');
+            
+            if (!submenu) {
+                resultDiv.innerHTML = '<div class="test-result error">서브메뉴를 찾을 수 없습니다</div>';
+                return;
+            }
+            
+            // 강제로 active 클래스 토글
+            const wasActive = submenu.classList.contains('active');
+            
+            if (wasActive) {
+                submenu.classList.remove('active');
+                submenu.dataset.open = 'false';
+            } else {
+                submenu.classList.add('active');
+                submenu.dataset.open = 'true';
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="test-result success">
+                    서브메뉴 상태 변경: ${wasActive ? 'active 제거' : 'active 추가'}
+                </div>
+                <div class="test-result info">
+                    현재 상태: ${submenu.classList.contains('active') ? '열림' : '닫힘'}<br>
+                    data-open: ${submenu.dataset.open}
+                </div>
+            `;
+            
+            // 스타일 재확인
+            setTimeout(() => {
+                const styles = window.getComputedStyle(submenu);
+                resultDiv.innerHTML += `
+                    <div class="test-result info">
+                        <strong>변경 후 스타일:</strong><br>
+                        visibility: ${styles.visibility}<br>
+                        opacity: ${styles.opacity}<br>
+                        transform: ${styles.transform}
+                    </div>
+                `;
+            }, 500);
+        }
+
+        // 페이지 로드 시 자동 체크
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log('=== VideoplaNet 서브메뉴 자동 진단 ===');
+                checkSubmenuDOM();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

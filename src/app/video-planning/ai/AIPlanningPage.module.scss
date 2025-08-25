@@ -1,0 +1,753 @@
+.aiPlanningPage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+}
+
+// Input Form Styles
+.inputForm {
+  padding: 3rem;
+  
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1631F8;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+    color: #6b7280;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+}
+
+// Section Group Styles
+.sectionGroup {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  
+  .sectionTitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1631F8;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #1631F8;
+  }
+}
+
+// Checkbox Group Styles
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+  
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #1631F8;
+      background: #f0f4ff;
+    }
+    
+    .checkbox {
+      margin: 0;
+      accent-color: #1631F8;
+    }
+  }
+}
+
+// Radio Group Styles
+.radioGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  
+  .radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #1631F8;
+      background: #f0f4ff;
+    }
+    
+    .radio {
+      margin: 0;
+      accent-color: #1631F8;
+    }
+  }
+}
+
+.form {
+  max-width: 800px;
+  margin: 0 auto;
+  
+  .formGroup {
+    margin-bottom: 2rem;
+    
+    label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      
+      .required {
+        color: #ef4444;
+        margin-left: 4px;
+      }
+    }
+    
+    .input, .select, .textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      
+      &:focus {
+        outline: none;
+        border-color: #1631F8;
+        box-shadow: 0 0 0 3px rgba(22, 49, 248, 0.1);
+      }
+    }
+    
+    .textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+  }
+  
+  .formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+}
+
+.generateButton {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, #1631F8 0%, #6366f1 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 2rem;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(22, 49, 248, 0.3);
+  }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Generation Progress Styles
+.generating {
+  padding: 4rem 3rem;
+  text-align: center;
+  
+  h2 {
+    font-size: 2rem;
+    color: #1631F8;
+    margin-bottom: 3rem;
+  }
+  
+  .progressContainer {
+    width: 100%;
+    max-width: 400px;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    
+    .progressBar {
+      height: 100%;
+      background: linear-gradient(90deg, #1631F8 0%, #6366f1 100%);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+  }
+  
+  .progressText {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1631F8;
+    margin-bottom: 3rem;
+  }
+}
+
+.generationSteps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s;
+    
+    .stepNumber {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    
+    &.completed {
+      border-color: #1631F8;
+      background: rgba(22, 49, 248, 0.05);
+      
+      .stepNumber {
+        background: #1631F8;
+        color: white;
+      }
+    }
+  }
+}
+
+// Result Styles
+.result {
+  .resultHeader {
+    background: linear-gradient(135deg, #1631F8 0%, #6366f1 100%);
+    color: white;
+    padding: 3rem;
+    text-align: center;
+    
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+  }
+  
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+    
+    .editButton {
+      background: white;
+      color: #1631F8;
+    }
+    
+    .downloadButton {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+    }
+    
+    .newButton {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+.planContent {
+  padding: 3rem;
+  
+  h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #1631F8;
+  }
+}
+
+.planOverview {
+  margin-bottom: 4rem;
+  
+  .overviewGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    
+    .overviewItem {
+      padding: 1.5rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 4px solid #1631F8;
+      
+      strong {
+        color: #374151;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+.storyStages {
+  margin-bottom: 4rem;
+  
+  .storyStage {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    
+    .stageHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      
+      h4 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1631F8;
+        margin: 0;
+      }
+      
+      .duration {
+        background: #1631F8;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+    }
+    
+    .stageDescription {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #4b5563;
+      margin-bottom: 1.5rem;
+    }
+    
+    .keyPoints {
+      strong {
+        color: #374151;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      
+      ul {
+        margin: 0;
+        padding-left: 1.5rem;
+        
+        li {
+          margin-bottom: 0.5rem;
+          color: #6b7280;
+        }
+      }
+    }
+  }
+}
+
+.shotBreakdown {
+  .shotGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    
+    .shotCard {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+      
+      .shotHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        
+        .shotNumber {
+          font-weight: 700;
+          font-size: 1.2rem;
+          color: #1631F8;
+        }
+        
+        .shotStage {
+          background: rgba(22, 49, 248, 0.1);
+          color: #1631F8;
+          padding: 0.25rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          text-transform: capitalize;
+        }
+      }
+      
+      .shotSpecs {
+        margin-bottom: 1rem;
+        
+        div {
+          margin-bottom: 0.5rem;
+          font-size: 0.9rem;
+          
+          strong {
+            color: #374151;
+          }
+        }
+      }
+      
+      .shotDescription, .shotDialogue {
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        
+        strong {
+          color: #374151;
+          display: block;
+          margin-bottom: 0.25rem;
+        }
+      }
+    }
+  }
+}
+
+// Button Group Styles
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  
+  .optionButton {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    color: #374151;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    
+    &:hover {
+      border-color: #1631F8;
+      background: #f0f4ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 49, 248, 0.15);
+    }
+    
+    &.selected {
+      background: linear-gradient(135deg, #1631F8 0%, #6366f1 100%);
+      color: white;
+      border-color: #1631F8;
+      box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+    }
+    
+    .optionTitle {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .optionDesc {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      line-height: 1.3;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+// Method Grid Styles
+.methodGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  
+  .methodButton {
+    padding: 1.5rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    
+    &:hover {
+      border-color: #1631F8;
+      background: #f0f4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(22, 49, 248, 0.15);
+    }
+    
+    &.selected {
+      background: linear-gradient(135deg, #1631F8 0%, #6366f1 100%);
+      color: white;
+      border-color: #1631F8;
+      box-shadow: 0 8px 25px rgba(22, 49, 248, 0.3);
+    }
+    
+    .methodTitle {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: inherit;
+    }
+    
+    .methodDesc {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      opacity: 0.85;
+      color: inherit;
+    }
+    
+    .methodSteps {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+    
+    &:not(.selected) .methodSteps {
+      border-top-color: #e5e7eb;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+// Intensity Button Group (3-column layout)
+.intensityGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 0.5rem;
+  
+  .intensityButton {
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    color: #374151;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    
+    &:hover {
+      border-color: #1631F8;
+      background: #f0f4ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 49, 248, 0.15);
+    }
+    
+    &.selected {
+      background: linear-gradient(135deg, #1631F8 0%, #6366f1 100%);
+      color: white;
+      border-color: #1631F8;
+      box-shadow: 0 4px 12px rgba(22, 49, 248, 0.3);
+    }
+    
+    .intensityTitle {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .intensityDesc {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      line-height: 1.3;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+// Enhanced form label styling for button groups
+.formGroup {
+  &.buttonGroupContainer {
+    .label {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #374151;
+      
+      .description {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: #6b7280;
+        margin-top: 0.25rem;
+        line-height: 1.4;
+      }
+    }
+  }
+}
+
+// Loading states for buttons
+.buttonGroup, .methodGrid, .intensityGroup {
+  .loadingButton {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    
+    &::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .aiPlanningPage {
+    padding: 1rem;
+    
+    .container {
+      border-radius: 8px;
+    }
+  }
+  
+  .inputForm {
+    padding: 2rem 1.5rem;
+    
+    h2 {
+      font-size: 2rem;
+    }
+  }
+  
+  .generating {
+    padding: 3rem 2rem;
+    
+    h2 {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .planContent {
+    padding: 2rem 1.5rem;
+    
+    h3 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .shotGrid {
+    grid-template-columns: 1fr;
+  }
+}

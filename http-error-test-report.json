@@ -1,0 +1,190 @@
+{
+  "timestamp": "2025-08-24T06:31:55.428Z",
+  "summary": {
+    "passed": 18,
+    "warnings": 2,
+    "failed": 11,
+    "errors": 0
+  },
+  "details": {
+    "passed": [
+      {
+        "test": "Page: Home",
+        "path": "/",
+        "statusCode": 200,
+        "responseTime": 1271
+      },
+      {
+        "test": "Page: Dashboard",
+        "path": "/dashboard",
+        "statusCode": 200,
+        "responseTime": 503
+      },
+      {
+        "test": "Page: Projects List",
+        "path": "/projects",
+        "statusCode": 200,
+        "responseTime": 1102
+      },
+      {
+        "test": "Page: Create Project",
+        "path": "/projects/create",
+        "statusCode": 200,
+        "responseTime": 618
+      },
+      {
+        "test": "Page: Project Detail",
+        "path": "/projects/123",
+        "statusCode": 200,
+        "responseTime": 736
+      },
+      {
+        "test": "Page: Planning",
+        "path": "/planning",
+        "statusCode": 200,
+        "responseTime": 949
+      },
+      {
+        "test": "Page: Feedback Detail",
+        "path": "/feedback/456",
+        "statusCode": 200,
+        "responseTime": 732
+      },
+      {
+        "test": "Page: Login",
+        "path": "/login",
+        "statusCode": 200,
+        "responseTime": 864
+      },
+      {
+        "test": "Page: Register",
+        "path": "/register",
+        "statusCode": 200,
+        "responseTime": 621
+      },
+      {
+        "test": "Error Page: 500 Error Page",
+        "path": "/_error",
+        "statusCode": 500
+      },
+      {
+        "test": "CORS: Cross-Origin Request",
+        "path": "/api/dashboard/stats",
+        "message": "CORS properly restricted"
+      },
+      {
+        "test": "CORS: Public Feedback CORS",
+        "path": "/feedback/public/123",
+        "corsHeaders": {
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, POST, OPTIONS"
+        }
+      },
+      {
+        "test": "Security: Home Page Security",
+        "path": "/",
+        "message": "All security headers present"
+      },
+      {
+        "test": "Security: Dashboard Security",
+        "path": "/dashboard",
+        "message": "All security headers present"
+      },
+      {
+        "test": "Security: Public Feedback Security",
+        "path": "/feedback/public/123",
+        "message": "All security headers present"
+      },
+      {
+        "test": "Performance: Home Page",
+        "path": "/",
+        "responseTime": 14,
+        "threshold": 1000
+      },
+      {
+        "test": "Performance: Dashboard",
+        "path": "/dashboard",
+        "responseTime": 12,
+        "threshold": 2000
+      },
+      {
+        "test": "Performance: Health Check",
+        "path": "/api/health",
+        "responseTime": 10,
+        "threshold": 500
+      }
+    ],
+    "failed": [
+      {
+        "test": "Page: Profile",
+        "path": "/profile",
+        "statusCode": 500
+      },
+      {
+        "test": "Page: Settings",
+        "path": "/settings",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Health Check",
+        "path": "/api/health",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Dashboard Stats",
+        "path": "/api/dashboard/stats",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Feedback Notifications",
+        "path": "/api/notifications/feedback",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Project Notifications",
+        "path": "/api/notifications/project",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Projects API",
+        "path": "/api/projects",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Feedback API",
+        "path": "/api/feedback",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Backend Feedbacks",
+        "path": "/api/v1/feedbacks",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Backend Projects",
+        "path": "/api/v1/projects",
+        "statusCode": 500
+      },
+      {
+        "test": "API: Backend Users",
+        "path": "/api/v1/users",
+        "statusCode": 500
+      }
+    ],
+    "warnings": [
+      {
+        "test": "Error Page: 404 Error Page",
+        "path": "/this-page-does-not-exist",
+        "expected": 404,
+        "actual": 500
+      },
+      {
+        "test": "Error Page: API 404",
+        "path": "/api/this-endpoint-does-not-exist",
+        "expected": 404,
+        "actual": 500
+      }
+    ],
+    "errors": []
+  }
+}
