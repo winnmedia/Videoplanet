@@ -9,14 +9,15 @@ version = "3.11"
 cmd = """
 pip install --no-cache-dir --upgrade pip && \
 pip install --no-cache-dir -r requirements.txt && \
+pip install --no-cache-dir gunicorn uvicorn[standard] && \
 cd vridge_back && \
 export PYTHONPATH=/app/vridge_back && \
 python manage.py collectstatic --noinput --clear || echo "Static collection skipped"
 """
 
 [start]
-# Start Daphne ASGI server
-cmd = "cd vridge_back && python -m daphne -b 0.0.0.0 -p $PORT config.asgi:application"
+# Start Gunicorn ASGI server with uvicorn worker
+cmd = "cd vridge_back && export PYTHONPATH=/app/vridge_back:$PYTHONPATH && python manage.py migrate --noinput && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000}"
 
 [variables]
 DJANGO_SETTINGS_MODULE = "config.settings"

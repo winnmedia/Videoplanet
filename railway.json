@@ -4,7 +4,7 @@
     "builder": "RAILPACK"
   },
   "deploy": {
-    "startCommand": "cd vridge_back && python -m daphne -b 0.0.0.0 -p $PORT config.asgi:application",
+    "startCommand": "cd vridge_back && export PYTHONPATH=/app/vridge_back:$PYTHONPATH && python manage.py migrate --noinput && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000}",
     "healthcheckPath": "/health/",
     "healthcheckTimeout": 120,
     "restartPolicyType": "ON_FAILURE",

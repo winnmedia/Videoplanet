@@ -12,6 +12,10 @@ channels==4.0.0
 channels-redis==4.1.0
 daphne==4.0.0
 
+# ASGI Server
+gunicorn==21.2.0
+uvicorn[standard]==0.24.0
+
 # AWS & Storage
 boto3==1.26.160
 django-storages==1.13.2
