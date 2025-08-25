@@ -1,0 +1,18 @@
+version = "1"
+
+[build]
+nixpkgs = ["python311", "gcc", "postgresql"]
+
+[build.env]
+PYTHON_VERSION = "3.11"
+
+[setup]
+cmds = [
+  "python --version",
+  "pip install --upgrade pip setuptools wheel",
+  "pip install -r requirements.txt",
+  "pip install gunicorn==21.2.0 uvicorn[standard]==0.24.0"
+]
+
+[start]
+cmd = "cd vridge_back && python manage.py migrate --noinput && gunicorn config.asgi:application --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --pythonpath /app/vridge_back"

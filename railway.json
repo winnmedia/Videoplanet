@@ -1,12 +1,13 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "buildCommand": "pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir gunicorn uvicorn[standard]"
+    "builder": "RAILPACK",
+    "buildCommand": "echo 'Build started at $(date)' && pip install --no-cache-dir --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir gunicorn==21.2.0 uvicorn[standard]==0.24.0 && cd vridge_back && python manage.py collectstatic --noinput || true"
   },
   "deploy": {
-    "startCommand": "cd vridge_back && python manage.py migrate --noinput && gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000} --chdir /app/vridge_back",
+    "startCommand": "cd vridge_back && python manage.py migrate --noinput && python -m gunicorn config.asgi:application --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --chdir /app/vridge_back --pythonpath /app/vridge_back --log-level debug",
     "healthcheckPath": "/health/",
-    "healthcheckTimeout": 120,
+    "healthcheckTimeout": 180,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   },
@@ -14,13 +15,12 @@
     "production": {
       "variables": {
         "DJANGO_SETTINGS_MODULE": "config.settings",
-        "DEBUG": "False",
         "PYTHONPATH": "/app/vridge_back",
         "PYTHONUNBUFFERED": "1",
-        "PIP_DISABLE_PIP_VERSION_CHECK": "1",
-        "PYTHON_VERSION": "3.11",
-        "ALLOWED_HOSTS": "*",
-        "PORT": "8000"
+        "DEBUG": "False",
+        "ALLOWED_HOSTS": ".railway.app,localhost,127.0.0.1",
+        "PORT": "8000",
+        "PYTHON_VERSION": "3.11"
       }
     }
   }
