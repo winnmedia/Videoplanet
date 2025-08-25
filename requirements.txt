@@ -1,7 +1,3 @@
-# Django Backend Requirements
-# This file is for Nixpacks to recognize this as a Python project
-# Actual requirements are in vridge_back/requirements.txt
-
 # Django Core
 Django==4.2.2
 djangorestframework==3.14.0

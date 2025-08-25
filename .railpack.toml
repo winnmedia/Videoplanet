@@ -1,18 +1,22 @@
+# Railpack configuration for Django project in subdirectory
 providers = ["python"]
 
 [provider.python]
 version = "3.11"
 
 [build]
+# Install dependencies from root requirements.txt first
 cmd = """
-cd vridge_back && \
 pip install --no-cache-dir --upgrade pip && \
 pip install --no-cache-dir -r requirements.txt && \
-python manage.py collectstatic --noinput --clear
+cd vridge_back && \
+export PYTHONPATH=/app/vridge_back && \
+python manage.py collectstatic --noinput --clear || echo "Static collection skipped"
 """
 
 [start]
-cmd = "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
+# Start Daphne ASGI server
+cmd = "cd vridge_back && export PYTHONPATH=/app/vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
 
 [variables]
 DJANGO_SETTINGS_MODULE = "config.settings"

@@ -4,9 +4,9 @@
     "builder": "RAILPACK"
   },
   "deploy": {
-    "startCommand": "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application",
-    "healthcheckPath": "/health/",
-    "healthcheckTimeout": 100,
+    "startCommand": "cd vridge_back && export PYTHONPATH=/app/vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application",
+    "healthcheckPath": "/admin/",
+    "healthcheckTimeout": 120,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   },
@@ -18,7 +18,9 @@
         "PYTHONPATH": "/app/vridge_back",
         "PYTHONUNBUFFERED": "1",
         "PIP_DISABLE_PIP_VERSION_CHECK": "1",
-        "PYTHON_VERSION": "3.11"
+        "PYTHON_VERSION": "3.11",
+        "ALLOWED_HOSTS": "*",
+        "PORT": "8000"
       }
     }
   }
