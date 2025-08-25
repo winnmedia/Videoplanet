@@ -118,3 +118,4 @@ playwright/.cache/
 
 # Storybook build outputs
 storybook-static/
+.vercel
