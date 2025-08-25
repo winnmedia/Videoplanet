@@ -10,15 +10,13 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY vridge_back/requirements.txt ./requirements.txt
+# Copy entire project first
+COPY . /app/
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN cd vridge_back && \
+    pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
-
-# Copy Django project
-COPY vridge_back/ ./vridge_back/
 
 # Set environment variables
 ENV DJANGO_SETTINGS_MODULE=config.settings
