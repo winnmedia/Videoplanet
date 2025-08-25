@@ -1,25 +1,16 @@
 # Railpack Configuration for VideoPlanet Django Backend
 
-[build]
-# Build in the Django backend directory
-cmd = """
-cd vridge_back && \
-pip install --upgrade pip && \
-pip install -r requirements.txt && \
-python manage.py collectstatic --noinput --clear || echo 'Static collection skipped'
-"""
+[providers]
+python = "3.11"
 
-[start]
-# Start the Django application with Daphne (ASGI server)
+[build]
+cmd = "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
+
+[start] 
 cmd = "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
 
-[variables]
-# Django environment variables
+[env]
 DJANGO_SETTINGS_MODULE = "config.settings"
 PYTHONPATH = "/app/vridge_back"
 PYTHONUNBUFFERED = "1"
-PIP_DISABLE_PIP_VERSION_CHECK = "1"
-
-# Python version specification for Railpack
-[providers.python]
-version = "3.11"
+SECRET_KEY = "4(7b%fv3+tc0ptvzu9j2yh9)wotp(lty83a^b)d$79^+r(=trg"
