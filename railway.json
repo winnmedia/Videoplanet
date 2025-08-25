@@ -1,6 +1,7 @@
 {
+  "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS",
+    "builder": "RAILPACK",
     "buildCommand": "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
   },
   "deploy": {
@@ -19,7 +20,8 @@
         "PYTHONUNBUFFERED": "1",
         "PIP_DISABLE_PIP_VERSION_CHECK": "1",
         "STATIC_URL": "/static/",
-        "MEDIA_URL": "/media/"
+        "MEDIA_URL": "/media/",
+        "PYTHON_VERSION": "3.11"
       }
     }
   }
