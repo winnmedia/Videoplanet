@@ -1,10 +1,10 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "builder": "RAILPACK"
+    "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application",
+    "startCommand": "cd vridge_back && python -m daphne -b 0.0.0.0 -p $PORT config.asgi:application",
     "healthcheckPath": "/health/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
