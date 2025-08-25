@@ -6,6 +6,42 @@
 
 ## 📅 작업 히스토리 (최신순)
 
+### 2025-08-25: Railway 빌더 설정 간소화 및 배포 문제 해결
+**요청 내용**: Railway 배포가 시작되지 않는 문제 해결
+
+**수행 작업**:
+1. **Railway 빌더 문제 분석**
+   - RAILPACK 빌더가 인식되지 않음
+   - 캐시된 Daphne 설정이 계속 사용되는 문제
+   - 빌드가 트리거되지 않는 상황
+
+2. **단계별 해결 시도**
+   - Dockerfile → Dockerfile.backup 이름 변경
+   - Procfile 완전 삭제
+   - Daphne → Gunicorn + Uvicorn으로 ASGI 서버 교체
+   - RAILPACK 빌더 지정 제거
+
+3. **최종 해결책**
+   - railway.json에서 "builder": "RAILPACK" 제거
+   - Railway 자동 감지 모드 활성화
+   - buildCommand는 유지하여 필수 패키지 설치 보장
+
+4. **설정 파일 현황**
+   - railway.json: 빌더 자동 감지, buildCommand 유지
+   - nixpacks.toml: 백업 설정 파일
+   - .railpack.toml: 대체 빌더 설정
+   - requirements.txt: gunicorn, uvicorn 추가됨
+
+**핵심 교훈**:
+- Railway는 명시적 빌더 지정보다 자동 감지가 더 안정적
+- Procfile이 있으면 railway.json보다 우선 적용됨
+- Gunicorn이 Daphne보다 Python 경로 처리가 유연함
+
+**결과**:
+- 빌더 자동 감지로 배포 프로세스 정상화
+- Python 프로젝트로 올바르게 인식
+- 헬스체크 엔드포인트 /health/ 구현 완료
+
 ### 2025-08-25: Railway 백엔드 배포 오류 해결
 **요청 내용**: Railway 빌드 중 requirements.txt 파일을 찾지 못하는 오류 해결
 
