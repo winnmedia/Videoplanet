@@ -1,0 +1,14 @@
+# Nixpacks Configuration for VideoPlanet Django Backend
+[providers]
+python = "3.11"
+
+[start]
+cmd = "cd vridge_back && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
+
+[build]
+cmd = "cd vridge_back && pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
+
+[variables]
+DJANGO_SETTINGS_MODULE = "config.settings"
+PYTHONPATH = "/app/vridge_back"
+PYTHONUNBUFFERED = "1"
